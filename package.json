@@ -1,0 +1,20 @@
+{
+  "name": "electron-facilitador",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "server": "nodemon electron .",
+    "watch": "nodemon --exec electron .",
+    "start": "electron ."
+  },
+  "author": "Filipe Marques Ferreira",
+  "license": "ISC",
+  "dependencies": {
+    "electron": "^13.1.4",
+    "jquery": "^3.6.0",
+    "python-shell": "^3.0.0",
+    "request": "^2.88.2",
+    "request-promise": "^4.2.6"
+  }
+}

@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <script>
+        var $ = jQuery = require("jquery")
+      </script>
+    <link rel="stylesheet" href="../../css/style.css">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+    <title>ADM</title>
+    <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+    
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-circle-progress/1.2.2/circle-progress.min.js"></script>
+    
+    <script type="text/javascript" src="../../js/graphics-config.js"></script>
+
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-brand">
+            <h2>
+                <span class="lab la-accusoft"></span>
+                <span>Marketing</span>
+            </h2>
+        </div>
+    
+        <div class="sidebar-menu">
+            <ul>
+                <li>
+                    <a href="../dashboard/index.html" class="active">
+                        <span class="las la-igloo"></span>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="screens/incluirDado.html" class="active">
+                        <span class="las la-igloo"></span>
+                        <span>Incluir Dados</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="screens/editarDado.html" class="active">
+                        <span class="las la-igloo"></span>
+                        <span>Editar um Dado</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="../consulta-mes/index.html" class="active">
+                        <span class="las la-igloo"></span>
+                        <span>Consultar Publicações por Mês</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="../consulta-mes/index.html" class="active">
+                        <span class="las la-igloo"></span>
+                        <span>Consultar Publicações por Escritórios</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="screens/consultarPorInstituicoes.html" class="active">
+                        <span class="las la-igloo"></span>
+                        <span>Consultar Publicações por Instituições</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="screens/consultarPorResponsaveis.html" class="active">
+                        <span class="las la-igloo"></span>
+                        <span>Consultar Publicações por Responsáveis</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="screens/consultaComplexa.html" class="active">
+                        <span class="las la-igloo"></span>
+                        <span>Consulta Complexa</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    
+    </div>
+    <input type="checkbox" id="nav-toggle">
+
+
+    <div class="main-content">
+        <header>
+            <h2>
+                <label for="nav-toggle">
+                    <span class="las la-bars"></span>
+                </label>
+                Dashboard
+            </h2>
+
+            <div class="search-wrapper">
+                <span class="las la-search"></span>
+                <input type="search" placeholder="Pesquisar"/>
+            </div>
+
+            <div class="user-wrapper">
+                <div>
+                    <h4>Filipe Marques</h4>
+                    <small>GOD</small>
+                </div>
+            </div>
+
+        </header>
+
+        <main>
+            <div class="cards">
+                <div class="card-single">
+                    <div class="card-header">
+                        <h2>Responsáveis:</h2>
+                    </div>
+
+                    <div class="card-body">
+                        <table width="100%">
+                           <!--  <thead>
+                                <tr>
+                                    <td>Responsáveis:</td>
+                                    <td>Quantidade de Submissões:</td>
+                                    <td>Submissão Mais Próxima:</td>
+                                </tr>
+                            </thead> -->
+                            <tbody>
+                                <tr>
+                                    <td>Elvis</td>
+                                    <td>8</td>
+                                    <td>
+                                        <span class="status"></span>
+                                        12/12/2021
+                                    </td>
+                                    <td>
+                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Filipe M</td>
+                                    <td>3</td>
+                                    <td>
+                                        <span class="status"></span>
+                                        07/05/2021
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>Amanda</td>
+                                    <td>7</td>
+                                    <td>
+                                        <span class="status"></span>
+                                        22/10/2022
+                                    </td>
+                                </tr>
+
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                        <span class="las la-users"></span>
+                    </div>
+                </div>
+
+                <div class="card-single">
+
+                    <div class="card js">
+                        <div class="circle">
+                            <div class="circle-text" style="margin-bottom: 30px;"></div>
+                            <div class="bar"></div>
+
+                            <div class="box"><span></span></div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="recent-grid">
+                <div class="projects">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>Recentes:</h2>
+                            <button>Ver Todas <span class="las la-arrow-right"></span></button>
+                        </div>
+
+                        <div class="card-body">
+                            <table width="100%">
+                                <thead>
+                                    <tr>
+                                        <td>Titulo:</td>
+                                        <td>Tipo de Mudança:</td>
+                                        <td>Status:</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>UI</td>
+                                        <td>Web</td>
+                                        <td>
+                                            <span class="status"></span>
+                                            review
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>UI</td>
+                                        <td>Web</td>
+                                        <td>
+                                            <span class="status"></span>
+                                            review
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>UI</td>
+                                        <td>Web</td>
+                                        <td>
+                                            <span class="status"></span>
+                                            review
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+
+                </div>
+                
+                 
+                <div class="customers">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>Últimos Grupos Adicionados</h2>
+                            <button>Ver Todas <span class="las la-arrow-right"></span></button>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="customer">
+                                <div class="info">
+                                    <img width="40px" height="40px" alt="">
+                                    <div>
+                                        <h4>Chambers Australia</h4>
+                                        <small>Categoria: Abacate</small>
+                                    </div>
+                                </div>
+                                <div class="contact">
+                                    <span class="las la-user-circle"></span>
+                                    <span class="las la-user-circle"></span>
+                                    <span class="las la-user-circle"></span>
+                                </div>
+                            </div>
+
+                            <div class="customer">
+                                <div class="info">
+                                    <img width="40px" height="40px" alt="">
+                                    <div>
+                                        <h4>Chambers Alemanha</h4>
+                                        <small>Categoria: Abacate</small>
+                                    </div>
+                                </div>
+                                <div class="contact">
+                                    <span class="las la-user-circle"></span>
+                                    <span class="las la-user-circle"></span>
+                                    <span class="las la-user-circle"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+
+
+</body>
+
+</html>
