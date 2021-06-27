@@ -13,13 +13,16 @@
     <script type="text/javascript" src="../../js/bootstrap.js"></script>
     
     
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-circle-progress/1.2.2/circle-progress.min.js"></script>
-    
     <link rel="stylesheet" href="../../css/style-consulta.css">
-    
-    <script type="text/javascript" src="../../js/graphics-config.js"></script>
 
-    <script src="../../js/scripts.js"></script>
+    <script src="../../js/scripts.js" charset="UTF-8"></script>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+
     
 </head>
 <body>
@@ -96,39 +99,74 @@
                     
 
                     <div class="card-body a">
-                        <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                            <input type="radio" class="btn-check" name="btnradio" id="prevista" autocomplete="off" checked>
-                            <label class="btn btn-outline-primary" for="prevista">Data Prevista</label>
-                          
-                            <input type="radio" class="btn-check" name="btnradio" id="resultado" autocomplete="off">
-                            <label class="btn btn-outline-primary" for="resultado">Data Resultado</label>
-                          
-                          </div>
+                        <select id="instituicoes" class="selectpicker" multiple data-live-search="true" title="Selecionar Instituições" data-size=8 data-actions-box="true">
+
+                        </select>
 
                         
-                        <select name="mes" id="mes" style="margin-top: 15px; margin-left: 15px;">
-                            <option value="01">Janeiro</option>
-                            <option value="02">Fevereiro</option>
-                            <option value="03">Março</option>
-                            <option value="04">Abril</option>
-                            <option value="05">Maio</option>
-                            <option value="06">Junho</option>
-                            <option value="07">Julho</option>
-                            <option value="08">Agosto</option>
-                            <option value="09">Setembro</option>
-                            <option value="10">Outubro</option>
-                            <option value="11">Novembro</option>
-                            <option value="12">Dezembro</option>
-                        </select>
+                        <script>
 
-                        <select name="ano" id="ano" style="margin-top: 15px;">
-                            <option value="todos">Todas</option>
-                            <option value="2021">2021</option>
-                            <option value="2020">2020</option>
-                            <option value="2022">2022</option>
-                        </select>
+                            var options = {
+                                scriptPath: path.join(__dirname,'../../engine/consulta-escritorio/'),
+                                args: ["instituicoes","instituicoes"]
+                            }
 
-                        <button id="buscar-mes" onclick="buscarMes()" class="btn btn-success" style="margin-top: 15px; margin-left: 55px;">
+                            PythonShell.run('main.py', options, function(err, results){
+                                if (err) throw err;
+                                formated = results[0].replace('[','')
+                                formated = formated.replace(']','')
+                                formated = formated.replace(/'/g,'')
+                                
+                                //formated = formated.replace(/\s/g,'')
+
+                                let array2 = formated.split(',')
+                                array2 = array2.map(s => s.trim());
+                                console.log(array2)
+
+                                for (var i = 0; i< array2.length; i++){
+                                    $("#instituicoes").append('<option value="'+array2[i]+'">'+array2[i]+'</option>');
+                                    $("#instituicoes").selectpicker("refresh");
+                                }
+
+                            })
+
+
+                        </script>
+
+
+                        
+                        <select id="escritorios" class="selectpicker" multiple data-live-search="true" title="Adicionar Escritórios" data-size=8 data-actions-box="true">
+
+                        </select>
+                        
+                        <script>
+
+                            var options = {
+                                scriptPath: path.join(__dirname,'../../engine/consulta-escritorio/'),
+                                args: ["escritorios","escritorios"]
+                            }
+
+                            PythonShell.run('main.py', options, function(err, results){
+                                if (err) throw err;
+                                formated = results[0].replace('[','')
+                                formated = formated.replace(']','')
+                                formated = formated.replace(/'/g,'')
+                                formated = formated.replace(/\s/g,'')
+
+                                let array2 = formated.split(',')
+                                console.log(array2)
+
+                                for (var i = 0; i< array2.length; i++){
+                                    $("#escritorios").append('<option value="'+array2[i]+'">'+array2[i]+'</option>');
+                                    $("#escritorios").selectpicker("refresh");
+                                }
+
+                            })
+
+
+                        </script>
+
+                        <button id="buscar-escritorios" onclick="buscarEscritorios()" class="btn btn-success" style="margin-top: 15px; margin-left: 55px;">
                             Buscar
                         </button>
                     </div>

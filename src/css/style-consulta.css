@@ -15,6 +15,10 @@
     font-family: 'Poppins', sans-serif;
 }
 
+#hideAll  {
+    visibility:hidden;
+ }
+
 .sidebar{
     width: 345px;
     position: fixed;

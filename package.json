@@ -11,10 +11,12 @@
   "author": "Filipe Marques Ferreira",
   "license": "ISC",
   "dependencies": {
+    "bootstrap-select": "^1.13.18",
     "electron": "^13.1.4",
     "jquery": "^3.6.0",
     "python-shell": "^3.0.0",
     "request": "^2.88.2",
-    "request-promise": "^4.2.6"
+    "request-promise": "^4.2.6",
+    "utf8": "^3.0.0"
   }
 }

@@ -7,6 +7,8 @@ from datetime import datetime
 import openpyxl as openpy
 import sys
 
+
+sys.stdout.reconfigure(encoding='utf-8')
 mes = sys.argv[1]
 ano = sys.argv[2]
 opcao = sys.argv[3]
