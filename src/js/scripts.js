@@ -76,18 +76,18 @@ function buscarMes(){
 }
 
 
-const textarea = document.getElementById('text')
-const title = document.getElementById('titles')
+// const textarea = document.getElementById('text')
+// const title = document.getElementById('titles')
 
-ipcRenderer.on('set-file', function(event, data){
-    textarea.value = data.content;
-    title.innerHTML = data.name+ ' | DEV'
-})
+// ipcRenderer.on('set-file', function(event, data){
+//     textarea.value = data.content;
+//     title.innerHTML = data.name+ ' | DEV'
+// })
 
-function handleChangeText(){
-    options = [{
-        data: "um",
-        date: "dois"
-    }]
-    ipcRenderer.send('update-content', options[0].data)
-}
+// function handleChangeText(){
+//     options = [{
+//         data: "um",
+//         date: "dois"
+//     }]
+//     ipcRenderer.send('update-content', options[0].data)
+// }

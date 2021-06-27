@@ -12,8 +12,6 @@
     <link rel="stylesheet" href="../../css/bootstrap.css">
     <script type="text/javascript" src="../../js/bootstrap.js"></script>
     
-
-    
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-circle-progress/1.2.2/circle-progress.min.js"></script>
     
@@ -72,7 +70,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="screens/consultarPorResponsaveis.html" class="active">
+                    <a href="../consulta-responsaveis/index.html" class="active">
                         <span class="las la-igloo"></span>
                         <span>Consultar Publicações por Responsáveis</span>
                     </a>
@@ -86,53 +84,58 @@
             </ul>
         </div>
     
-    </div>`;
-
+    </div>
     <div class="main-content">
-     
-            <div class="cards" style="margin-left: 20%;">
-                <div class="card-single">
+
+            <div class="card" style="display: inline-block;">
+              
                     <div class="card-header">
                         <h2>Filtros:</h2>
                     </div>
 
                     
 
-                    <div class="card-body">
-                        <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                            <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
-                            <label class="btn btn-outline-primary" for="btnradio1">Data Prevista</label>
-                          
-                            <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
-                            <label class="btn btn-outline-primary" for="btnradio2">Data Resultado</label>
-                        </div>
+                    <div class="card-body a">
+                        <select name="Responsáveis" id="responsaveis" style="margin-top: 15px; margin-left: 15px;">
 
-                        <select name="mes" id="mes" style="display: block;margin-top: 15px;">
-                            <option value="01">Janeiro</option>
-                            <option value="02">Fevereiro</option>
-                            <option value="03">Março</option>
-                            <option value="04">Abril</option>
-                            <option value="05">Maio</option>
-                            <option value="06">Junho</option>
-                            <option value="07">Julho</option>
-                            <option value="08">Agosto</option>
-                            <option value="09">Setembro</option>
-                            <option value="10">Outubro</option>
-                            <option value="11">Novembro</option>
-                            <option value="12">Dezembro</option>
                         </select>
 
-                        <select name="mes" id="mes" style="display: block;margin-top: 15px;">
-                            <option value="2021">2021</option>
-                            <option value="2020">2020</option>
-                            <option value="2022">2022</option>
-                        </select>
+                        <script>
 
-                        <button id="buscar-mes" onclick="buscarMes()" style="display: block; margin-top: 15px;">
+                            var options = {
+                                scriptPath: path.join(__dirname,'../../engine/consulta-responsaveis/'),
+                                args: ["options"]
+                            }
+
+                            PythonShell.run('main.py', options, function(err, results){
+                                if (err) throw err;
+
+                                formated = results[0].replace('[','')
+                                formated = formated.replace(']','')
+                                formated = formated.replace(/'/g,'')
+                                formated = formated.replace(/\s/g,'')
+
+                                let array2 = formated.split(',')
+
+                                for (var i = 0; i< array2.length; i++){
+                                    var option = document.createElement('option')
+                                    option.value = array2[i]
+                                    option.text = array2[i]
+
+                                    document.getElementById('responsaveis').appendChild(option)
+                                }
+                            })
+
+                            
+
+
+                        </script>
+
+                        <button id="buscar-mes" onclick="buscarMes()" class="btn btn-success" style="margin-top: 15px; margin-left: 55px;">
                             Buscar
                         </button>
                     </div>
-                </div>
+           
 
             </div>
 
@@ -150,8 +153,6 @@
 
                 </div>
                 
-
-
     </div>
 
 </body>

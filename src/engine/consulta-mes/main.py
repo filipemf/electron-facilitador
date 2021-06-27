@@ -1,3 +1,5 @@
+# coding=UTF-8
+
 import os
 import numpy as np
 import pandas as pd
@@ -59,9 +61,22 @@ def buscarMesPrevista(oMes, ano):
         #df.to_json(orient="records")[1:-1].replace('},{', '} {')
 
         resultadoFinal = df2.to_html(index = False)
+        # resultadoEncode = []
+
+        # for item in resultadoFinal:
+        #     item2 = item.encode(encoding="utf-8",errors="xmlcharrefreplace")
+        #     resultadoEncode.append(item2)
+
+        # def clean_unicode(df):
+        #     df=df.values
+        #     for x in np.nditer(df, flags=['refs_ok'], op_flags =['copy', 'readonly']):
+        #             df[df==x]=str(str(x).encode("latin-1", "replace").decode('utf8'))
+        #     df=pd.DataFrame(df)
+        #     return df
+
+        # dfF = clean_unicode(df2)
 
         return resultadoFinal
-
 
 
 def buscarMesResultado(oMes, ano):    
