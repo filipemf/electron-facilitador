@@ -145,6 +145,41 @@ function buscarEscritorios(){
     })
 }
 
+function buscarInstituicoes(){
+    var valuesEscritorios =Array.from($("#escritorios").find(':selected')).map(function(item){
+        return $(item).text();
+    });
+
+    var valuesInstituicoes =Array.from($("#instituicoes").find(':selected')).map(function(item){
+        return $(item).text();
+    });
+    
+    var valuesCategorias = Array.from($("#categorias").find(':selected')).map(function(item){
+        return $(item).text();
+    });
+    
+    
+    var options = {
+        scriptPath: path.join(__dirname,'../../engine/consulta-instituicao/'),
+        args: [valuesEscritorios, valuesInstituicoes, valuesCategorias]
+    }
+
+    PythonShell.run('main.py', options, function(err, results){
+        if (err) throw err;
+        console.log(results)
+        $('.card-body.b').empty()
+
+        function appendHtml(el, str) {
+            var div = document.createElement('div'); //container to append to
+            div.innerHTML = str;
+            while (div.children.length > 0) {
+                $('.card-body.b').append(div.children[0]);
+            }
+          }
+        appendHtml(document.body, results)
+        //$('body').append(results);
+    })
+}
 // const textarea = document.getElementById('text')
 // const title = document.getElementById('titles')
 
