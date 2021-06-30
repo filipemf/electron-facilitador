@@ -180,6 +180,49 @@ function buscarInstituicoes(){
         //$('body').append(results);
     })
 }
+
+function incluirDado(){
+    var valuesEscritorios =Array.from($("#escritorios").find(':selected')).map(function(item){
+        return $(item).text();
+    });
+
+    var valuesInstituicoes = $("#instituicoes").find(':selected').text();
+    
+    const responsavel = document.getElementById('responsaveis').value
+
+    const nomeCategoria = document.getElementById('nome-categoria').value
+
+    const submissao = document.getElementById('submissao').value
+
+    const status = document.getElementById('status').value
+
+    const dataPrevista = document.getElementById('data-prevista').value
+
+    const dataResultado = document.getElementById('data-resultado').value
+    
+    
+    var options = {
+        scriptPath: path.join(__dirname,'../../engine/incluir-dado/'),
+        args: [valuesEscritorios, valuesInstituicoes, responsavel, nomeCategoria, submissao, status, dataPrevista, dataResultado]
+    }
+
+    PythonShell.run('main.py', options, function(err, results){
+        if (err) throw err;
+        console.log(results)
+        $('.card-body.b').empty()
+
+        function appendHtml(el, str) {
+            var div = document.createElement('div'); //container to append to
+            div.innerHTML = str;
+            while (div.children.length > 0) {
+                $('.card-body.b').append(div.children[0]);
+            }
+          }
+        appendHtml(document.body, results)
+        //$('body').append(results);
+    })
+}
+
 // const textarea = document.getElementById('text')
 // const title = document.getElementById('titles')
 
