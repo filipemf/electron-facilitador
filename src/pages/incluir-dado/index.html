@@ -23,7 +23,6 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
 
-    
 </head>
 <body>
     <div class="sidebar">
@@ -90,20 +89,122 @@
     </div>
     <div class="main-content">
         <div style="margin-left: 10rem; margin-right: 10rem;">
-            <div class="card-header" style="margin-left: -10rem; margin-right: -10rem;">
+            <div class="card-header" style="margin-left: -10rem; margin-right: -10rem; margin-bottom: 10px;">
                 <h2>Filtros:</h2>
             </div>
 
             <form>
                 <div class="form-row">
-                  <div class="form-group col-md-6">
-                    <label for="inputEmail4">Email</label>
-                    <input type="email" class="form-control" id="inputEmail4" placeholder="Email">
-                  </div>
-                  <div class="form-group col-md-6">
-                    <label for="inputPassword4">Password</label>
-                    <input type="password" class="form-control" id="inputPassword4" placeholder="Password">
-                  </div>
+                    <div class="form-group col-md-6">
+                        <select id="instituicoes" class="selectpicker" multiple data-live-search="true" title="Selecionar Instituições" data-size=8 data-actions-box="true">
+                        </select>
+
+                        <script>
+
+                            var options = {
+                                scriptPath: path.join(__dirname,'../../engine/consulta-escritorio/'),
+                                args: ["instituicoes","instituicoes"]
+                            }
+
+                            PythonShell.run('main.py', options, function(err, results){
+                                if (err) throw err;
+                                formated = results[0].replace('[','')
+                                formated = formated.replace(']','')
+                                formated = formated.replace(/'/g,'')
+                                
+                                //formated = formated.replace(/\s/g,'')
+
+                                let array2 = formated.split(',')
+                                array2 = array2.map(s => s.trim());
+                                console.log(array2)
+
+                                for (var i = 0; i< array2.length; i++){
+                                    $("#instituicoes").append('<option value="'+array2[i]+'">'+array2[i]+'</option>');
+                                    $("#instituicoes").selectpicker("refresh");
+                                }
+
+                            })
+
+
+                        </script>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <select id="escritorios" class="selectpicker" multiple data-live-search="true" title="Adicionar Escritórios" data-size=8 data-actions-box="true">
+                        </select>
+
+                        <script>
+
+                            var options = {
+                                scriptPath: path.join(__dirname,'../../engine/consulta-escritorio/'),
+                                args: ["escritorios","escritorios"]
+                            }
+
+                            PythonShell.run('main.py', options, function(err, results){
+                                if (err) throw err;
+                                formated = results[0].replace('[','')
+                                formated = formated.replace(']','')
+                                formated = formated.replace(/'/g,'')
+                                formated = formated.replace(/\s/g,'')
+
+                                let array2 = formated.split(',')
+                                console.log(array2)
+
+                                for (var i = 0; i< array2.length; i++){
+                                    $("#escritorios").append('<option value="'+array2[i]+'">'+array2[i]+'</option>');
+                                    $("#escritorios").selectpicker("refresh");
+                                }
+
+                            })
+
+
+                        </script>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="data-selecionada" style="margin-right:25px">Data Selecionada: </label>
+                        <input placeholder="dd/mm/yyyy" data-slots="dmy">
+                    </div>
+                    
+
+                    <div class="form-group col-md-6">
+                        <label for="data-prevista" style="margin-right:25px">Data Prevista: </label>
+                        <input placeholder="dd/mm/yyyy" data-slots="dmy">
+                    </div>
+
+                    <script>
+                    // This code empowers all input tags having a placeholder and data-slots attribute
+                    document.addEventListener('DOMContentLoaded', () => {
+                        for (const el of document.querySelectorAll("[placeholder][data-slots]")) {
+                            const pattern = el.getAttribute("placeholder"),
+                                slots = new Set(el.dataset.slots || "_"),
+                                prev = (j => Array.from(pattern, (c,i) => slots.has(c)? j=i+1: j))(0),
+                                first = [...pattern].findIndex(c => slots.has(c)),
+                                accept = new RegExp(el.dataset.accept || "\\d", "g"),
+                                clean = input => {
+                                    input = input.match(accept) || [];
+                                    return Array.from(pattern, c =>
+                                        input[0] === c || slots.has(c) ? input.shift() || c : c
+                                    );
+                                },
+                                format = () => {
+                                    const [i, j] = [el.selectionStart, el.selectionEnd].map(i => {
+                                        i = clean(el.value.slice(0, i)).findIndex(c => slots.has(c));
+                                        return i<0? prev[prev.length-1]: back? prev[i-1] || first: i;
+                                    });
+                                    el.value = clean(el.value).join``;
+                                    el.setSelectionRange(i, j);
+                                    back = false;
+                                };
+                            let back = false;
+                            el.addEventListener("keydown", (e) => back = e.key === "Backspace");
+                            el.addEventListener("input", format);
+                            el.addEventListener("focus", format);
+                            el.addEventListener("blur", () => el.value === pattern && (el.value=""));
+                        }
+                    });
+
+                    </script>
                 </div>
                 <div class="form-group">
                   <label for="inputAddress">Address</label>
