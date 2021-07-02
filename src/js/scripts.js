@@ -223,6 +223,78 @@ function incluirDado(){
     })
 }
 
+function buscaComplexa(){
+    var valuesEscritorios =Array.from($("#escritorios").find(':selected')).map(function(item){
+        return $(item).text();
+    });
+
+    var valuesInstituicoes = Array.from($("#instituicoes").find(':selected')).map(function(item){
+        return $(item).text();
+    });
+    
+    const responsavel = document.getElementById('responsaveis').value
+
+
+    const submissao = document.getElementById('submissao').value
+
+    const status = document.getElementById('status').value
+
+    const mes = document.getElementById('mes').value
+    const ano = document.getElementById('ano').value
+    
+    if(document.getElementById('prevista').checked) {
+        var prevista = "previsao"
+
+        var options = {
+            scriptPath: path.join(__dirname,'../../engine/consulta-complexa/'),
+            args: [valuesEscritorios, valuesInstituicoes, responsavel, "nomeCategoria", submissao, status, mes, ano, prevista]
+        }
+
+        
+        PythonShell.run('main.py', options, function(err, results){
+            if (err) throw err;
+            console.log(results)
+            $('.card-body.b').empty()
+
+            function appendHtml(el, str) {
+                var div = document.createElement('div'); //container to append to
+                div.innerHTML = str;
+                while (div.children.length > 0) {
+                    $('.card-body.b').append(div.children[0]);
+                }
+            }
+            appendHtml(document.body, results)
+            //$('body').append(results);
+        })
+
+    }else if(document.getElementById('resultado').checked) {
+        var resultado = "resultado"
+
+        var options = {
+            scriptPath: path.join(__dirname,'../../engine/incluir-dado/'),
+            args: [valuesEscritorios, valuesInstituicoes, responsavel, "nomeCategoria", submissao, status, mes, ano, resultado]
+        }
+
+        
+        PythonShell.run('main.py', options, function(err, results){
+            if (err) throw err;
+            console.log(results)
+            $('.card-body.b').empty()
+
+            function appendHtml(el, str) {
+                var div = document.createElement('div'); //container to append to
+                div.innerHTML = str;
+                while (div.children.length > 0) {
+                    $('.card-body.b').append(div.children[0]);
+                }
+            }
+            appendHtml(document.body, results)
+            //$('body').append(results);
+        })
+    }
+
+}
+
 // const textarea = document.getElementById('text')
 // const title = document.getElementById('titles')
 

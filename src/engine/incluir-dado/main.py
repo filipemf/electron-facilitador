@@ -20,7 +20,7 @@ dataPrevista = sys.argv[7]
 dataResultado = sys.argv[8]
 
 
-def buscarInstituicoes(escritorios, instituicao, responsavel, categoria, submissao, status, dataPrevista, dataResultado):
+def adicionarData(escritorios, instituicao, responsavel, categoria, submissao, status, dataPrevista, dataResultado):
     arrayEscritorios = escritorios.split(",")
 
     format_str = '%d/%m/%Y'
@@ -52,7 +52,7 @@ def buscarInstituicoes(escritorios, instituicao, responsavel, categoria, submiss
                 categoria,
                 aDataPrevista.strftime(format_str) if dataPrevista!="" else "",
                 #dataPrevista if dataPrevista!="" else "",
-                aDataPrevista.strftime(format_str2) if dataPrevista!="" else "",
+                aDataPrevista.strftime('%m/%Y') if dataPrevista!="" else "",
                 aDataResultado.strftime(format_str2) if dataResultado!="" else "",
                 responsavel,
                 submissao,
@@ -78,5 +78,5 @@ def buscarInstituicoes(escritorios, instituicao, responsavel, categoria, submiss
 
     return df
 
-print(buscarInstituicoes(escritorios, instituicao, responsavel, categoria, submissao, status, dataPrevista, dataResultado))
+print(adicionarData(escritorios, instituicao, responsavel, categoria, submissao, status, dataPrevista, dataResultado))
 sys.stdout.flush()
