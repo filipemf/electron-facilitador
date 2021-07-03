@@ -66,13 +66,6 @@ function buscarMes(){
 
 
     }
-
-    
-
-    // pyshell.on('message', function(message){
-        
-    //     document.getElementById('label_resultado').innerHTML = message
-    // })
 }
 
 function buscarResponsaveis(){
@@ -295,18 +288,86 @@ function buscaComplexa(){
 
 }
 
-// const textarea = document.getElementById('text')
-// const title = document.getElementById('titles')
+function checarEscritorios(){
+    var valuesCategorias = Array.from($("#categorias").find(':selected')).map(function(item){
+        var optgroup = $(item).parent().attr('label');
 
-// ipcRenderer.on('set-file', function(event, data){
-//     textarea.value = data.content;
-//     title.innerHTML = data.name+ ' | DEV'
-// })
+        let finalString = optgroup+":"+$(item).text();
+        console.log(finalString)
+        return finalString
 
-// function handleChangeText(){
-//     options = [{
-//         data: "um",
-//         date: "dois"
-//     }]
-//     ipcRenderer.send('update-content', options[0].data)
-// }
+    });
+
+    
+    var options = {
+        scriptPath: path.join(__dirname,'../../engine/editar-dado/'),
+        args: ["checar-escritorios", valuesCategorias]
+    }
+
+    
+    PythonShell.run('main.py', options, function(err, results){
+        if (err) throw err;
+        formated = results[0].replace('[','')
+        formated = formated.replace(']','')
+        formated = formated.replace(/'/g,'')
+        formated = formated.replace(/\s/g,'')
+
+        let array2 = formated.split(',')
+        console.log(array2)
+
+        $("#escritorios").empty()
+        for (var i = 0; i< array2.length; i++){
+            $("#escritorios").append('<option value="'+array2[i]+'">'+array2[i]+'</option>');
+            $("#escritorios").selectpicker("refresh");
+        }
+
+    })
+}
+
+function buscarDados(){
+    var valuesCategorias = Array.from($("#categorias").find(':selected')).map(function(item){
+        var optgroup = $(item).parent().attr('label');
+
+        let finalString = optgroup+":"+$(item).text();
+        console.log(finalString)
+        return finalString
+
+    });
+
+    var valuesEscritorio = Array.from($("#escritorios").find(':selected')).map(function(item){
+        return $(item).text();
+    });
+
+    
+    var options = {
+        scriptPath: path.join(__dirname,'../../engine/editar-dado/'),
+        args: ["buscar-dados", valuesCategorias, valuesEscritorio]
+    }
+
+    
+    PythonShell.run('main.py', options, function(err, results){
+        if (err) throw err;
+        formated = results[0].replace('[','')
+        formated = formated.replace(']','')
+        formated = formated.replace(/\\/g, '');
+        formated = formated.replace(/\]/g, '');
+        formated = formated.replace(/\[/g, '');
+        formated = formated.replace(/'/g,'')
+        //formated = formated.replace(/\s/g,'')
+
+        let array2 = formated.split(',')
+
+        for(let i = 0; i<array2.length;i++){
+            console.log(typeof array2[i])
+        }
+
+        document.getElementById("data-prevista").value = array2[3].replace(/\"/g, '');
+        document.getElementById("data-resultado").value = array2[5].replace(/\"/g, '');
+        document.getElementById("nome-categoria").value = array2[2].replace(/\"/g, '');
+        document.getElementById("responsaveis").value = array2[6].replace(/\"/g, '');
+        document.getElementById("submissao").value = array2[7].replace(/\"/g, '');
+        document.getElementById("status").value = array2[8].replace(/\"/g, '');
+
+
+    })
+}
