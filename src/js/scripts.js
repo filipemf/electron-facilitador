@@ -292,7 +292,7 @@ function checarEscritorios(){
     var valuesCategorias = Array.from($("#categorias").find(':selected')).map(function(item){
         var optgroup = $(item).parent().attr('label');
 
-        let finalString = optgroup+":"+$(item).text();
+        let finalString = optgroup+": "+$(item).text();
         console.log(finalString)
         return finalString
 
@@ -328,7 +328,7 @@ function buscarDados(){
     var valuesCategorias = Array.from($("#categorias").find(':selected')).map(function(item){
         var optgroup = $(item).parent().attr('label');
 
-        let finalString = optgroup+":"+$(item).text();
+        let finalString = optgroup+": "+$(item).text();
         console.log(finalString)
         return finalString
 
@@ -370,4 +370,90 @@ function buscarDados(){
 
 
     })
+}
+
+
+function pegarTodosEscritorios(){
+    var valuesCategorias = Array.from($("#categorias").find(':selected')).map(function(item){
+        var optgroup = $(item).parent().attr('label');
+
+        let finalString = optgroup+": "+$(item).text();
+        console.log(finalString)
+        return finalString
+
+    });
+
+    
+    var options = {
+        scriptPath: path.join(__dirname,'../../engine/editar-dado/'),
+        args: ["checar-escritorios", valuesCategorias]
+    }
+
+    
+    PythonShell.run('main.py', options, function(err, results){
+        if (err) throw err;
+        formated = results[0].replace('[','')
+        formated = formated.replace(']','')
+        formated = formated.replace(/'/g,'')
+        formated = formated.replace(/\s/g,'')
+
+        let array2 = formated.split(',')
+        
+        return array2
+
+    })
+}
+
+function salvarDadosEditados(){
+    var valuesEscritorio = Array.from($("#escritorios").find(':selected')).map(function(item){
+        return $(item).text();
+    });
+
+    var valuesCategorias = Array.from($("#categorias").find(':selected')).map(function(item){
+        var optgroup = $(item).parent().attr('label');
+
+        let finalString = optgroup+": "+$(item).text();
+        console.log(finalString)
+        return finalString
+
+    });
+
+
+    let dataPrevista = document.getElementById("data-prevista").value
+    let dataResultado = document.getElementById("data-resultado").value
+    let nomeCategoria = document.getElementById("nome-categoria").value
+    let responsaveis = document.getElementById("responsaveis").value
+    let submissao = document.getElementById("submissao").value
+    let status = document.getElementById("status").value 
+
+    if(document.getElementById('todos').checked) {
+        
+        let x = document.getElementById('escritorios')
+
+        let array3 = []
+        for (var i = 0; i < x.length; i++) {
+            array3.push(x[i].text)
+        }
+
+        var filtered = array3.filter(n => n)
+
+        console.log(filtered)
+        var options = {
+            scriptPath: path.join(__dirname,'../../engine/editar-dado/'),
+            args: ["salvar-dados", valuesCategorias[0], nomeCategoria, dataPrevista, dataResultado, responsaveis, submissao, status, filtered]
+        }
+        PythonShell.run('main.py', options, function(err, results){
+            console.log(results)
+        })
+    }
+    else{
+        console.log(valuesEscritorio)
+        var options = {
+            scriptPath: path.join(__dirname,'../../engine/editar-dado/'),
+            args: ["salvar-dados", valuesCategorias[0], nomeCategoria, dataPrevista, dataResultado, responsaveis, submissao, status, valuesEscritorio]
+        }
+        PythonShell.run('main.py', options, function(err, results){
+            console.log(results)
+        })
+    }
 }

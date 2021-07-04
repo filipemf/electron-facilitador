@@ -7,39 +7,75 @@ from datetime import date, datetime
 import openpyxl as openpy
 import sys
 
-
-def checarEscritorios(grupos):
-    gruposArray = grupos.split(",")
-
-    instituicoes = grupos.split(':')[0]
-    categorias = ': '.join(grupos.split(':')[1:])
-
-    print("INS: "+instituicoes)
-    print("Cate: "+categorias)
-
-    
+def salvarRow(grupos, nomeCategoria, dataPrevista, dataResultado, responsaveis, submissao, status, escritorios):
     filepath = os.path.join('c:/UltimaPlanilha', 'ultima_planilha.txt')
 
     f = open(filepath, "r")
     w = f.read()
 
-    
     df = pd.read_excel(w, sheet_name="CATEGORIAS PARA LIPE")
 
+    df = df.fillna("")
+
+    gruposArray = grupos.split(",")
+
+    instituicoes = gruposArray[0].split(': ')[0]
+    categorias = ': '.join(gruposArray[0].split(': ')[1:])
+
     
-    df2 = df[df['INSTITUIÇÃO']==instituicoes]
+    filepath2 = os.path.join('c:/UltimaPlanilha', 'ultima_planilha.txt')
 
-    df2 = df2[df2['CATEGORIAS']==categorias]
+    f2 = open(filepath2, "r")
+    w2 = f2.read()
 
-    df3 = df2.iloc[:, 0]
+    
+    dfCut = pd.read_excel(w2, sheet_name="CATEGORIAS PARA LIPE")
+    dfCut = dfCut.fillna("")
 
-    onlyClientes = []
-    for item in df3:
-        onlyClientes.append(item)
+    format_str = '%d/%m/%Y'
+    format_str2 = '%m/%Y'
+    aDataPrevista = datetime.strptime(dataPrevista, format_str) if dataPrevista != "" else ""
+    aDataResultado = datetime.strptime(dataResultado, format_str2) if dataResultado != "" else ""
 
-    #onlyClientes.append('Todos')
-    return onlyClientes
+    
+    df['DATA PREVISTA'] = pd.to_datetime(df['DATA PREVISTA'])
+    df['DATA PREVISTA'] = df['DATA PREVISTA'].dt.strftime('%d/%m/%Y')
+    
+    df['DATA RESULTADO'] = pd.to_datetime(df['DATA RESULTADO'])
+    df['DATA RESULTADO'] = df['DATA RESULTADO'].dt.strftime('%m/%Y')
+
+    df['MÊS/ANO'] = pd.to_datetime(df['MÊS/ANO'])
+    df['MÊS/ANO'] = df['MÊS/ANO'].dt.strftime('%m/%Y')
+
+    for item in escritorios:
+        df3= pd.DataFrame([
+            (item,
+            instituicoes,
+            nomeCategoria,
+            aDataPrevista.strftime(format_str) if dataPrevista!="" else "",
+                #dataPrevista if dataPrevista!="" else "",
+            aDataPrevista.strftime('%m/%Y') if dataPrevista!="" else "",
+            aDataResultado.strftime('%m/%Y') if dataResultado!="" else "",
+            responsaveis,
+            submissao,
+            status)], columns=("CLIENTE","INSTITUIÇÃO","CATEGORIAS","DATA PREVISTA","MÊS/ANO","DATA RESULTADO","RESPONSÁVEL","FAZ SUBMISSÃO? (S/N)","STATUS"))
+
+        df = df.append(df3, ignore_index=True)
 
 
-print(checarEscritorios("ABRIL:Gfd"))
+        for item in escritorios:
+            dfCut2 = dfCut[dfCut['INSTITUIÇÃO']==instituicoes]
 
+            dfCut2 = dfCut2[dfCut2['CATEGORIAS']==categorias]
+
+            dfCut2 = dfCut2[dfCut2['CLIENTE']==item]
+
+            
+            index = int(dfCut2.index[0])
+            df = df.drop(index)
+
+    return df
+
+print(salvarRow("CHAMBERS AND PARTNERS: Agribusiness", "Gribusin","21/02/2021", "08/2019","Livia", "Submetido","Sim", ["CM"]))
+
+sys.stdout.flush()
