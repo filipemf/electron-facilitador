@@ -281,28 +281,11 @@
 
                 <div class="form-row">
                     <div class="form-group col-md-6">
-                        <button type="button" class="btn btn-danger" onclick="adicionarEscritorio()">Apagar Registro</button>
+                        <button type="button" class="btn btn-danger" onclick="apagarRegistro()">Apagar Registro</button>
                     </div>
                 </div>
 
                 <script>
-                    function adicionarGrupo(){
-                        Swal.fire({
-                            title: "Adicionar Grupo",
-                            input: 'text',
-                            showCancelButton: true        
-                        }).then((result) => {
-                            if (result.value) {
-                                var option = document.createElement('option')
-                                option.value = result
-                                option.text = result
-
-                                $("#instituicoes").append('<option value="'+result.value+'" selected>'+result.value+'</option>');
-                                $("#instituicoes").selectpicker("refresh");
-                            }
-                        });
-                    }
-
                     function adicionarEscritorio(){
                         Swal.fire({
                             title: "Adicionar Escritório",
@@ -310,14 +293,90 @@
                             showCancelButton: true        
                         }).then((result) => {
                             if (result.value) {
-                                var option = document.createElement('option')
-                                option.value = result
-                                option.text = result
 
-                                $("#escritorios").append('<option value="'+result.value+'" selected>'+result.value+'</option>');
-                                $("#escritorios").selectpicker("refresh");
+                                var valuesCategorias = Array.from($("#categorias").find(':selected')).map(function(item){
+                                    var optgroup = $(item).parent().attr('label');
+
+                                    let finalString = optgroup+": "+$(item).text();
+                                    console.log(finalString)
+                                    return finalString
+
+                                });
+
+                                var options = {
+                                    scriptPath: path.join(__dirname,'../../engine/editar-dado/'),
+                                    args: ["adicionar-escritorio", valuesCategorias[0], result.value]
+                                }
+                                PythonShell.run('main.py', options, function(err, results){
+                                    console.log(results)
+                                })
                             }
                         });
+                    }
+
+                    function apagarRegistro(){
+                        Swal.fire({
+                            title: 'Tem Certeza que Deseja Apagar o Registro?',
+                            showDenyButton: true,
+                            showCancelButton: true,
+                            confirmButtonText: `Apagar Esse Escritório`,
+                            denyButtonText: `Apagar Todos Escritórios`,
+                            }).then((result) => {
+                            /* Read more about isConfirmed, isDenied below */
+                            if (result.isConfirmed) {
+                                var valuesCategorias = Array.from($("#categorias").find(':selected')).map(function(item){
+                                    var optgroup = $(item).parent().attr('label');
+
+                                    let finalString = optgroup+": "+$(item).text();
+                                    console.log(finalString)
+                                    return finalString
+
+                                });
+
+                                var selectedItem = $('#escritorios').val()
+                                
+                                var options = {
+                                    scriptPath: path.join(__dirname,'../../engine/editar-dado/'),
+                                    args: ["excluir-apenas", valuesCategorias[0], selectedItem]
+                                }
+                                PythonShell.run('excluir.py', options, function(err, results){
+                                    console.log(results)
+
+                                    Swal.fire('Registro apagado!', '', 'info')
+                                })
+
+                                
+                            } else if (result.isDenied) {
+                                var valuesCategorias = Array.from($("#categorias").find(':selected')).map(function(item){
+                                    var optgroup = $(item).parent().attr('label');
+
+                                    let finalString = optgroup+": "+$(item).text();
+                                    console.log(finalString)
+                                    return finalString
+
+                                });
+
+                                
+                                let x = document.getElementById('escritorios')
+
+                                let array3 = []
+                                for (var i = 0; i < x.length; i++) {
+                                    array3.push(x[i].text)
+                                }
+                                var filtered = array3.filter(n => n)
+
+                                var options = {
+                                    scriptPath: path.join(__dirname,'../../engine/editar-dado/'),
+                                    args: ["excluir-todos", valuesCategorias[0], filtered]
+                                }
+                                PythonShell.run('excluir.py', options, function(err, results){
+                                    console.log(results)
+                                    Swal.fire('Registros apagados!', '', 'info')
+                                })
+
+                                
+                            }
+                            })
                     }
                     
                 </script>

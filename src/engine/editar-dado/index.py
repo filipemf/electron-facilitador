@@ -7,37 +7,66 @@ from datetime import date, datetime
 import openpyxl as openpy
 import sys
 
-def salvarRow(grupos, nomeCategoria, dataPrevista, dataResultado, responsaveis, submissao, status, escritorios):
-    filepath = os.path.join('c:/UltimaPlanilha', 'ultima_planilha.txt')
 
-    f = open(filepath, "r")
-    w = f.read()
+sys.stdout.reconfigure(encoding='utf-8')
+pd.io.formats.excel.header_style = None
+pd.set_option('display.width', 1000)
 
-    df = pd.read_excel(w, sheet_name="CATEGORIAS PARA LIPE")
-
-    df = df.fillna("")
-
+def checarEscritorios(grupos):
     gruposArray = grupos.split(",")
 
     instituicoes = gruposArray[0].split(': ')[0]
     categorias = ': '.join(gruposArray[0].split(': ')[1:])
 
     
-    filepath2 = os.path.join('c:/UltimaPlanilha', 'ultima_planilha.txt')
+    filepath = os.path.join('c:/UltimaPlanilha', 'ultima_planilha.txt')
 
-    f2 = open(filepath2, "r")
-    w2 = f2.read()
-
-    
-    dfCut = pd.read_excel(w2, sheet_name="CATEGORIAS PARA LIPE")
-    dfCut = dfCut.fillna("")
-
-    format_str = '%d/%m/%Y'
-    format_str2 = '%m/%Y'
-    aDataPrevista = datetime.strptime(dataPrevista, format_str) if dataPrevista != "" else ""
-    aDataResultado = datetime.strptime(dataResultado, format_str2) if dataResultado != "" else ""
+    f = open(filepath, "r")
+    w = f.read()
 
     
+    df = pd.read_excel(w, sheet_name="CATEGORIAS PARA LIPE")
+
+    
+    df2 = df[df['INSTITUIÇÃO']==instituicoes]
+
+    df2 = df2[df2['CATEGORIAS']==categorias]
+
+
+
+    df3 = df2.iloc[:, 0]
+
+    onlyClientes = []
+    for item in df3:
+        onlyClientes.append(item)
+
+    #onlyClientes.append('Todos')
+    return onlyClientes
+
+def excluirDado(grupos, escritorio):
+    gruposArray = grupos.split(",")
+
+    instituicoes = gruposArray[0].split(': ')[0]
+    categorias = ': '.join(gruposArray[0].split(': ')[1:])
+
+    
+    filepath = os.path.join('c:/UltimaPlanilha', 'ultima_planilha.txt')
+
+    f = open(filepath, "r")
+    w = f.read()
+
+    
+    df = pd.read_excel(w, sheet_name="CATEGORIAS PARA LIPE")
+
+    print(df)
+
+    df = df[df['INSTITUIÇÃO']==instituicoes]
+
+    df = df[df['CATEGORIAS']==categorias]
+
+    df = df[df['CLIENTE']==escritorio]
+
+
     df['DATA PREVISTA'] = pd.to_datetime(df['DATA PREVISTA'])
     df['DATA PREVISTA'] = df['DATA PREVISTA'].dt.strftime('%d/%m/%Y')
     
@@ -47,35 +76,71 @@ def salvarRow(grupos, nomeCategoria, dataPrevista, dataResultado, responsaveis, 
     df['MÊS/ANO'] = pd.to_datetime(df['MÊS/ANO'])
     df['MÊS/ANO'] = df['MÊS/ANO'].dt.strftime('%m/%Y')
 
-    for item in escritorios:
-        df3= pd.DataFrame([
-            (item,
-            instituicoes,
-            nomeCategoria,
-            aDataPrevista.strftime(format_str) if dataPrevista!="" else "",
-                #dataPrevista if dataPrevista!="" else "",
-            aDataPrevista.strftime('%m/%Y') if dataPrevista!="" else "",
-            aDataResultado.strftime('%m/%Y') if dataResultado!="" else "",
-            responsaveis,
-            submissao,
-            status)], columns=("CLIENTE","INSTITUIÇÃO","CATEGORIAS","DATA PREVISTA","MÊS/ANO","DATA RESULTADO","RESPONSÁVEL","FAZ SUBMISSÃO? (S/N)","STATUS"))
+    
+    
+    index = int(df.index[0])
 
-        df = df.append(df3, ignore_index=True)
+    # write2excel(w,'CATEGORIAS PARA LIPE', df2)
+    # return "opa"
+    index = index+2
+
+    book= openpy.load_workbook(w)
+    sheet = book['CATEGORIAS PARA LIPE']
+    #delete row
+    print(str(index))
+    sheet.delete_rows(index)
+    book.save(w)
+    
+    return str(index)
 
 
-        for item in escritorios:
-            dfCut2 = dfCut[dfCut['INSTITUIÇÃO']==instituicoes]
+def excluirVariosDado(grupos, escritorio):
+    gruposArray = grupos.split(",")
+    arrayEscritorios = escritorio.split(",")
 
-            dfCut2 = dfCut2[dfCut2['CATEGORIAS']==categorias]
+    instituicoes = gruposArray[0].split(': ')[0]
+    categorias = ': '.join(gruposArray[0].split(': ')[1:])
 
-            dfCut2 = dfCut2[dfCut2['CLIENTE']==item]
+    
+    filepath = os.path.join('c:/UltimaPlanilha', 'ultima_planilha.txt')
 
-            
-            index = int(dfCut2.index[0])
-            df = df.drop(index)
+    f = open(filepath, "r")
+    w = f.read()
 
-    return df
+    
+    df = pd.read_excel(w, sheet_name="CATEGORIAS PARA LIPE")
 
-print(salvarRow("CHAMBERS AND PARTNERS: Agribusiness", "Gribusin","21/02/2021", "08/2019","Livia", "Submetido","Sim", ["CM"]))
+    for item in arrayEscritorios:
+        df = df[df['INSTITUIÇÃO']==instituicoes]
+
+        df = df[df['CATEGORIAS']==categorias]
+
+        df = df[df['CLIENTE']==item]
+
+    
+    index = int(df.index[0])
+    df = df.drop(index)
+
+    excelBook = openpy.load_workbook(w)
+    with pd.ExcelWriter(w, engine='openpyxl', date_format='DD/MM/YYYY') as writer:
+        # Save your file workbook as base
+        writer.book = excelBook
+        writer.sheets = dict((ws.title, ws) for ws in excelBook.worksheets)
+
+        # Now here add your new sheets
+        df.to_excel(writer,'CATEGORIAS PARA LIPE', index = False)
+
+        # Save the file
+        print(df)
+        writer.save()
+    
+    return "feito todos"
+
+
+
+#if sys.argv[1]=="excluir-apenas":
+print(excluirDado("LEADERS LEAGUE: Relações governamentais (Contém subpráticas)", "FIALDINI"))
+# else:
+#     print(excluirVariosDado(sys.argv[2], sys.argv[3]))
 
 sys.stdout.flush()

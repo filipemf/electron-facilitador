@@ -158,11 +158,137 @@ def salvarRow(grupos, nomeCategoria, dataPrevista, dataResultado, responsaveis, 
 
     return df
 
+def adicionarEscritorio(grupos, escritorio):
+    filepath = os.path.join('c:/UltimaPlanilha', 'ultima_planilha.txt')
+
+    f = open(filepath, "r")
+    w = f.read()
+
+    df = pd.read_excel(w, sheet_name="CATEGORIAS PARA LIPE")
+
+    df = df.fillna("")
+    
+    gruposArray = grupos.split(",")
+
+    instituicoes = gruposArray[0].split(': ')[0]
+    categorias = ': '.join(gruposArray[0].split(': ')[1:])
+
+    instituicaoVar = ""
+    categoriasVar = ""
+    dataPrevistaVar = ""
+    mesAnoVar = ""
+    dataResultadoVar = ""
+    responsavelVar = ""
+    submissaoVar = ""
+    statusVar = ""
+
+
+    df2 = df[df['INSTITUIÇÃO']==instituicoes]
+
+    df2 = df2[df2['CATEGORIAS']==categorias]
+
+
+    dfInstituicoes = df2.iloc[:,1]
+    if dfInstituicoes.values[0] != "":
+        instituicaoVar = dfInstituicoes.values[0]
+    else:
+        instituicaoVar = ""
+
+    dfCategorias = df2.iloc[:,2]
+    if dfCategorias.values[0] != "":
+        categoriasVar = dfCategorias.values[0]
+    else:
+        categoriasVar = ""
+
+    dfDataPrevisao = df2.iloc[:,3]
+    if str(dfDataPrevisao.values[0])[:10] != "":
+        dataPrevistaVar = str(dfDataPrevisao.values[0])[:10]
+    else:
+        dataPrevistaVar = ""
+
+    
+    dfMesAno = df2.iloc[:,4]
+    if str(dfMesAno.values[0])[:10] != "":
+        mesAnoVar = str(dfMesAno.values[0])[:10]
+    else:
+        mesAnoVar = ""
+
+
+    
+    dfDataResultado1 = df2.iloc[:,5]
+    if str(dfDataResultado1.values[0])[:10] != "":
+        dataResultadoVar = str(dfDataResultado1.values[0])[:10]
+    else:
+        dataResultadoVar = ""
+
+
+    dfResponsavel = df2.iloc[:,6]
+    if dfResponsavel.values[0] != "":
+        responsavelVar = dfResponsavel.values[0]
+    else:
+        responsavelVar = ""
+
+    
+    dfSubmissao = df2.iloc[:,7]
+    if dfSubmissao.values[0] != "":
+        submissaoVar = dfSubmissao.values[0]
+    else:
+        submissaoVar = ""
+
+
+    dfStatus = df2.iloc[:,8]
+    if dfStatus.values[0] != "":
+        statusVar = dfStatus.values[0]
+    else:
+        statusVar = ""
+
+
+    if escritorio!='':
+        df3= pd.DataFrame([
+            (escritorio,
+            instituicoes,
+            categorias,
+            dataPrevistaVar,
+            mesAnoVar,
+            dataResultadoVar,
+            responsavelVar,
+            submissaoVar,
+            statusVar)], columns=("CLIENTE","INSTITUIÇÃO","CATEGORIAS","DATA PREVISTA","MÊS/ANO","DATA RESULTADO","RESPONSÁVEL","FAZ SUBMISSÃO? (S/N)","STATUS"))
+
+        df = df.append(df3, ignore_index=True)
+        print("feito todos")
+    else:
+        pass
+
+
+    df['DATA PREVISTA'] = pd.to_datetime(df['DATA PREVISTA'])
+    df['DATA PREVISTA'] = df['DATA PREVISTA'].dt.strftime('%d/%m/%Y')
+    
+    df['DATA RESULTADO'] = pd.to_datetime(df['DATA RESULTADO'])
+    df['DATA RESULTADO'] = df['DATA RESULTADO'].dt.strftime('%m/%Y')
+
+    df['MÊS/ANO'] = pd.to_datetime(df['MÊS/ANO'])
+    df['MÊS/ANO'] = df['MÊS/ANO'].dt.strftime('%m/%Y')
+
+
+    excelBook = openpy.load_workbook(w)
+    with pd.ExcelWriter(w, engine='openpyxl', date_format='DD/MM/YYYY') as writer:
+        # Save your file workbook as base
+        writer.book = excelBook
+        writer.sheets = dict((ws.title, ws) for ws in excelBook.worksheets)
+
+        # Now here add your new sheets
+        df.to_excel(writer,'CATEGORIAS PARA LIPE', index = False)
+
+        # Save the file
+        writer.save()
 
 if sys.argv[1]=="checar-escritorios":
     print(checarEscritorios(sys.argv[2]))
 elif sys.argv[1]=="salvar-dados":
     print(salvarRow(sys.argv[2], sys.argv[3],sys.argv[4], sys.argv[5],sys.argv[6], sys.argv[7],sys.argv[8], sys.argv[9]))
+elif sys.argv[1]=="adicionar-escritorio":
+    print(adicionarEscritorio(sys.argv[2], sys.argv[3]))
 else:
     print(buscarDados(sys.argv[2], sys.argv[3]))
 
