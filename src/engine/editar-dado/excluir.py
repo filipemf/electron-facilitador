@@ -115,13 +115,13 @@ def excluirVariosDado(grupos, escritorio):
     sheet = book['CATEGORIAS PARA LIPE']
 
     for item in arrayEscritorios:
-        df = df[df['INSTITUIÇÃO']==instituicoes]
+        df2 = df[df['INSTITUIÇÃO']==instituicoes]
 
-        df = df[df['CATEGORIAS']==categorias]
+        df2 = df[df['CATEGORIAS']==categorias]
 
-        df = df[df['CLIENTE']==item]
+        df2 = df[df['CLIENTE']==item]
     
-        index = int(df.index[0])
+        index = int(df2.index[0])
 
         index = index+2
     
