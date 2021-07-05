@@ -57,6 +57,16 @@ def buscarDados(grupos, escritorio):
     df = pd.read_excel(w, sheet_name="CATEGORIAS PARA LIPE")
 
     
+    df['DATA PREVISTA'] = pd.to_datetime(df['DATA PREVISTA'])
+    df['DATA PREVISTA'] = df['DATA PREVISTA'].dt.strftime('%d/%m/%Y')
+    
+    df['DATA RESULTADO'] = pd.to_datetime(df['DATA RESULTADO'])
+    df['DATA RESULTADO'] = df['DATA RESULTADO'].dt.strftime('%m/%Y')
+
+    df['MÊS/ANO'] = pd.to_datetime(df['MÊS/ANO'])
+    df['MÊS/ANO'] = df['MÊS/ANO'].dt.strftime('%m/%Y')
+
+    
     df2 = df[df['INSTITUIÇÃO']==instituicoes]
 
     df2 = df2[df2['CATEGORIAS']==categorias]
@@ -64,7 +74,7 @@ def buscarDados(grupos, escritorio):
     df2 = df2[df2['CLIENTE']==escritorio]
 
     df2 = df2.replace(np.nan, '', regex=True)
-    # df3 = df2.iloc[:, 0]
+
 
     # onlyClientes = []
     # for item in df3:
@@ -72,7 +82,7 @@ def buscarDados(grupos, escritorio):
 
     #onlyClientes.append('Todos')
     list1 = df2.to_json(orient="values", force_ascii=False)
-
+    print(list1)
     return list1
 
 def salvarRow(grupos, nomeCategoria, dataPrevista, dataResultado, responsaveis, submissao, status, escritorios):

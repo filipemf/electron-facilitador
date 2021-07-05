@@ -347,6 +347,7 @@ function buscarDados(){
     
     PythonShell.run('main.py', options, function(err, results){
         if (err) throw err;
+        console.log(results)
         formated = results[0].replace('[','')
         formated = formated.replace(']','')
         formated = formated.replace(/\\/g, '');
@@ -357,9 +358,9 @@ function buscarDados(){
 
         let array2 = formated.split(',')
 
-        for(let i = 0; i<array2.length;i++){
-            console.log(typeof array2[i])
-        }
+        // for(let i = 0; i<array2.length;i++){
+        //     console.log(array2[i])
+        // }
 
         document.getElementById("data-prevista").value = array2[3].replace(/\"/g, '');
         document.getElementById("data-resultado").value = array2[5].replace(/\"/g, '');

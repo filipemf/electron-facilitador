@@ -137,8 +137,10 @@
                             console.log(results)
                             $('#categorias').empty()
                             for (var i = 0; i< results[0].length; i++){
+                                
                                 let option = results[0][i][0].replace(/\s/g, "")
                                 let option2 = results[0][i][1].replace(/\s/g, "")
+                            
                                 option2 = option2.replace("&", "")
                                 option2 = option2.replace(":", "")
                                 option2 = option2.replace("/", "")
