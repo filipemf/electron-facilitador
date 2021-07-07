@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "bootstrap-select": "^1.13.18",
+    "chart.js": "^3.4.1",
     "electron": "^13.1.4",
     "jquery": "^3.6.0",
     "jquery-mask-plugin": "^1.14.16",

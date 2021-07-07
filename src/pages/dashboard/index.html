@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <script>
         var $ = jQuery = require("jquery")
+        const Chart = require('chart.js')
       </script>
     <link rel="stylesheet" href="../../css/style.css">
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
@@ -160,113 +161,279 @@
                 </div>
 
                 <div class="card-single">
+                    <div class="card js">
+                        <div class="circle">
+                            <div class="card-header">
+                                <h2>Casos em Andamento</h2>
+                            </div>
+                            <canvas class="andamento"></canvas>
+
+                            <script>
+                                var ctx = document.getElementsByClassName('andamento')
+                                dataGraph = [5,8,10]
+
+                                var coloR = [];
+
+                                var dynamicColors = function() {
+                                    var r = Math.floor(Math.random() * 255);
+                                    var g = Math.floor(Math.random() * 255);
+                                    var b = Math.floor(Math.random() * 255);
+                                    return "rgb(" + r + "," + g + "," + b + ")";
+                                };
+
+                                for (var i in dataGraph) {
+                                    coloR.push(dynamicColors());
+                                }
+
+                                var chartGraph = new Chart(ctx, {
+                                    type: 'pie',
+                                    data: {
+                                        labels: ["1","2","3"],
+                                        datasets: [{
+                                            label: "Grafico",
+                                            data: dataGraph,
+                                            borderWidth: 6,
+                                            backgroundColor: coloR,
+                                        }]
+                                    },
+                                    options: {
+                                        responsive: true,
+                                        plugins: {
+                                        legend: {
+                                            position: 'top',
+                                        },
+                                        title: {
+                                            display: false,
+                                        }
+                                        }
+                                    },
+                                })
+                            </script>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-single">
+                    <div class="card js">
+                        <div class="circle">
+                            <div class="card-header">
+                                <h2>Casos em revisão</h2>
+                            </div>
+                            <canvas class="revisao"></canvas>
+
+                            <script>
+                                var ctx = document.getElementsByClassName('revisao')
+                                dataGraph = [5,8,10]
+
+                                var coloR = [];
+
+                                var dynamicColors = function() {
+                                    var r = Math.floor(Math.random() * 255);
+                                    var g = Math.floor(Math.random() * 255);
+                                    var b = Math.floor(Math.random() * 255);
+                                    return "rgb(" + r + "," + g + "," + b + ")";
+                                };
+
+                                for (var i in dataGraph) {
+                                    coloR.push(dynamicColors());
+                                }
+
+                                var chartGraph = new Chart(ctx, {
+                                    type: 'pie',
+                                    data: {
+                                        labels: ["1","2","3"],
+                                        datasets: [{
+                                            label: "Grafico",
+                                            data: dataGraph,
+                                            borderWidth: 6,
+                                            backgroundColor: coloR,
+                                        }]
+                                    },
+                                    options: {
+                                        responsive: true,
+                                        plugins: {
+                                        legend: {
+                                            position: 'top',
+                                        },
+                                        title: {
+                                            display: false,
+                                        }
+                                        }
+                                    },
+                                })
+                            </script>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            
+            <div class="cards">
+                <div class="card-single">
 
                     <div class="card js">
                         <div class="circle">
-                            <div class="circle-text" style="margin-bottom: 30px;"></div>
-                            <div class="bar"></div>
+                            <div class="card-header">
+                                <h2>Casos por Integrantes</h2>
+                            </div>
+                            <canvas class="integrantes"></canvas>
 
-                            <div class="box"><span></span></div>
+                            <script>
+                                var ctx = document.getElementsByClassName('integrantes')
+                                dataGraph = [5,8,10]
+
+                                var coloR = [];
+
+                                var dynamicColors = function() {
+                                    var r = Math.floor(Math.random() * 255);
+                                    var g = Math.floor(Math.random() * 255);
+                                    var b = Math.floor(Math.random() * 255);
+                                    return "rgb(" + r + "," + g + "," + b + ")";
+                                };
+
+                                for (var i in dataGraph) {
+                                    coloR.push(dynamicColors());
+                                }
+
+                                var chartGraph = new Chart(ctx, {
+                                    type: 'bar',
+                                    data: {
+                                        labels: ["1","2","3"],
+                                        datasets: [{
+                                            label: "Grafico",
+                                            data: dataGraph,
+                                            borderWidth: 6,
+                                            backgroundColor: coloR,
+                                        }]
+                                    },
+                                    options: {
+                                        responsive: true,
+                                        plugins: {
+                                        legend: {
+                                            position: 'top',
+                                        },
+                                        title: {
+                                            display: false,
+                                        }
+                                        }
+                                    },
+                                })
+                            </script>
                         </div>
                     </div>
-
                 </div>
 
-            </div>
+                <div class="card-single">
+                    <div class="card js">
+                        <div class="circle">
+                            <div class="card-header">
+                                <h2>Casos em Transcrição</h2>
+                            </div>
+                            <canvas class="transcricao"></canvas>
 
-            <div class="recent-grid">
-                <div class="projects">
-                    <div class="card">
-                        <div class="card-header">
-                            <h2>Recentes:</h2>
-                            <button>Ver Todas <span class="las la-arrow-right"></span></button>
+                            <script>
+                                var ctx = document.getElementsByClassName('transcricao')
+                                dataGraph = [5,8,10]
+
+                                var coloR = [];
+
+                                var dynamicColors = function() {
+                                    var r = Math.floor(Math.random() * 255);
+                                    var g = Math.floor(Math.random() * 255);
+                                    var b = Math.floor(Math.random() * 255);
+                                    return "rgb(" + r + "," + g + "," + b + ")";
+                                };
+
+                                for (var i in dataGraph) {
+                                    coloR.push(dynamicColors());
+                                }
+
+                                var chartGraph = new Chart(ctx, {
+                                    type: 'pie',
+                                    data: {
+                                        labels: ["1","2","3"],
+                                        datasets: [{
+                                            label: "Grafico",
+                                            data: dataGraph,
+                                            borderWidth: 6,
+                                            backgroundColor: coloR,
+                                        }]
+                                    },
+                                    options: {
+                                        responsive: true,
+                                        plugins: {
+                                        legend: {
+                                            position: 'top',
+                                        },
+                                        title: {
+                                            display: false,
+                                        }
+                                        }
+                                    },
+                                })
+                            </script>
                         </div>
-
-                        <div class="card-body">
-                            <table width="100%">
-                                <thead>
-                                    <tr>
-                                        <td>Titulo:</td>
-                                        <td>Tipo de Mudança:</td>
-                                        <td>Status:</td>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>UI</td>
-                                        <td>Web</td>
-                                        <td>
-                                            <span class="status"></span>
-                                            review
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>UI</td>
-                                        <td>Web</td>
-                                        <td>
-                                            <span class="status"></span>
-                                            review
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>UI</td>
-                                        <td>Web</td>
-                                        <td>
-                                            <span class="status"></span>
-                                            review
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
                     </div>
-
                 </div>
+
                 
-                 
-                <div class="customers">
-                    <div class="card">
-                        <div class="card-header">
-                            <h2>Últimos Grupos Adicionados</h2>
-                            <button>Ver Todas <span class="las la-arrow-right"></span></button>
-                        </div>
-
-                        <div class="card-body">
-                            <div class="customer">
-                                <div class="info">
-                                    <img width="40px" height="40px" alt="">
-                                    <div>
-                                        <h4>Chambers Australia</h4>
-                                        <small>Categoria: Abacate</small>
-                                    </div>
-                                </div>
-                                <div class="contact">
-                                    <span class="las la-user-circle"></span>
-                                    <span class="las la-user-circle"></span>
-                                    <span class="las la-user-circle"></span>
-                                </div>
+                <div class="card-single">
+                    <div class="card js">
+                        <div class="circle">
+                            <div class="card-header">
+                                <h2>Casos em Aprovação</h2>
                             </div>
+                            <canvas class="aprovacao"></canvas>
 
-                            <div class="customer">
-                                <div class="info">
-                                    <img width="40px" height="40px" alt="">
-                                    <div>
-                                        <h4>Chambers Alemanha</h4>
-                                        <small>Categoria: Abacate</small>
-                                    </div>
-                                </div>
-                                <div class="contact">
-                                    <span class="las la-user-circle"></span>
-                                    <span class="las la-user-circle"></span>
-                                    <span class="las la-user-circle"></span>
-                                </div>
-                            </div>
+                            <script>
+                                var ctx = document.getElementsByClassName('aprovacao')
+                                dataGraph = [5,8,10]
+
+                                var coloR = [];
+
+                                var dynamicColors = function() {
+                                    var r = Math.floor(Math.random() * 255);
+                                    var g = Math.floor(Math.random() * 255);
+                                    var b = Math.floor(Math.random() * 255);
+                                    return "rgb(" + r + "," + g + "," + b + ")";
+                                };
+
+                                for (var i in dataGraph) {
+                                    coloR.push(dynamicColors());
+                                }
+
+                                var chartGraph = new Chart(ctx, {
+                                    type: 'pie',
+                                    data: {
+                                        labels: ["1","2","3"],
+                                        datasets: [{
+                                            label: "Grafico",
+                                            data: dataGraph,
+                                            borderWidth: 6,
+                                            backgroundColor: coloR,
+                                        }]
+                                    },
+                                    options: {
+                                        responsive: true,
+                                        plugins: {
+                                        legend: {
+                                            position: 'top',
+                                        },
+                                        title: {
+                                            display: false,
+                                        }
+                                        }
+                                    },
+                                })
+                            </script>
                         </div>
                     </div>
                 </div>
+
             </div>
+
+
         </main>
     </div>
 
