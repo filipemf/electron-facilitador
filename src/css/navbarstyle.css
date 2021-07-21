@@ -1,0 +1,166 @@
+/* Google Font Link */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+
+:root{
+    --main-color:#413769;
+    --color-dark: #1D2231;
+    --text-grey: #8390A2
+}
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins" , sans-serif;
+}
+.sidebar{
+  position: fixed;
+  height: 100%;
+  width: 78px;
+  background: var(--main-color);
+  z-index: 203;
+  transition: all 0.5s ease;
+}
+.sidebar.open{
+  width: 260px;
+}
+.sidebar .companyLogo{
+  height: 60px;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+.sidebar .companyLogo .icon{
+  opacity: 0;
+  transition: all 0.5s ease;
+}
+.sidebar .companyLogo .logo_name{
+  color: #fff;
+  font-size: 20px;
+  font-weight: 600;
+  opacity: 0;
+  transition: all 0.5s ease;
+}
+.sidebar.open .companyLogo .icon,
+.sidebar.open .companyLogo .logo_name{
+  opacity: 1;
+}
+.sidebar .companyLogo #btn{
+  margin-left: 10px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 22px;
+  transition: all 0.4s ease;
+  font-size: 23px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.5s ease;
+}
+.sidebar.open .companyLogo #btn{
+  text-align: right;
+  float: right;
+  width: 220px;
+}
+.sidebar i{
+  color: #fff;
+  height: 60px;
+  min-width: 50px;
+  font-size: 28px;
+  text-align: center;
+  line-height: 60px;
+}
+.sidebar .optionsNavigator{
+  margin-top: 20px;
+  height: 100%;
+}
+.sidebar li{
+  position: relative;
+  margin: 8px 0;
+  list-style: none;
+}
+.sidebar li .hoverText{
+  position: absolute;
+  top: -20px;
+  left: calc(100% + 15px);
+  z-index: 3;
+  background: #fff;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 15px;
+  font-weight: 400;
+  opacity: 0;
+  pointer-events: none;
+  transition: 0s;
+}
+.sidebar li:hover .hoverText{
+  opacity: 1;
+  pointer-events: auto;
+  transition: all 0.4s ease;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.sidebar.open li .hoverText{
+  display: none;
+}
+.sidebar li a{
+  display: flex;
+  align-items: center;
+  transition: all 0.4s ease;
+}
+
+.sidebar li a .spanLinks{
+  color: #fff;
+  font-size: 15px;
+  font-weight: 400;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.4s;
+}
+.sidebar.open li a .spanLinks{
+  opacity: 1;
+  pointer-events: auto;
+}
+.sidebar li a:hover .spanLinks,
+.sidebar li a:hover i{
+  color: #11101D;
+}
+
+a:hover{
+    background: #fff;
+}
+
+.sidebar li i{
+  height: 50px;
+  line-height: 50px;
+  font-size: 18px;
+  border-radius: 12px;
+}
+.sidebar.open li.profile{
+  position: fixed;
+  width: 78px;
+  left: 0;
+  bottom: -8px;
+  padding: 10px 14px;
+  background: #1d1b31;
+  transition: all 0.5s ease;
+  overflow: hidden;
+}
+.sidebar.open li.profile{
+  width: 260px;
+}
+
+.sidebar .actual{
+  color: #fff;
+  opacity: 0;
+}
+
+.sidebar.open .actual{
+  color: #fff;
+  opacity: 1;
+}
+
+.sidebar.open ~ main{
+  margin-left: 250px;
+}
