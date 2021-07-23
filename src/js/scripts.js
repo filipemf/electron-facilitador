@@ -460,139 +460,174 @@ function salvarDadosEditados(){
 }
 
 function criarGraficos(){
-    var andamento1 = new ProgressBar.SemiCircle(andamento, {
-        strokeWidth: 6,
-        color: '#FFEA82',
-        trailColor: '#eee',
-        trailWidth: 1,
-        easing: 'easeInOut',
-        duration: 1400,
-        svgStyle: null,
-        text: {
-          value: '',
-          alignToBottom: false
-        },
-        from: {color: '#FFEA82'},
-        to: {color: '#ED6A5A'},
-        // Set default step function for all animate calls
-        step: (state, bar) => {
-          bar.path.setAttribute('stroke', state.color);
-          var value = Math.round(bar.value() * 100);
-          if (value === 0) {
-            bar.setText('');
-          } else {
-            bar.setText(value);
-          }
-          bar.text.style.color = state.color;
-        }
-      });
-    andamento1.text.style.fontFamily = '"Raleway", Helvetica, sans-serif';
-    andamento1.text.style.fontSize = '2rem';
-    andamento1.animate(1.0);  // Number from 0.0 to 1.0
-    // var optionsAn = {
-    //     scriptPath: path.join(__dirname,'../../engine/dashboard/'),
-    //     args: [mes, ano, prevista]
-    // }
+    var optionsAn = {
+        scriptPath: path.join(__dirname,'../../engine/dashboard/'),
+    }
+    PythonShell.run('main.py', optionsAn, function(err, results){
+        if (err) throw err;
+        //console.log(JSON.parse(results))
+        //console.log(results[0])
+        let json = JSON.parse(results)
+        console.log(json)
 
-    // PythonShell.run('main.py', optionsAn, function(err, results){
-    //     if (err) throw err;
-    //     console.log(results)
+            
+        var andamento1 = new ProgressBar.SemiCircle(andamento, {
+            strokeWidth: 6,
+            color: '#FFEA82',
+            trailColor: '#eee',
+            trailWidth: 1,
+            easing: 'easeInOut',
+            duration: 1400,
+            svgStyle: null,
+            text: {
+            value: '',
+            alignToBottom: false
+            },
+            from: {color: '#FFEA82'},
+            to: {color: '#ED6A5A'},
+            // Set default step function for all animate calls
+            step: (state, bar) => {
+            bar.path.setAttribute('stroke', state.color);
+            var value = Math.round(bar.value() * 100);
+            if (value === 0) {
+                bar.setText('Nenhum Caso');
+            } else {
+                bar.setText(json['casos-andamento'].sim+"/"+json['casos-andamento'].nao);
+            }
+            bar.text.style.color = state.color;
+            }
+        });
+        andamento1.text.style.fontFamily = '"Raleway", Helvetica, sans-serif';
+        andamento1.text.style.fontSize = '2rem';
 
-    //     andamento1.animate(1.0);  // Number from 0.0 to 1.0
-    // })
-    
-    var revisao1 = new ProgressBar.SemiCircle(revisao, {
-        strokeWidth: 6,
-        color: '#FFEA82',
-        trailColor: '#eee',
-        trailWidth: 1,
-        easing: 'easeInOut',
-        duration: 1400,
-        svgStyle: null,
-        text: {
-          value: '',
-          alignToBottom: false
-        },
-        from: {color: '#FFEA82'},
-        to: {color: '#ED6A5A'},
-        // Set default step function for all animate calls
-        step: (state, bar) => {
-          bar.path.setAttribute('stroke', state.color);
-          var value = Math.round(bar.value() * 100);
-          if (value === 0) {
-            bar.setText('');
-          } else {
-            bar.setText(value);
-          }
-          bar.text.style.color = state.color;
+        if(eval(json['casos-andamento'].sim+"/"+json['casos-andamento'].nao).toFixed(0) <= 1.0){
+            andamento1.animate(eval(json['casos-andamento'].sim+"/"+json['casos-andamento'].nao).toFixed(0));
         }
-      });
-    revisao1.text.style.fontFamily = '"Raleway", Helvetica, sans-serif';
-    revisao1.text.style.fontSize = '2rem';
-    
-    revisao1.animate(1.0);  // Number from 0.0 to 1.0
+        else{
+            andamento1.animate(1.0);
+        }
+        $('#span_andamento').empty()
+        $('#span_andamento').append((eval(json['casos-andamento'].sim+"/"+json['casos-andamento'].nao)*100).toFixed(0)+"%")
+        
 
-    
-    var transcricao1 = new ProgressBar.SemiCircle(transcricao, {
-        strokeWidth: 6,
-        color: '#FFEA82',
-        trailColor: '#eee',
-        trailWidth: 1,
-        easing: 'easeInOut',
-        duration: 1400,
-        svgStyle: null,
-        text: {
-          value: '',
-          alignToBottom: false
-        },
-        from: {color: '#FFEA82'},
-        to: {color: '#ED6A5A'},
-        // Set default step function for all animate calls
-        step: (state, bar) => {
-          bar.path.setAttribute('stroke', state.color);
-          var value = Math.round(bar.value() * 100);
-          if (value === 0) {
-            bar.setText('');
-          } else {
-            bar.setText(value);
-          }
-          bar.text.style.color = state.color;
+        var revisao1 = new ProgressBar.SemiCircle(revisao, {
+            strokeWidth: 6,
+            color: '#FFEA82',
+            trailColor: '#eee',
+            trailWidth: 1,
+            easing: 'easeInOut',
+            duration: 1400,
+            svgStyle: null,
+            text: {
+            value: '',
+            alignToBottom: false
+            },
+            from: {color: '#FFEA82'},
+            to: {color: '#ED6A5A'},
+            // Set default step function for all animate calls
+            step: (state, bar) => {
+            bar.path.setAttribute('stroke', state.color);
+            var value = Math.round(bar.value() * 100);
+            if (value === 0) {
+                bar.setText('Nenhum Caso');
+            } else {
+                bar.setText(json['casos-revisao'].sim+"/"+json['casos-revisao'].nao);
+            }
+            bar.text.style.color = state.color;
+            }
+        });
+        revisao1.text.style.fontFamily = '"Raleway", Helvetica, sans-serif';
+        revisao1.text.style.fontSize = '2rem';
+        
+        if(eval(json['casos-revisao'].sim+"/"+json['casos-revisao'].nao).toFixed(0) <= 1.0){
+            revisao1.animate(eval(json['casos-revisao'].sim+"/"+json['casos-revisao'].nao).toFixed(0));
         }
-      });
-    transcricao1.text.style.fontFamily = '"Raleway", Helvetica, sans-serif';
-    transcricao1.text.style.fontSize = '2rem';
-    
-    transcricao1.animate(1.0);  // Number from 0.0 to 1.0
+        else{
+            revisao1.animate(1.0);
+        }
+        $('#span_revisao').empty()
+        $('#span_revisao').append((eval(json['casos-revisao'].sim+"/"+json['casos-revisao'].nao)*100).toFixed(0)+"%")
 
-    
-    var aprovacao1 = new ProgressBar.SemiCircle(aprovacao, {
-        strokeWidth: 6,
-        color: '#FFEA82',
-        trailColor: '#eee',
-        trailWidth: 1,
-        easing: 'easeInOut',
-        duration: 1400,
-        svgStyle: null,
-        text: {
-          value: '',
-          alignToBottom: false
-        },
-        from: {color: '#FFEA82'},
-        to: {color: '#ED6A5A'},
-        // Set default step function for all animate calls
-        step: (state, bar) => {
-          bar.path.setAttribute('stroke', state.color);
-          var value = Math.round(bar.value() * 100);
-          if (value === 0) {
-            bar.setText('');
-          } else {
-            bar.setText(value);
-          }
-          bar.text.style.color = state.color;
+        
+        var transcricao1 = new ProgressBar.SemiCircle(transcricao, {
+            strokeWidth: 6,
+            color: '#FFEA82',
+            trailColor: '#eee',
+            trailWidth: 1,
+            easing: 'easeInOut',
+            duration: 1400,
+            svgStyle: null,
+            text: {
+            value: '',
+            alignToBottom: false
+            },
+            from: {color: '#FFEA82'},
+            to: {color: '#ED6A5A'},
+            // Set default step function for all animate calls
+            step: (state, bar) => {
+            bar.path.setAttribute('stroke', state.color);
+            var value = Math.round(bar.value() * 100);
+            if (value === 0) {
+                bar.setText('Nenhum Caso');
+            } else {
+                bar.setText(json['casos-transcricao'].sim+"/"+json['casos-transcricao'].nao);
+            }
+            bar.text.style.color = state.color;
+            }
+        });
+        transcricao1.text.style.fontFamily = '"Raleway", Helvetica, sans-serif';
+        transcricao1.text.style.fontSize = '2rem';
+        if(eval(json['casos-transcricao'].sim+"/"+json['casos-transcricao'].nao).toFixed(0) <= 1.0){
+            transcricao1.animate(eval(json['casos-transcricao'].sim+"/"+json['casos-transcricao'].nao).toFixed(0));  // Number from 0.0 to 1.0
         }
-      });
-    aprovacao1.text.style.fontFamily = '"Raleway", Helvetica, sans-serif';
-    aprovacao1.text.style.fontSize = '2rem';
-    
-    aprovacao1.animate(1.0);  // Number from 0.0 to 1.0
+        else{
+            transcricao1.animate(1.0);  // Number from 0.0 to 1.0
+        }
+        $('#span_transcricao').empty()
+        $('#span_transcricao').append((eval(json['casos-transcricao'].sim+"/"+json['casos-transcricao'].nao)*100).toFixed(0)+"%")
+        
+
+        
+        var aprovacao1 = new ProgressBar.SemiCircle(aprovacao, {
+            strokeWidth: 6,
+            color: '#FFEA82',
+            trailColor: '#eee',
+            trailWidth: 1,
+            easing: 'easeInOut',
+            duration: 1400,
+            svgStyle: null,
+            text: {
+            value: '',
+            alignToBottom: false
+            },
+            from: {color: '#FFEA82'},
+            to: {color: '#ED6A5A'},
+            // Set default step function for all animate calls
+            step: (state, bar) => {
+            bar.path.setAttribute('stroke', state.color);
+            var value = Math.round(bar.value() * 100);
+            if (value === 0) {
+                bar.setText('Nenhum Caso');
+            } else {
+                bar.setText(json['casos-aprovacao'].sim+"/"+json['casos-aprovacao'].nao);
+            }
+            bar.text.style.color = state.color;
+            }
+        });
+        aprovacao1.text.style.fontFamily = '"Raleway", Helvetica, sans-serif';
+        aprovacao1.text.style.fontSize = '2rem';
+
+        if(eval(json['casos-aprovacao'].sim+"/"+json['casos-aprovacao'].nao).toFixed(0) <= 1.0){
+            aprovacao1.animate(eval(json['casos-aprovacao'].sim+"/"+json['casos-aprovacao'].nao).toFixed(0));  // Number from 0.0 to 1.0
+        }
+        else{
+            aprovacao1.animate(1.0);  // Number from 0.0 to 1.0
+        }
+        $('#span_aprovacao').empty()
+        $('#span_aprovacao').append((eval(json['casos-aprovacao'].sim+"/"+json['casos-aprovacao'].nao)*100).toFixed(0)+"%")
+        
+          // Number from 0.0 to 1.0
+
+        })
+
 }
