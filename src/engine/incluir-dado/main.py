@@ -28,7 +28,7 @@ def adicionarData(escritorios, instituicao, responsavel, categoria, submissao, s
     aDataPrevista = datetime.strptime(dataPrevista, format_str) if dataPrevista != "" else ""
     aDataResultado = datetime.strptime(dataResultado, format_str) if dataResultado != "" else ""
     
-    filepath = os.path.join('c:/UltimaPlanilha', 'ultima_planilha.txt')
+    filepath = os.path.join('./UltimaPlanilha', 'ultima_planilha.txt')
 
     f = open(filepath, "r")
     w = f.read()

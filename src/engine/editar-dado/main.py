@@ -17,7 +17,7 @@ def checarEscritorios(grupos):
     categorias = ': '.join(gruposArray[0].split(': ')[1:])
 
     
-    filepath = os.path.join('c:/UltimaPlanilha', 'ultima_planilha.txt')
+    filepath = os.path.join('./UltimaPlanilha', 'ultima_planilha.txt')
 
     f = open(filepath, "r")
     w = f.read()
@@ -48,7 +48,7 @@ def buscarDados(grupos, escritorio):
     categorias = ': '.join(gruposArray[0].split(': ')[1:])
 
     
-    filepath = os.path.join('c:/UltimaPlanilha', 'ultima_planilha.txt')
+    filepath = os.path.join('./UltimaPlanilha', 'ultima_planilha.txt')
 
     f = open(filepath, "r")
     w = f.read()
@@ -86,7 +86,7 @@ def buscarDados(grupos, escritorio):
     return list1
 
 def salvarRow(grupos, nomeCategoria, dataPrevista, dataResultado, responsaveis, submissao, status, escritorios):
-    filepath = os.path.join('c:/UltimaPlanilha', 'ultima_planilha.txt')
+    filepath = os.path.join('./UltimaPlanilha', 'ultima_planilha.txt')
 
     f = open(filepath, "r")
     w = f.read()
@@ -103,7 +103,7 @@ def salvarRow(grupos, nomeCategoria, dataPrevista, dataResultado, responsaveis, 
     categorias = ': '.join(gruposArray[0].split(': ')[1:])
 
     
-    filepath2 = os.path.join('c:/UltimaPlanilha', 'ultima_planilha.txt')
+    filepath2 = os.path.join('./UltimaPlanilha', 'ultima_planilha.txt')
 
     f2 = open(filepath2, "r")
     w2 = f2.read()
@@ -169,7 +169,7 @@ def salvarRow(grupos, nomeCategoria, dataPrevista, dataResultado, responsaveis, 
     return df
 
 def adicionarEscritorio(grupos, escritorio):
-    filepath = os.path.join('c:/UltimaPlanilha', 'ultima_planilha.txt')
+    filepath = os.path.join('./UltimaPlanilha', 'ultima_planilha.txt')
 
     f = open(filepath, "r")
     w = f.read()

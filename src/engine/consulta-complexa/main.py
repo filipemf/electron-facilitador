@@ -29,7 +29,7 @@ def buscaComplexa(escritorios, instituicoes, responsavel, categoria, submissao, 
     format_str = '%d/%m/%Y'
     format_str2 = '%m/%Y'
 
-    filepath = os.path.join('c:/UltimaPlanilha', 'ultima_planilha.txt')
+    filepath = os.path.join('./UltimaPlanilha', 'ultima_planilha.txt')
 
     f = open(filepath, "r")
     w = f.read()

@@ -17,7 +17,7 @@ def checarEscritorios(grupos):
     categorias = ': '.join(gruposArray[0].split(': ')[1:])
 
     
-    filepath = os.path.join('c:/UltimaPlanilha', 'ultima_planilha.txt')
+    filepath = os.path.join('./UltimaPlanilha', 'ultima_planilha.txt')
 
     f = open(filepath, "r")
     w = f.read()
@@ -51,7 +51,7 @@ def excluirDado(grupos, escritorio):
     print(grupos)
 
     
-    filepath = os.path.join('c:/UltimaPlanilha', 'ultima_planilha.txt')
+    filepath = os.path.join('./UltimaPlanilha', 'ultima_planilha.txt')
 
     f = open(filepath, "r")
     w = f.read()
@@ -103,7 +103,7 @@ def excluirVariosDado(grupos, escritorio):
     print(grupos)
 
     
-    filepath = os.path.join('c:/UltimaPlanilha', 'ultima_planilha.txt')
+    filepath = os.path.join('./UltimaPlanilha', 'ultima_planilha.txt')
 
     f = open(filepath, "r")
     w = f.read()

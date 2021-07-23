@@ -15,7 +15,7 @@ optionsQ = sys.argv[1]
 optionsQ2 = sys.argv[2]
 
 def buscarEscritorios():
-    filepath = os.path.join('c:/UltimaPlanilha', 'ultima_planilha.txt')
+    filepath = os.path.join('./UltimaPlanilha', 'ultima_planilha.txt')
 
     f = open(filepath, "r")
     w = f.read()
@@ -35,7 +35,7 @@ def buscarEscritorios():
 
 
 def buscarInsituicoes():
-    filepath = os.path.join('c:/UltimaPlanilha', 'ultima_planilha.txt')
+    filepath = os.path.join('./UltimaPlanilha', 'ultima_planilha.txt')
 
     f = open(filepath, "r")
     w = f.read()
@@ -58,7 +58,7 @@ def fetchEscritorios(escritorios, instituicoes):
     escritoriosArray= escritorios.split(",")
     instituicoesArray= instituicoes.split(",")
 
-    filepath = os.path.join('c:/UltimaPlanilha', 'ultima_planilha.txt')
+    filepath = os.path.join('./UltimaPlanilha', 'ultima_planilha.txt')
 
     f = open(filepath, "r")
     w = f.read()

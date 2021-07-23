@@ -6,7 +6,8 @@ import pandas as pd
 from datetime import datetime
 import openpyxl as openpy
 import sys
-
+from io import BytesIO
+import requests
 
 sys.stdout.reconfigure(encoding='utf-8')
 mes = sys.argv[1]
@@ -19,7 +20,7 @@ def buscarMesPrevista(oMes, ano):
     if ano != "todos":
         print("data prevista e todos")
         print(ano)
-        filepath = os.path.join('c:/UltimaPlanilha', 'ultima_planilha.txt')
+        filepath = os.path.join('./UltimaPlanilha', 'ultima_planilha.txt')
 
         f = open(filepath, "r")
         w = f.read()
@@ -45,7 +46,7 @@ def buscarMesPrevista(oMes, ano):
 
 
     else:
-        filepath = os.path.join('c:/UltimaPlanilha', 'ultima_planilha.txt')
+        filepath = os.path.join('./UltimaPlanilha', 'ultima_planilha.txt')
 
         f = open(filepath, "r")
         w = f.read()
@@ -83,7 +84,7 @@ def buscarMesPrevista(oMes, ano):
 
 def buscarMesResultado(oMes, ano):    
     if ano != "todos":
-        filepath = os.path.join('c:/UltimaPlanilha', 'ultima_planilha.txt')
+        filepath = os.path.join('./UltimaPlanilha', 'ultima_planilha.txt')
 
         f = open(filepath, "r")
         w = f.read()
@@ -109,7 +110,7 @@ def buscarMesResultado(oMes, ano):
 
 
     else:
-        filepath = os.path.join('c:/UltimaPlanilha', 'ultima_planilha.txt')
+        filepath = os.path.join('./UltimaPlanilha', 'ultima_planilha.txt')
 
         f = open(filepath, "r")
         w = f.read()

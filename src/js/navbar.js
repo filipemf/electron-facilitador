@@ -21,44 +21,39 @@ function readTextFile(file)
     
 }
 
-function console1(){
+function changeFile(){
     const Swal = require('sweetalert2')
     const fs = require('fs');
 
     Swal.fire({
         title: 'Selecione o Tipo de Arquivo',
-        showDenyButton: true,
         showCancelButton: true,
         confirmButtonText: `Local`,
         denyButtonText: `Online`,
         }).then(async (result) => {
-        /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
-                //c:/UltimaPlanilha/ultima_planilha.txt
-                // Or with ECMAScript 6
                 const {dialog, getCurrentWindow, globalShortcut,BrowserWindow} = require('electron').remote;
+                
+                let outputPath = "./UltimaPlanilha/ultima_planilha.txt"
+
+                fs.mkdir("./UltimaPlanilha", { recursive: true }, (err) => {
+                    if (err) throw err;
+                    console.log("Creating Dir");
+                  });
 
                 let file = dialog.showOpenDialog({ properties: ['openFile', 'multiSelections'] }).then((result)=>{
-                    fs.writeFile("c:/UltimaPlanilha/ultima_planilha.txt", result.filePaths[0], { flag: 'w' }, function(err) {
+                    fs.writeFileSync(outputPath, result.filePaths[0], {encoding:'utf8',flag:'w'}, function(err) {
                         if(err) {
                             return console.log(err);
                         }
                         console.log("The file was saved!");
                     });  
-                }).filePaths[0]
-
-                BrowserWindow.getCurrentWindow().reload();
-                
-                // // directory to check if exists
-                // const dir = 'c:/UltimaPlanilha';
-
-                // // check if directory exists
-                // if (fs.existsSync(dir)) {
-                //     console.log('Directory exists!');
-                // } else {
-                //     console.log('Directory not found.');
-                // }
-                 
+                }).then(()=>{
+                    var text = fs.readFileSync('./UltimaPlanilha/ultima_planilha.txt','utf8')
+                    $('#actualFile').empty()
+                    $('#actualFile').append(text);
+                    console.log(text);
+                })
 
             }
             else if (result.isDenied) {
@@ -145,16 +140,19 @@ function loadSidebar() {
         <span class="hoverText">Consulta Complexa</span>
     </li>
     <li class="profile">
-        <a href="#" onclick="console1()">
+        <a href="#" onclick="changeFile()">
         <i class='bx bx-sync' ></i>
         <span class="spanLinks">Carregar Novo Arquivo</span>
         </a>
         <span class="actual" id="actualFile">Atual: </span>
         <script>
 
-        let file = readTextFile("c:/UltimaPlanilha/ultima_planilha.txt")
-        console.log(file)
-        $('#actualFile').append(file);
+        const fs = require('fs');
+        // First I want to read the file
+        var text = fs.readFileSync('./UltimaPlanilha/ultima_planilha.txt','utf8')
+        $('#actualFile').append(text);
+        console.log(text);   // Put all of the code here (not the best solution)
+        
 
         </script>
         <span class="hoverText">Carregar Novo Arquivo</span>

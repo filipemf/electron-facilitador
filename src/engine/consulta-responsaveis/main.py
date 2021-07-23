@@ -14,7 +14,7 @@ optionsQ = sys.argv[1]
 
 
 def buscarResponsaveis():
-    filepath = os.path.join('c:/UltimaPlanilha', 'ultima_planilha.txt')
+    filepath = os.path.join('./UltimaPlanilha', 'ultima_planilha.txt')
 
     f = open(filepath, "r")
     w = f.read()
@@ -33,7 +33,7 @@ def buscarResponsaveis():
     return responsaveis
 
 def fetchResponsaveis(responsavel):
-    filepath = os.path.join('c:/UltimaPlanilha', 'ultima_planilha.txt')
+    filepath = os.path.join('./UltimaPlanilha', 'ultima_planilha.txt')
 
     f = open(filepath, "r")
     w = f.read()
@@ -56,7 +56,7 @@ def fetchResponsaveis(responsavel):
     # for data in resultadoFinal:
     #     encoded.append(data.encode(encoding="ascii",errors="xmlcharrefreplace"))
     # return encoded
-    # filepath = os.path.join('c:/UltimaPlanilha', 'ultima_planilha.txt')
+    # filepath = os.path.join('./UltimaPlanilha', 'ultima_planilha.txt')
 
     # f = open(filepath, "r")
     # w = f.read()
