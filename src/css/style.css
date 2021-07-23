@@ -364,3 +364,9 @@ tbody tr.active-row {
     font-weight: bold;
     color: #009879;
 }
+
+.graficos {
+    margin: 20px;
+    width: 200px;
+    height: 100px;
+  }

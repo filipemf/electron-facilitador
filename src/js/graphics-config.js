@@ -7,9 +7,9 @@ $(document).ready(function(){
       fill: {gradient: ['#a445b2', '#fa4299']}
     }
   
-    const div = $('.circle-text');
+    const div = $('.progress_bar');
   
-    div.append('<p class="envelope" style="left:10px;">Submetidos</p>');
+    //div.append('<p class="envelope" style="left:10px;">Submetidos</p>');
   
     $(".circle .bar").circleProgress(options).on('circle-animation-progress',
     function(event, progress, stepValue){

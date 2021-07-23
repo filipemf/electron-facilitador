@@ -3,7 +3,7 @@ const { ipcRenderer} = require('electron')
 
 let {PythonShell} = require('python-shell')
 var path = require("path")
-
+var ProgressBar = require('progressbar.js')
 
 function buscarMes(){
     
@@ -457,4 +457,142 @@ function salvarDadosEditados(){
             console.log(results)
         })
     }
+}
+
+function criarGraficos(){
+    var andamento1 = new ProgressBar.SemiCircle(andamento, {
+        strokeWidth: 6,
+        color: '#FFEA82',
+        trailColor: '#eee',
+        trailWidth: 1,
+        easing: 'easeInOut',
+        duration: 1400,
+        svgStyle: null,
+        text: {
+          value: '',
+          alignToBottom: false
+        },
+        from: {color: '#FFEA82'},
+        to: {color: '#ED6A5A'},
+        // Set default step function for all animate calls
+        step: (state, bar) => {
+          bar.path.setAttribute('stroke', state.color);
+          var value = Math.round(bar.value() * 100);
+          if (value === 0) {
+            bar.setText('');
+          } else {
+            bar.setText(value);
+          }
+          bar.text.style.color = state.color;
+        }
+      });
+    andamento1.text.style.fontFamily = '"Raleway", Helvetica, sans-serif';
+    andamento1.text.style.fontSize = '2rem';
+    andamento1.animate(1.0);  // Number from 0.0 to 1.0
+    // var optionsAn = {
+    //     scriptPath: path.join(__dirname,'../../engine/dashboard/'),
+    //     args: [mes, ano, prevista]
+    // }
+
+    // PythonShell.run('main.py', optionsAn, function(err, results){
+    //     if (err) throw err;
+    //     console.log(results)
+
+    //     andamento1.animate(1.0);  // Number from 0.0 to 1.0
+    // })
+    
+    var revisao1 = new ProgressBar.SemiCircle(revisao, {
+        strokeWidth: 6,
+        color: '#FFEA82',
+        trailColor: '#eee',
+        trailWidth: 1,
+        easing: 'easeInOut',
+        duration: 1400,
+        svgStyle: null,
+        text: {
+          value: '',
+          alignToBottom: false
+        },
+        from: {color: '#FFEA82'},
+        to: {color: '#ED6A5A'},
+        // Set default step function for all animate calls
+        step: (state, bar) => {
+          bar.path.setAttribute('stroke', state.color);
+          var value = Math.round(bar.value() * 100);
+          if (value === 0) {
+            bar.setText('');
+          } else {
+            bar.setText(value);
+          }
+          bar.text.style.color = state.color;
+        }
+      });
+    revisao1.text.style.fontFamily = '"Raleway", Helvetica, sans-serif';
+    revisao1.text.style.fontSize = '2rem';
+    
+    revisao1.animate(1.0);  // Number from 0.0 to 1.0
+
+    
+    var transcricao1 = new ProgressBar.SemiCircle(transcricao, {
+        strokeWidth: 6,
+        color: '#FFEA82',
+        trailColor: '#eee',
+        trailWidth: 1,
+        easing: 'easeInOut',
+        duration: 1400,
+        svgStyle: null,
+        text: {
+          value: '',
+          alignToBottom: false
+        },
+        from: {color: '#FFEA82'},
+        to: {color: '#ED6A5A'},
+        // Set default step function for all animate calls
+        step: (state, bar) => {
+          bar.path.setAttribute('stroke', state.color);
+          var value = Math.round(bar.value() * 100);
+          if (value === 0) {
+            bar.setText('');
+          } else {
+            bar.setText(value);
+          }
+          bar.text.style.color = state.color;
+        }
+      });
+    transcricao1.text.style.fontFamily = '"Raleway", Helvetica, sans-serif';
+    transcricao1.text.style.fontSize = '2rem';
+    
+    transcricao1.animate(1.0);  // Number from 0.0 to 1.0
+
+    
+    var aprovacao1 = new ProgressBar.SemiCircle(aprovacao, {
+        strokeWidth: 6,
+        color: '#FFEA82',
+        trailColor: '#eee',
+        trailWidth: 1,
+        easing: 'easeInOut',
+        duration: 1400,
+        svgStyle: null,
+        text: {
+          value: '',
+          alignToBottom: false
+        },
+        from: {color: '#FFEA82'},
+        to: {color: '#ED6A5A'},
+        // Set default step function for all animate calls
+        step: (state, bar) => {
+          bar.path.setAttribute('stroke', state.color);
+          var value = Math.round(bar.value() * 100);
+          if (value === 0) {
+            bar.setText('');
+          } else {
+            bar.setText(value);
+          }
+          bar.text.style.color = state.color;
+        }
+      });
+    aprovacao1.text.style.fontFamily = '"Raleway", Helvetica, sans-serif';
+    aprovacao1.text.style.fontSize = '2rem';
+    
+    aprovacao1.animate(1.0);  // Number from 0.0 to 1.0
 }

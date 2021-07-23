@@ -23,6 +23,8 @@
     <link rel="stylesheet" href="../../css/navbarstyle.css">
     <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
     <script type="text/javascript" src="../../js/navbar.js"></script>
+
+    <script type="text/javascript" src="../../js/scripts.js"></script>
 </head>
     <body>
         <script>
@@ -91,49 +93,8 @@
                             <div class="card-header">
                                 <h2>Casos em Andamento</h2>
                             </div>
-                            <canvas class="andamento"></canvas>
+                            <div id="andamento" class="graficos"></div>
 
-                            <script>
-                                var ctx = document.getElementsByClassName('andamento')
-                                dataGraph = [5,8,10]
-
-                                var coloR = [];
-
-                                var dynamicColors = function() {
-                                    var r = Math.floor(Math.random() * 255);
-                                    var g = Math.floor(Math.random() * 255);
-                                    var b = Math.floor(Math.random() * 255);
-                                    return "rgb(" + r + "," + g + "," + b + ")";
-                                };
-
-                                for (var i in dataGraph) {
-                                    coloR.push(dynamicColors());
-                                }
-
-                                var chartGraph = new Chart(ctx, {
-                                    type: 'pie',
-                                    data: {
-                                        labels: ["1","2","3"],
-                                        datasets: [{
-                                            label: "Grafico",
-                                            data: dataGraph,
-                                            borderWidth: 6,
-                                            backgroundColor: coloR,
-                                        }]
-                                    },
-                                    options: {
-                                        responsive: true,
-                                        plugins: {
-                                        legend: {
-                                            position: 'top',
-                                        },
-                                        title: {
-                                            display: false,
-                                        }
-                                        }
-                                    },
-                                })
-                            </script>
                         </div>
                     </div>
                 </div>
@@ -144,49 +105,8 @@
                             <div class="card-header">
                                 <h2>Casos em revisão</h2>
                             </div>
-                            <canvas class="revisao"></canvas>
+                            <div id="revisao" class="graficos"></div>
 
-                            <script>
-                                var ctx = document.getElementsByClassName('revisao')
-                                dataGraph = [5,8,10]
-
-                                var coloR = [];
-
-                                var dynamicColors = function() {
-                                    var r = Math.floor(Math.random() * 255);
-                                    var g = Math.floor(Math.random() * 255);
-                                    var b = Math.floor(Math.random() * 255);
-                                    return "rgb(" + r + "," + g + "," + b + ")";
-                                };
-
-                                for (var i in dataGraph) {
-                                    coloR.push(dynamicColors());
-                                }
-
-                                var chartGraph = new Chart(ctx, {
-                                    type: 'pie',
-                                    data: {
-                                        labels: ["1","2","3"],
-                                        datasets: [{
-                                            label: "Grafico",
-                                            data: dataGraph,
-                                            borderWidth: 6,
-                                            backgroundColor: coloR,
-                                        }]
-                                    },
-                                    options: {
-                                        responsive: true,
-                                        plugins: {
-                                        legend: {
-                                            position: 'top',
-                                        },
-                                        title: {
-                                            display: false,
-                                        }
-                                        }
-                                    },
-                                })
-                            </script>
                         </div>
                     </div>
                 </div>
@@ -195,59 +115,6 @@
 
             
             <div class="cards">
-                <div class="card-single">
-
-                    <div class="card js">
-                        <div class="circle">
-                            <div class="card-header">
-                                <h2>Casos por Integrantes</h2>
-                            </div>
-                            <canvas class="integrantes"></canvas>
-
-                            <script>
-                                var ctx = document.getElementsByClassName('integrantes')
-                                dataGraph = [5,8,10]
-
-                                var coloR = [];
-
-                                var dynamicColors = function() {
-                                    var r = Math.floor(Math.random() * 255);
-                                    var g = Math.floor(Math.random() * 255);
-                                    var b = Math.floor(Math.random() * 255);
-                                    return "rgb(" + r + "," + g + "," + b + ")";
-                                };
-
-                                for (var i in dataGraph) {
-                                    coloR.push(dynamicColors());
-                                }
-
-                                var chartGraph = new Chart(ctx, {
-                                    type: 'bar',
-                                    data: {
-                                        labels: ["1","2","3"],
-                                        datasets: [{
-                                            label: "Grafico",
-                                            data: dataGraph,
-                                            borderWidth: 6,
-                                            backgroundColor: coloR,
-                                        }]
-                                    },
-                                    options: {
-                                        responsive: true,
-                                        plugins: {
-                                        legend: {
-                                            position: 'top',
-                                        },
-                                        title: {
-                                            display: false,
-                                        }
-                                        }
-                                    },
-                                })
-                            </script>
-                        </div>
-                    </div>
-                </div>
 
                 <div class="card-single">
                     <div class="card js">
@@ -255,49 +122,8 @@
                             <div class="card-header">
                                 <h2>Casos em Transcrição</h2>
                             </div>
-                            <canvas class="transcricao"></canvas>
+                            <div id="transcricao" class="graficos"></div>
 
-                            <script>
-                                var ctx = document.getElementsByClassName('transcricao')
-                                dataGraph = [5,8,10]
-
-                                var coloR = [];
-
-                                var dynamicColors = function() {
-                                    var r = Math.floor(Math.random() * 255);
-                                    var g = Math.floor(Math.random() * 255);
-                                    var b = Math.floor(Math.random() * 255);
-                                    return "rgb(" + r + "," + g + "," + b + ")";
-                                };
-
-                                for (var i in dataGraph) {
-                                    coloR.push(dynamicColors());
-                                }
-
-                                var chartGraph = new Chart(ctx, {
-                                    type: 'pie',
-                                    data: {
-                                        labels: ["1","2","3"],
-                                        datasets: [{
-                                            label: "Grafico",
-                                            data: dataGraph,
-                                            borderWidth: 6,
-                                            backgroundColor: coloR,
-                                        }]
-                                    },
-                                    options: {
-                                        responsive: true,
-                                        plugins: {
-                                        legend: {
-                                            position: 'top',
-                                        },
-                                        title: {
-                                            display: false,
-                                        }
-                                        }
-                                    },
-                                })
-                            </script>
                         </div>
                     </div>
                 </div>
@@ -309,54 +135,19 @@
                             <div class="card-header">
                                 <h2>Casos em Aprovação</h2>
                             </div>
-                            <canvas class="aprovacao"></canvas>
+                            <div id="aprovacao" class="graficos">
 
-                            <script>
-                                var ctx = document.getElementsByClassName('aprovacao')
-                                dataGraph = [5,8,10]
-
-                                var coloR = [];
-
-                                var dynamicColors = function() {
-                                    var r = Math.floor(Math.random() * 255);
-                                    var g = Math.floor(Math.random() * 255);
-                                    var b = Math.floor(Math.random() * 255);
-                                    return "rgb(" + r + "," + g + "," + b + ")";
-                                };
-
-                                for (var i in dataGraph) {
-                                    coloR.push(dynamicColors());
-                                }
-
-                                var chartGraph = new Chart(ctx, {
-                                    type: 'pie',
-                                    data: {
-                                        labels: ["1","2","3"],
-                                        datasets: [{
-                                            label: "Grafico",
-                                            data: dataGraph,
-                                            borderWidth: 6,
-                                            backgroundColor: coloR,
-                                        }]
-                                    },
-                                    options: {
-                                        responsive: true,
-                                        plugins: {
-                                        legend: {
-                                            position: 'top',
-                                        },
-                                        title: {
-                                            display: false,
-                                        }
-                                        }
-                                    },
-                                })
-                            </script>
+                            </div>
+                            
                         </div>
                     </div>
                 </div>
 
             </div>
+
+            <script>
+                criarGraficos()
+            </script>
 
 
         </main>
