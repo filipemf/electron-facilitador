@@ -366,7 +366,8 @@ tbody tr.active-row {
 }
 
 .graficos {
-    margin: 20px;
+    margin: 15px;
     width: 200px;
     height: 100px;
+    margin-bottom: 45px;
   }

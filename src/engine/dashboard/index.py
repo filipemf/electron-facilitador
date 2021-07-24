@@ -6,6 +6,7 @@ import pandas as pd
 from datetime import datetime
 import openpyxl as openpy
 import sys
+import json
 
 pd.set_option('display.max_columns', None)
 
@@ -13,7 +14,7 @@ sys.stdout.reconfigure(encoding='utf-8')
 # optionsQ = sys.argv[1]
 
 
-def buscarDado(tipo):
+def buscarResponsaveis():
     filepath = os.path.join('./UltimaPlanilha', 'ultima_planilha.txt')
 
     f = open(filepath, "r")
@@ -21,32 +22,25 @@ def buscarDado(tipo):
 
     df = pd.read_excel(w, sheet_name="CATEGORIAS PARA LIPE")
 
-    df = df.drop_duplicates(subset=['INSTITUIÇÃO','CATEGORIAS'], keep="first")
-    
+    dfResponsaveis = df.iloc[:,6]
+    dfResponsaveis = dfResponsaveis.dropna()
 
-    dfSim = df[df[tipo]=="Sim"]
-    dfNao = df[df[tipo]=="Não"]
-
-    dfSim2= dfSim.iloc[:,9:13]
-    return dfSim2['CASOS EM ANDAMENTO'].to_json()
-
-    dfSim = dfSim[tipo]
-    dfNao = dfNao[tipo]
-
-    allResultado = str(len(dfSim.index))+"/"+str(len(dfNao.index))
-    #print(df)
-    #list1= df.to_json(orient="values", force_ascii=False)
-
-    return allResultado
+    responsaveis = []
+    for row in dfResponsaveis:
+        if row not in responsaveis:
+            responsaveis.append(row)
 
 
-def buscarDado2():
+    return responsaveis
+
+def buscarDado():
     filepath = os.path.join('./UltimaPlanilha', 'ultima_planilha.txt')
 
     f = open(filepath, "r")
     w = f.read()
 
     df = pd.read_excel(w, sheet_name="CATEGORIAS PARA LIPE")
+    df2 = pd.read_excel(w, sheet_name="CATEGORIAS PARA LIPE")
 
     df = df.drop_duplicates(subset=['INSTITUIÇÃO','CATEGORIAS'], keep="first")
     
@@ -55,6 +49,10 @@ def buscarDado2():
     dfRevisao = df['CASOS EM REVISÃO'].dropna().to_list()
     dfTranscricao = df['CASOS EM TRANSCRIÇÃO'].dropna().to_list()
     dfAprovacao = df['CASOS EM APROVAÇÃO'].dropna().to_list()
+
+    responsaveis = buscarResponsaveis()
+    dfResponsaveis = df2['RESPONSÁVEL'].dropna().to_list()
+
 
     data = [
         {
@@ -73,17 +71,21 @@ def buscarDado2():
             "casos-aprovacao":{
                 "sim":dfAprovacao.count("Sim"),
                 "nao":dfAprovacao.count("Não")
-            }
+            },
+            "responsaveis":{}
         }
     ]
 
+    for pessoa in responsaveis:
+        data[0]["responsaveis"][pessoa]=dfResponsaveis.count(pessoa)
+        # data[0].update({"responsaveis":{pessoa:"pessoa"}})
+
     #print(df)
     #list1= df.to_json(orient="values", force_ascii=False)
+    #print(data)
+    y = json.dumps(data[0])
+    return y
 
-    return data
-
-
-#print(buscarDado("CASOS EM ANDAMENTO"))
-print(buscarDado2())
+print(buscarDado())
 
 sys.stdout.flush()

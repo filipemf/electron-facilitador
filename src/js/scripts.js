@@ -469,6 +469,48 @@ function criarGraficos(){
         //console.log(results[0])
         let json = JSON.parse(results)
         console.log(json)
+        console.log([json['responsaveis']])
+
+                // Builds the HTML Table out of myList.
+            var myList = [json['responsaveis']]
+            console.log(myList)
+                
+                // Builds the HTML Table out of myList.
+                function buildHtmlTable(selector) {
+                var columns = addAllColumnHeaders(myList, selector);
+                
+                for (var i = 0; i < myList.length; i++) {
+                    var row$ = $('<tr/>');
+                    for (var colIndex = 0; colIndex < columns.length; colIndex++) {
+                    var cellValue = myList[i][columns[colIndex]];
+                    if (cellValue == null) cellValue = "";
+                    row$.append($('<td/>').html(cellValue));
+                    }
+                    $(selector).append(row$);
+                }
+                }
+                
+                // Adds a header row to the table and returns the set of columns.
+                // Need to do union of keys from all records as some records may not contain
+                // all records.
+                function addAllColumnHeaders(myList, selector) {
+                var columnSet = [];
+                var headerTr$ = $('<tr/>');
+                
+                for (var i = 0; i < myList.length; i++) {
+                    var rowHash = myList[i];
+                    for (var key in rowHash) {
+                    if ($.inArray(key, columnSet) == -1) {
+                        columnSet.push(key);
+                    }
+                    }
+                }
+                $(selector).append(headerTr$);
+                
+                return columnSet;
+}
+
+        buildHtmlTable('#tabela')
 
             
         var andamento1 = new ProgressBar.SemiCircle(andamento, {
@@ -497,8 +539,7 @@ function criarGraficos(){
             bar.text.style.color = state.color;
             }
         });
-        andamento1.text.style.fontFamily = '"Raleway", Helvetica, sans-serif';
-        andamento1.text.style.fontSize = '2rem';
+        andamento1.text.style.fontSize = '2.8rem';
 
         if(eval(json['casos-andamento'].sim+"/"+json['casos-andamento'].nao).toFixed(0) <= 1.0){
             andamento1.animate(eval(json['casos-andamento'].sim+"/"+json['casos-andamento'].nao).toFixed(0));
@@ -536,8 +577,7 @@ function criarGraficos(){
             bar.text.style.color = state.color;
             }
         });
-        revisao1.text.style.fontFamily = '"Raleway", Helvetica, sans-serif';
-        revisao1.text.style.fontSize = '2rem';
+        revisao1.text.style.fontSize = '2.8rem';
         
         if(eval(json['casos-revisao'].sim+"/"+json['casos-revisao'].nao).toFixed(0) <= 1.0){
             revisao1.animate(eval(json['casos-revisao'].sim+"/"+json['casos-revisao'].nao).toFixed(0));
@@ -575,8 +615,7 @@ function criarGraficos(){
             bar.text.style.color = state.color;
             }
         });
-        transcricao1.text.style.fontFamily = '"Raleway", Helvetica, sans-serif';
-        transcricao1.text.style.fontSize = '2rem';
+        transcricao1.text.style.fontSize = '2.8rem';
         if(eval(json['casos-transcricao'].sim+"/"+json['casos-transcricao'].nao).toFixed(0) <= 1.0){
             transcricao1.animate(eval(json['casos-transcricao'].sim+"/"+json['casos-transcricao'].nao).toFixed(0));  // Number from 0.0 to 1.0
         }
@@ -614,8 +653,7 @@ function criarGraficos(){
             bar.text.style.color = state.color;
             }
         });
-        aprovacao1.text.style.fontFamily = '"Raleway", Helvetica, sans-serif';
-        aprovacao1.text.style.fontSize = '2rem';
+        aprovacao1.text.style.fontSize = '2.8rem';
 
         if(eval(json['casos-aprovacao'].sim+"/"+json['casos-aprovacao'].nao).toFixed(0) <= 1.0){
             aprovacao1.animate(eval(json['casos-aprovacao'].sim+"/"+json['casos-aprovacao'].nao).toFixed(0));  // Number from 0.0 to 1.0
