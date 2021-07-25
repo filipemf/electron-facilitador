@@ -468,119 +468,99 @@ function criarGraficos(){
         //console.log(JSON.parse(results))
         //console.log(results[0])
         let json = JSON.parse(results)
-        console.log(json)
-        console.log([json['responsaveis']])
 
                 // Builds the HTML Table out of myList.
-            var myList = [json['responsaveis']]
-            console.log(myList)
+        var myList = [json['responsaveis']]
+            
+            // Builds the HTML Table out of myList.
+        function buildHtmlTable(selector) {
+            Object.keys(myList[0]).forEach(function(key) {
+                console.log(key, String(myList[0][key]));
+                //$(selector).find('tbody').append('<tr>')
+                $(selector).find('tbody').append('<tr><td>'+key+'</td>'+'<td>'+myList[0][key]+'</td></tr>');
+
+                //$(selector).find('tbody').append('<td>'+myList[0][key]+'</td></tr>');
+                //$(selector).find('tbody').append('</tr>')
+            });
+
+        }
                 
-                // Builds the HTML Table out of myList.
-                function buildHtmlTable(selector) {
-                var columns = addAllColumnHeaders(myList, selector);
-                
-                for (var i = 0; i < myList.length; i++) {
-                    var row$ = $('<tr/>');
-                    for (var colIndex = 0; colIndex < columns.length; colIndex++) {
-                    var cellValue = myList[i][columns[colIndex]];
-                    if (cellValue == null) cellValue = "";
-                    row$.append($('<td/>').html(cellValue));
-                    }
-                    $(selector).append(row$);
-                }
-                }
-                
-                // Adds a header row to the table and returns the set of columns.
-                // Need to do union of keys from all records as some records may not contain
-                // all records.
-                function addAllColumnHeaders(myList, selector) {
-                var columnSet = [];
-                var headerTr$ = $('<tr/>');
-                
-                for (var i = 0; i < myList.length; i++) {
-                    var rowHash = myList[i];
-                    for (var key in rowHash) {
-                    if ($.inArray(key, columnSet) == -1) {
-                        columnSet.push(key);
-                    }
-                    }
-                }
-                $(selector).append(headerTr$);
-                
-                return columnSet;
-}
 
         buildHtmlTable('#tabela')
 
             
-        var andamento1 = new ProgressBar.SemiCircle(andamento, {
-            strokeWidth: 6,
-            color: '#FFEA82',
-            trailColor: '#eee',
+        var andamento1 = new ProgressBar.Circle(andamento, {
+            color: '#aaa',
+            // This has to be the same size as the maximum width to
+            // prevent clipping
+            strokeWidth: 4,
             trailWidth: 1,
             easing: 'easeInOut',
             duration: 1400,
-            svgStyle: null,
             text: {
-            value: '',
-            alignToBottom: false
+              autoStyleContainer: false
             },
-            from: {color: '#FFEA82'},
-            to: {color: '#ED6A5A'},
+            from: { color: '#aaa', width: 1 },
+            to: { color: '#333', width: 4 },
             // Set default step function for all animate calls
-            step: (state, bar) => {
-            bar.path.setAttribute('stroke', state.color);
-            var value = Math.round(bar.value() * 100);
+            step: function(state, circle) {
+              circle.path.setAttribute('stroke', state.color);
+              circle.path.setAttribute('stroke-width', state.width);
+          
+              var value = Math.round(circle.value() * 100);
             if (value === 0) {
-                bar.setText('Nenhum Caso');
+                circle.setText('Nenhum Caso');
             } else {
-                bar.setText(json['casos-andamento'].sim+"/"+json['casos-andamento'].nao);
+                circle.setText(json['casos-andamento'].sim+"/"+json['casos-andamento'].nao);
             }
-            bar.text.style.color = state.color;
+            circle.text.style.color = state.color;
             }
         });
         andamento1.text.style.fontSize = '2.8rem';
 
-        if(eval(json['casos-andamento'].sim+"/"+json['casos-andamento'].nao).toFixed(0) <= 1.0){
-            andamento1.animate(eval(json['casos-andamento'].sim+"/"+json['casos-andamento'].nao).toFixed(0));
+        if(eval(json['casos-andamento'].sim+"/"+json['casos-andamento'].nao).toFixed(1) <= 1.0){
+            console.log(String(eval(json['casos-andamento'].sim+"/"+json['casos-andamento'].nao).toFixed(1) <= 1.0))
+            andamento1.animate(eval(json['casos-andamento'].sim+"/"+json['casos-andamento'].nao).toFixed(1));
         }
         else{
+            console.log(String(eval(json['casos-andamento'].sim+"/"+json['casos-andamento'].nao).toFixed(1) <= 1.0))
             andamento1.animate(1.0);
         }
         $('#span_andamento').empty()
         $('#span_andamento').append((eval(json['casos-andamento'].sim+"/"+json['casos-andamento'].nao)*100).toFixed(0)+"%")
         
 
-        var revisao1 = new ProgressBar.SemiCircle(revisao, {
-            strokeWidth: 6,
-            color: '#FFEA82',
-            trailColor: '#eee',
+        var revisao1 = new ProgressBar.Circle(revisao, {
+            color: '#aaa',
+            // This has to be the same size as the maximum width to
+            // prevent clipping
+            strokeWidth: 4,
             trailWidth: 1,
             easing: 'easeInOut',
             duration: 1400,
-            svgStyle: null,
             text: {
-            value: '',
-            alignToBottom: false
+              autoStyleContainer: false
             },
-            from: {color: '#FFEA82'},
-            to: {color: '#ED6A5A'},
+            from: { color: '#aaa', width: 1 },
+            to: { color: '#333', width: 4 },
             // Set default step function for all animate calls
-            step: (state, bar) => {
-            bar.path.setAttribute('stroke', state.color);
-            var value = Math.round(bar.value() * 100);
+            step: function(state, circle) {
+              circle.path.setAttribute('stroke', state.color);
+              circle.path.setAttribute('stroke-width', state.width);
+          
+              var value = Math.round(circle.value() * 100);
             if (value === 0) {
-                bar.setText('Nenhum Caso');
+                circle.setText('Nenhum Caso');
             } else {
-                bar.setText(json['casos-revisao'].sim+"/"+json['casos-revisao'].nao);
+                circle.setText(json['casos-revisao'].sim+"/"+json['casos-revisao'].nao);
             }
-            bar.text.style.color = state.color;
+            circle.text.style.color = state.color;
             }
         });
         revisao1.text.style.fontSize = '2.8rem';
         
-        if(eval(json['casos-revisao'].sim+"/"+json['casos-revisao'].nao).toFixed(0) <= 1.0){
-            revisao1.animate(eval(json['casos-revisao'].sim+"/"+json['casos-revisao'].nao).toFixed(0));
+        if(eval(json['casos-revisao'].sim+"/"+json['casos-revisao'].nao).toFixed(1) <= 1.0){
+            revisao1.animate(eval(json['casos-revisao'].sim+"/"+json['casos-revisao'].nao).toFixed(1));
         }
         else{
             revisao1.animate(1.0);
@@ -589,35 +569,36 @@ function criarGraficos(){
         $('#span_revisao').append((eval(json['casos-revisao'].sim+"/"+json['casos-revisao'].nao)*100).toFixed(0)+"%")
 
         
-        var transcricao1 = new ProgressBar.SemiCircle(transcricao, {
-            strokeWidth: 6,
-            color: '#FFEA82',
-            trailColor: '#eee',
+        var transcricao1 = new ProgressBar.Circle(transcricao, {
+            color: '#aaa',
+            // This has to be the same size as the maximum width to
+            // prevent clipping
+            strokeWidth: 4,
             trailWidth: 1,
             easing: 'easeInOut',
             duration: 1400,
-            svgStyle: null,
             text: {
-            value: '',
-            alignToBottom: false
+              autoStyleContainer: false
             },
-            from: {color: '#FFEA82'},
-            to: {color: '#ED6A5A'},
+            from: { color: '#aaa', width: 1 },
+            to: { color: '#333', width: 4 },
             // Set default step function for all animate calls
-            step: (state, bar) => {
-            bar.path.setAttribute('stroke', state.color);
-            var value = Math.round(bar.value() * 100);
+            step: function(state, circle) {
+              circle.path.setAttribute('stroke', state.color);
+              circle.path.setAttribute('stroke-width', state.width);
+          
+              var value = Math.round(circle.value() * 100);
             if (value === 0) {
-                bar.setText('Nenhum Caso');
+                circle.setText('Nenhum Caso');
             } else {
-                bar.setText(json['casos-transcricao'].sim+"/"+json['casos-transcricao'].nao);
+                circle.setText(json['casos-transcricao'].sim+"/"+json['casos-transcricao'].nao);
             }
-            bar.text.style.color = state.color;
+            circle.text.style.color = state.color;
             }
         });
         transcricao1.text.style.fontSize = '2.8rem';
-        if(eval(json['casos-transcricao'].sim+"/"+json['casos-transcricao'].nao).toFixed(0) <= 1.0){
-            transcricao1.animate(eval(json['casos-transcricao'].sim+"/"+json['casos-transcricao'].nao).toFixed(0));  // Number from 0.0 to 1.0
+        if(eval(json['casos-transcricao'].sim+"/"+json['casos-transcricao'].nao).toFixed(1) <= 1.0){
+            transcricao1.animate(eval(json['casos-transcricao'].sim+"/"+json['casos-transcricao'].nao).toFixed(1));  // Number from 0.0 to 1.0
         }
         else{
             transcricao1.animate(1.0);  // Number from 0.0 to 1.0
@@ -627,36 +608,37 @@ function criarGraficos(){
         
 
         
-        var aprovacao1 = new ProgressBar.SemiCircle(aprovacao, {
-            strokeWidth: 6,
-            color: '#FFEA82',
-            trailColor: '#eee',
+        var aprovacao1 = new ProgressBar.Circle(aprovacao, {
+            color: '#aaa',
+            // This has to be the same size as the maximum width to
+            // prevent clipping
+            strokeWidth: 4,
             trailWidth: 1,
             easing: 'easeInOut',
             duration: 1400,
-            svgStyle: null,
             text: {
-            value: '',
-            alignToBottom: false
+              autoStyleContainer: false
             },
-            from: {color: '#FFEA82'},
-            to: {color: '#ED6A5A'},
+            from: { color: '#aaa', width: 1 },
+            to: { color: '#333', width: 4 },
             // Set default step function for all animate calls
-            step: (state, bar) => {
-            bar.path.setAttribute('stroke', state.color);
-            var value = Math.round(bar.value() * 100);
+            step: function(state, circle) {
+              circle.path.setAttribute('stroke', state.color);
+              circle.path.setAttribute('stroke-width', state.width);
+          
+              var value = Math.round(circle.value() * 100);
             if (value === 0) {
-                bar.setText('Nenhum Caso');
+                circle.setText('Nenhum Caso');
             } else {
-                bar.setText(json['casos-aprovacao'].sim+"/"+json['casos-aprovacao'].nao);
+                circle.setText(json['casos-aprovacao'].sim+"/"+json['casos-aprovacao'].nao);
             }
-            bar.text.style.color = state.color;
+            circle.text.style.color = state.color;
             }
         });
         aprovacao1.text.style.fontSize = '2.8rem';
 
-        if(eval(json['casos-aprovacao'].sim+"/"+json['casos-aprovacao'].nao).toFixed(0) <= 1.0){
-            aprovacao1.animate(eval(json['casos-aprovacao'].sim+"/"+json['casos-aprovacao'].nao).toFixed(0));  // Number from 0.0 to 1.0
+        if(eval(json['casos-aprovacao'].sim+"/"+json['casos-aprovacao'].nao).toFixed(1) <= 1.0){
+            aprovacao1.animate(eval(json['casos-aprovacao'].sim+"/"+json['casos-aprovacao'].nao).toFixed(1));  // Number from 0.0 to 1.0
         }
         else{
             aprovacao1.animate(1.0);  // Number from 0.0 to 1.0
