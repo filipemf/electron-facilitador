@@ -6,8 +6,8 @@ async function createWindow(){
     mainWindow = new BrowserWindow({
         //fullscreen: true,
         //frame: false,
-        width:1924,
-        height: 1024,
+        width:1025,
+        height: 1017,
         webPreferences:{
             nodeIntegration: true,
             enableRemoteModule: true,
