@@ -85,7 +85,7 @@ def buscarDados(grupos, escritorio):
     print(list1)
     return list1
 
-def salvarRow(grupos, nomeCategoria, dataPrevista, dataResultado, responsaveis, submissao, status, escritorios):
+def salvarRow(grupos, nomeCategoria, dataPrevista, dataResultado, responsaveis, submissao, status, escritorios, casosAndamento, casosRevisao, casosTranscricao, casosAprovacao):
     filepath = os.path.join('./UltimaPlanilha', 'ultima_planilha.txt')
 
     f = open(filepath, "r")
@@ -138,21 +138,25 @@ def salvarRow(grupos, nomeCategoria, dataPrevista, dataResultado, responsaveis, 
             aDataResultado.strftime(format_str2) if dataResultado!="" else "",
             responsaveis,
             submissao,
-            status)], columns=("CLIENTE","INSTITUIÇÃO","CATEGORIAS","DATA PREVISTA","MÊS/ANO","DATA RESULTADO","RESPONSÁVEL","FAZ SUBMISSÃO? (S/N)","STATUS"))
+            status,
+            casosAndamento,
+            casosRevisao,
+            casosTranscricao,
+            casosAprovacao)], columns=("CLIENTE","INSTITUIÇÃO","CATEGORIAS","DATA PREVISTA","MÊS/ANO","DATA RESULTADO","RESPONSÁVEL","FAZ SUBMISSÃO? (S/N)","STATUS","CASOS EM ANDAMENTO", "CASOS EM REVISÃO","CASOS EM TRANSCRIÇÃO","CASOS EM APROVAÇÃO"))
 
         df = df.append(df3, ignore_index=True)
 
+    for item in arrayEscritorios:
+        dfCut2 = dfCut[dfCut['INSTITUIÇÃO']==instituicoes]
 
-        for item in arrayEscritorios:
-            dfCut2 = dfCut[dfCut['INSTITUIÇÃO']==instituicoes]
+        dfCut2 = dfCut2[dfCut2['CATEGORIAS']==categorias]
 
-            dfCut2 = dfCut2[dfCut2['CATEGORIAS']==categorias]
+        dfCut2 = dfCut2[dfCut2['CLIENTE']==item]
 
-            dfCut2 = dfCut2[dfCut2['CLIENTE']==item]
 
-            
-            index = int(dfCut2.index[0])
-            df = df.drop(index)
+        
+        index = int(dfCut2.index[0])
+        df = df.drop(index)
 
     excelBook = openpy.load_workbook(w)
     with pd.ExcelWriter(w, engine='openpyxl', date_format='DD/MM/YYYY') as writer:
@@ -165,7 +169,7 @@ def salvarRow(grupos, nomeCategoria, dataPrevista, dataResultado, responsaveis, 
 
         # Save the file
         writer.save()
-
+    print(df)
     return df
 
 def adicionarEscritorio(grupos, escritorio):
@@ -191,6 +195,10 @@ def adicionarEscritorio(grupos, escritorio):
     responsavelVar = ""
     submissaoVar = ""
     statusVar = ""
+    casosAndamento = ""
+    casosRevisao = ""
+    casosTranscricao = "" 
+    casosAprovacao = ""
 
 
     df2 = df[df['INSTITUIÇÃO']==instituicoes]
@@ -251,7 +259,32 @@ def adicionarEscritorio(grupos, escritorio):
         statusVar = dfStatus.values[0]
     else:
         statusVar = ""
+    
 
+    dfAndamento = df2.iloc[:,9]
+    if dfAndamento.values[0] != "":
+        casosAndamento = dfAndamento.values[0]
+    else:
+        casosAndamento = ""
+    
+    dfRevisao = df2.iloc[:,10]
+    if dfRevisao.values[0] != "":
+        casosRevisao = dfRevisao.values[0]
+    else:
+        casosRevisao = ""
+    
+    dfTranscricao = df2.iloc[:,11]
+    if dfTranscricao.values[0] != "":
+        casosTranscricao = dfTranscricao.values[0]
+    else:
+        casosTranscricao = ""
+
+    
+    dfAprovacao = df2.iloc[:,12]
+    if dfAprovacao.values[0] != "":
+        casosAprovacao = dfAprovacao.values[0]
+    else:
+        casosAprovacao = ""
 
     if escritorio!='':
         df3= pd.DataFrame([
@@ -263,7 +296,11 @@ def adicionarEscritorio(grupos, escritorio):
             dataResultadoVar,
             responsavelVar,
             submissaoVar,
-            statusVar)], columns=("CLIENTE","INSTITUIÇÃO","CATEGORIAS","DATA PREVISTA","MÊS/ANO","DATA RESULTADO","RESPONSÁVEL","FAZ SUBMISSÃO? (S/N)","STATUS"))
+            statusVar,
+            casosAndamento,
+            casosRevisao,
+            casosTranscricao,
+            casosAprovacao)], columns=("CLIENTE","INSTITUIÇÃO","CATEGORIAS","DATA PREVISTA","MÊS/ANO","DATA RESULTADO","RESPONSÁVEL","FAZ SUBMISSÃO? (S/N)","STATUS","CASOS EM ANDAMENTO", "CASOS EM REVISÃO","CASOS EM TRANSCRIÇÃO","CASOS EM APROVAÇÃO"))
 
         df = df.append(df3, ignore_index=True)
         print("feito todos")
@@ -296,7 +333,7 @@ def adicionarEscritorio(grupos, escritorio):
 if sys.argv[1]=="checar-escritorios":
     print(checarEscritorios(sys.argv[2]))
 elif sys.argv[1]=="salvar-dados":
-    print(salvarRow(sys.argv[2], sys.argv[3],sys.argv[4], sys.argv[5],sys.argv[6], sys.argv[7],sys.argv[8], sys.argv[9]))
+    print(salvarRow(sys.argv[2], sys.argv[3],sys.argv[4], sys.argv[5],sys.argv[6], sys.argv[7],sys.argv[8], sys.argv[9], sys.argv[10], sys.argv[11], sys.argv[12], sys.argv[13]))
 elif sys.argv[1]=="adicionar-escritorio":
     print(adicionarEscritorio(sys.argv[2], sys.argv[3]))
 else:

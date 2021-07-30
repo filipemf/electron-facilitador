@@ -368,11 +368,22 @@ function buscarDados(){
         document.getElementById("responsaveis").value = array2[6].replace(/\"/g, '');
         document.getElementById("submissao").value = array2[7].replace(/\"/g, '');
         document.getElementById("status").value = array2[8].replace(/\"/g, '');
+        if (array2[9].replace(/\"/g, '')=="Sim"){
+            document.getElementById("casos-em-andamento").checked = true
+        }
+        if (array2[10].replace(/\"/g, '')=="Sim"){
+            document.getElementById("casos-em-revisao").checked = true
+        }
+        if (array2[11].replace(/\"/g, '')=="Sim"){
+            document.getElementById("casos-em-transcricao").checked = true
+        }
+        if (array2[12].replace(/\"/g, '')=="Sim"){
+            document.getElementById("casos-em-aprovacao").checked = true
+        }
 
 
     })
 }
-
 
 function pegarTodosEscritorios(){
     var valuesCategorias = Array.from($("#categorias").find(':selected')).map(function(item){
@@ -406,6 +417,35 @@ function pegarTodosEscritorios(){
 }
 
 function salvarDadosEditados(){
+    var casosAndamento
+    if ($(document).find('#casos-em-andamento').is(':checked')) {
+        casosAndamento = "Sim"
+    } else {
+        casosAndamento = "Não"
+    }
+    
+    var casosRevisao
+    if ($(document).find('#casos-em-revisao').is(':checked')) {
+        casosRevisao = "Sim"
+    } else {
+        casosRevisao = "Não"
+    }
+    
+    var casosTranscricao
+    if ($(document).find('#casos-em-transcricao').is(':checked')) {
+        casosTranscricao = "Sim"
+    } else {
+        casosTranscricao = "Não"
+    }
+
+    var casosAprovacao
+    if ($(document).find('#casos-em-aprovacao').is(':checked')) {
+        casosAprovacao = "Sim"
+    } else {
+        casosAprovacao = "Não"
+    }
+    
+
     var valuesEscritorio = Array.from($("#escritorios").find(':selected')).map(function(item){
         return $(item).text();
     });
@@ -441,7 +481,7 @@ function salvarDadosEditados(){
         console.log(filtered)
         var options = {
             scriptPath: path.join(__dirname,'../../engine/editar-dado/'),
-            args: ["salvar-dados", valuesCategorias[0], nomeCategoria, dataPrevista, dataResultado, responsaveis, submissao, status, filtered]
+            args: ["salvar-dados", valuesCategorias[0], nomeCategoria, dataPrevista, dataResultado, responsaveis, submissao, status, filtered, casosAndamento, casosRevisao, casosTranscricao, casosAprovacao]
         }
         PythonShell.run('main.py', options, function(err, results){
             console.log(results)
@@ -451,7 +491,7 @@ function salvarDadosEditados(){
         console.log(valuesEscritorio)
         var options = {
             scriptPath: path.join(__dirname,'../../engine/editar-dado/'),
-            args: ["salvar-dados", valuesCategorias[0], nomeCategoria, dataPrevista, dataResultado, responsaveis, submissao, status, valuesEscritorio]
+            args: ["salvar-dados", valuesCategorias[0], nomeCategoria, dataPrevista, dataResultado, responsaveis, submissao, status, valuesEscritorio, casosAndamento, casosRevisao, casosTranscricao, casosAprovacao]
         }
         PythonShell.run('main.py', options, function(err, results){
             console.log(results)
