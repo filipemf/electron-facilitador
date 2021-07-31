@@ -32,12 +32,12 @@
         <script>
             loadSidebar()
         </script>
-    <div class="main-content">
+    <main>
 
-            <div class="card" style="display: inline-block; margin-left: 20%;">
+            <div class="card">
               
                     <div class="card-header">
-                        <h2>Filtros:</h2>
+                        <h2>Consulta Complexa:</h2>
                     </div>
 
                     
@@ -45,13 +45,27 @@
                     <div class="card-body a" style="display: block;">
                         <div style="display: block; align-self: center; align-content: center; justify-content: center; margin-left: 30%;margin-bottom: 4%;">
                             <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                                <input type="radio" class="btn-check" name="btnradio" id="prevista" autocomplete="off" checked>
-                                <label class="btn btn-outline-primary" for="prevista">Data Prevista</label>
+                                <input type="radio" class="btn-check" name="btnradio" id="prevista" autocomplete="off">
+                                <label class="btn btn-outline-primary" for="prevista" ondblclick="disablePrevista()">Data Prevista</label>
                             
-                                <input type="radio" class="btn-check" name="btnradio" id="resultado" autocomplete="off">
-                                <label class="btn btn-outline-primary" for="resultado">Data Resultado</label>
+                                <input type="radio" class="btn-check" name="btnradio" id="resultado" autocomplete="off" >
+                                <label class="btn btn-outline-primary" for="resultado" ondblclick="disableResultado()">Data Resultado</label>
                             
                             </div>
+
+                            <script>          
+                                function disablePrevista(){
+                                    
+                                    document.getElementById('prevista').checked = false
+                                    console.log(document.getElementById('prevista').checked)
+                                }
+
+                                function disableResultado(){
+                                    
+                                    document.getElementById('resultado').checked = false
+                                    console.log(document.getElementById('resultado').checked)
+                                }
+                            </script>
 
                             <div>
                                 <select name="mes" id="mes" style="margin-top: 15px; margin-left: 15px;">
@@ -252,35 +266,42 @@
                             <label for="status">Status: </label>
                             <select class="selectpicker" id="status">
                                 <option value="">‎‎‎‎‎‏‏‎‎</option>
-                                <option value="-">-</option>
+                                <option value="Iniciado">Iniciado</option>
                                 <option value="Submetido">Submetido</option>
+                                <option value="Aguardando">Aguardando</option>
                             </select>
 
                        
                         </div>
 
                         <div style="margin: 20px;">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                                <label class="form-check-label" for="flexCheckDefault">
-                                Casos em Andamento
+
+                            <div class="form-check" >
+                                
+                                <input class="form-check-input" type="checkbox" value="" id="casos-em-andamento" >
+                                <label class="form-check-label" for="casos-em-andamento">
+                                  Casos em Andamento
                                 </label>
+
+                                
+
+
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
-                                <label class="form-check-label" for="flexCheckChecked">
+                                <input class="form-check-input" type="checkbox" value="" id="casos-em-revisao">
+                                <label class="form-check-label" for="casos-em-revisao">
                                     Casos em Revisão
                                 </label>
                             </div>
                                 <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                                <label class="form-check-label" for="flexCheckDefault">
+                                <input class="form-check-input" type="checkbox" value="" id="casos-em-transcricao">
+                                <label class="form-check-label" for="casos-em-transcricao">
                                     Casos em Transcrição
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
-                                <label class="form-check-label" for="flexCheckChecked">
+                                <input class="form-check-input" type="checkbox" value="" id="casos-em-aprovacao">
+                                <label class="form-check-label" for="casos-em-aprovacao">
                                     Casos em Aprovação
                                 </label>
                             </div>
@@ -311,7 +332,9 @@
 
                 </div>
                 
-    </div>
+            
+            
+    </main>
 
 </body>
 </html>

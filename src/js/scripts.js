@@ -217,11 +217,44 @@ function incluirDado(){
 }
 
 function buscaComplexa(){
+    $('.card-body.b').empty()
+    var casosAndamento
+    if ($(document).find('#casos-em-andamento').is(':checked')) {
+        casosAndamento = "Sim"
+    } else {
+        casosAndamento = "Não"
+    }
+    
+    var casosRevisao
+    if ($(document).find('#casos-em-revisao').is(':checked')) {
+        casosRevisao = "Sim"
+    } else {
+        casosRevisao = "Não"
+    }
+    
+    var casosTranscricao
+    if ($(document).find('#casos-em-transcricao').is(':checked')) {
+        casosTranscricao = "Sim"
+    } else {
+        casosTranscricao = "Não"
+    }
+
+    var casosAprovacao
+    if ($(document).find('#casos-em-aprovacao').is(':checked')) {
+        casosAprovacao = "Sim"
+    } else {
+        casosAprovacao = "Não"
+    }
+    
     var valuesEscritorios =Array.from($("#escritorios").find(':selected')).map(function(item){
         return $(item).text();
     });
 
     var valuesInstituicoes = Array.from($("#instituicoes").find(':selected')).map(function(item){
+        return $(item).text();
+    });
+
+    var categorias = Array.from($("#categorias").find(':selected')).map(function(item){
         return $(item).text();
     });
     
@@ -235,12 +268,13 @@ function buscaComplexa(){
     const mes = document.getElementById('mes').value
     const ano = document.getElementById('ano').value
     
-    if(document.getElementById('prevista').checked) {
+    if(document.getElementById('prevista').checked==true) {
+        console.log("é previstaaaaa")
         var prevista = "previsao"
 
         var options = {
             scriptPath: path.join(__dirname,'../../engine/consulta-complexa/'),
-            args: [valuesEscritorios, valuesInstituicoes, responsavel, "nomeCategoria", submissao, status, mes, ano, prevista]
+            args: [valuesEscritorios, valuesInstituicoes, responsavel, categorias, submissao, status, mes, ano, prevista, casosAndamento, casosRevisao, casosTranscricao, casosAprovacao]
         }
 
         
@@ -260,12 +294,40 @@ function buscaComplexa(){
             //$('body').append(results);
         })
 
-    }else if(document.getElementById('resultado').checked) {
+    }if(document.getElementById('resultado').checked==true) {
+        console.log("é resultadoooo")
         var resultado = "resultado"
 
         var options = {
             scriptPath: path.join(__dirname,'../../engine/incluir-dado/'),
-            args: [valuesEscritorios, valuesInstituicoes, responsavel, "nomeCategoria", submissao, status, mes, ano, resultado]
+            args: [valuesEscritorios, valuesInstituicoes, responsavel, categorias, submissao, status, mes, ano, resultado, casosAndamento, casosRevisao, casosTranscricao, casosAprovacao]
+        }
+
+        
+        PythonShell.run('main.py', options, function(err, results){
+            if (err) throw err;
+            console.log(results)
+            $('.card-body.b').empty()
+
+            function appendHtml(el, str) {
+                var div = document.createElement('div'); //container to append to
+                div.innerHTML = str;
+                while (div.children.length > 0) {
+                    $('.card-body.b').append(div.children[0]);
+                }
+            }
+            appendHtml(document.body, results)
+            //$('body').append(results);
+        })
+    }
+    else{
+        console.log("é nadaaa")
+        
+        var prevista = ""
+
+        var options = {
+            scriptPath: path.join(__dirname,'../../engine/consulta-complexa/'),
+            args: [valuesEscritorios, valuesInstituicoes, responsavel, categorias, submissao, status, mes, ano, prevista, casosAndamento, casosRevisao, casosTranscricao, casosAprovacao]
         }
 
         
@@ -467,6 +529,7 @@ function salvarDadosEditados(){
     let submissao = document.getElementById("submissao").value
     let status = document.getElementById("status").value 
 
+    const Swal = require('sweetalert2')
     if(document.getElementById('todos').checked) {
         
         let x = document.getElementById('escritorios')
@@ -485,6 +548,7 @@ function salvarDadosEditados(){
         }
         PythonShell.run('main.py', options, function(err, results){
             console.log(results)
+            Swal.fire('Registros editados!', '', 'success')
         })
     }
     else{
@@ -495,6 +559,7 @@ function salvarDadosEditados(){
         }
         PythonShell.run('main.py', options, function(err, results){
             console.log(results)
+            Swal.fire('Registro editado!', '', 'success')
         })
     }
 }

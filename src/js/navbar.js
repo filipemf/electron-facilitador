@@ -144,14 +144,15 @@ function loadSidebar() {
         <i class='bx bx-sync' ></i>
         <span class="spanLinks">Carregar Novo Arquivo</span>
         </a>
+        <div class="divActual">
         <span class="actual" id="actualFile">Atual: </span>
+        </div>
         <script>
 
         const fs = require('fs');
-        // First I want to read the file
         var text = fs.readFileSync('./UltimaPlanilha/ultima_planilha.txt','utf8')
         $('#actualFile').append(text);
-        console.log(text);   // Put all of the code here (not the best solution)
+        console.log(text);
         
 
         </script>
