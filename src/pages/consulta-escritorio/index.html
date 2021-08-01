@@ -49,15 +49,13 @@
 
                         
                         <script>
-
-                            var options = {
-                                scriptPath: path.join(__dirname,'../../engine/consulta-escritorio/'),
-                                args: ["instituicoes","instituicoes"]
-                            }
-
-                            PythonShell.run('main.py', options, function(err, results){
-                                if (err) throw err;
-                                formated = results[0].replace('[','')
+                            const { execFile } = require('child_process');
+                            const child = execFile('engine/consulta-escritorio/main', ["instituicoes","instituicoes"] ,(error, stdout, stderr) => {
+                                if (error) {
+                                throw error;
+                                }
+                                var results = stdout;
+                                formated = results.replace('[','')
                                 formated = formated.replace(']','')
                                 formated = formated.replace(/'/g,'')
                                 
@@ -85,14 +83,15 @@
                         
                         <script>
 
-                            var options = {
-                                scriptPath: path.join(__dirname,'../../engine/consulta-escritorio/'),
-                                args: ["escritorios","escritorios"]
-                            }
-
-                            PythonShell.run('main.py', options, function(err, results){
-                                if (err) throw err;
-                                formated = results[0].replace('[','')
+                            const exec = require('child_process').execFile;
+                            
+                            exec('engine/consulta-escritorio/main', ["escritorios","escritorios"] ,(error, stdout, stderr) => {
+                                if (error) {
+                                throw error;
+                                }
+                                var results = stdout;
+                                console.log(results)
+                                formated = results.replace('[','')
                                 formated = formated.replace(']','')
                                 formated = formated.replace(/'/g,'')
                                 formated = formated.replace(/\s/g,'')

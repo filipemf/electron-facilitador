@@ -65,37 +65,79 @@
                                 var valuesEscritorios =Array.from($("#instituicoes").find(':selected')).map(function(item){
                                     return $(item).text();
                                 });
-
-
                                 
-                                var options = {
-                                    mode:'json',
-                                    scriptPath: path.join(__dirname,'../../engine/consulta-instituicao/'),
-                                    args: ["grupos",valuesEscritorios, "opa"]
-                                }
+                                
+                                const { execFile } = require('child_process');
+                                const child = execFile('engine/consulta-instituicao/main', ["grupos",valuesEscritorios, "opa"] ,(error, stdout, stderr) => {
+                                    if (error) {
+                                        throw error;
+                                    }
+                                    var results = stdout;
+                                    
+                                    let arrayFor = results.slice(1,-1)
+                                    let arr = results.split("],[")
+                                    // console.log(typeof jsonAr)
+                                    //console.log(arr)
+                                    for (var i = 0; i< arr.length;i++){
+                                        arr[i].substring(3)
+                                        arr[i].slice(1,-1)
+                                        arr[i].replace("[")
+                                        arr[i].replace(/\s/g, "")
+                                    }
+                                    console.log(arr)
 
-                                PythonShell.run('main.py', options, function(err, results){
-                                    if (err) throw err;
-                                    console.log(results)
+                                    
                                     $('#categorias').empty()
-                                    for (var i = 0; i< results[0].length; i++){
-                                        let option = results[0][i][0].replace(/\s/g, "")
-                                        let option2 = results[0][i][1].replace(/\s/g, "")
+                                    for (var i = 0; i< arr.length; i++){
+                                        let option = arr[i].replace(/\s/g, "")
+
+                                        let semSpace = arr[i]
+                                        semSpace = semSpace.replace("[", "")
+                                        semSpace = semSpace.replace("[", "")
+                                        semSpace = semSpace.replace("]", "")
+                                        semSpace = semSpace.replace("]", "")
+                                        semSpace = semSpace.replace(/\\/g, '')
+
+                                        let option2 = arr[i].replace(/\s/g, "")
+                                        
+                                        option = option.replace("[", "")
+                                        option = option.replace("[", "")
+
                                         option2 = option2.replace("&", "")
                                         option2 = option2.replace(":", "")
                                         option2 = option2.replace("/", "")
                                         option2 = option2.replace("(", "-")
                                         option2 = option2.replace(")", "-")
+                                        option2 = option2.replace("]", "")
+                                        option2 = option2.replace("]", "")
+                                        option2 = option2.replace("[", "")
+                                        option2 = option2.replace("[", "")
                                         option2 = option2.toLowerCase()
 
-                                        if ($('#divider-'+option).length === 0) {
-                                            $("#categorias").append('<optgroup id="'+'divider-'+option+'" label="'+results[0][i][0]+'"></optgroup>');
+                                        semSpace = semSpace.replace(/"/g, "")
+                                        option = option.replace(/"/g, "")
+                                        option2 = option2.replace(/"/g, "")
 
-                                            $("#divider-"+option).append('<option id="'+option2+'" value="'+results[0][i][1]+'">'+results[0][i][1]+'</option>');
+                                        semSpace = semSpace.split(",")
+                                        option = option.split(",")
+                                        option2 = option2.split(",")
+
+                                        
+
+                                        console.log(semSpace[1])
+                                        console.log(option)
+                                        console.log(option2)
+                                        
+                                        
+
+                                        if ($('#divider-'+option[0]).length === 0) {
+                                            $("#categorias").append('<optgroup id="'+'divider-'+option[0]+'" label="'+semSpace[0]+'"></optgroup>');
+
+                                            $("#divider-"+option[0]).append('<option id="'+option2[1]+'" value="'+semSpace[1]+'">'+semSpace[1]+'</option>');
                                             $("#categorias").selectpicker("refresh");
                                         }
                                         else {
-                                            $("#divider-"+option).append('<option id="'+option2+'" value="'+results[0][i][1]+'">'+results[0][i][1]+'</option>');
+                                            $("#divider-"+option[0]).append('<option id="'+option2[1]+'" value="'+semSpace[1]+'">'+semSpace[1]+'</option>');
                                             $("#categorias").selectpicker("refresh");
                                         }
                                     }
@@ -108,29 +150,32 @@
                         
                         <script>
 
-                            var options = {
-                                scriptPath: path.join(__dirname,'../../engine/consulta-escritorio/'),
-                                args: ["instituicoes","instituicoes"]
-                            }
+                            function adicionar(){
+                                const { execFile } = require('child_process');
+                                const child = execFile('engine/consulta-escritorio/main', ["instituicoes","instituicoes"] ,(error, stdout, stderr) => {
+                                    if (error) {
+                                        throw error;
+                                    }
+                                    var results = stdout;
+                                    console.log(results)
+                                    formated = results.replace('[','')
+                                    formated = formated.replace(']','')
+                                    formated = formated.replace(/'/g,'')
+                                    
+                                    //formated = formated.replace(/\s/g,'')
 
-                            PythonShell.run('main.py', options, function(err, results){
-                                if (err) throw err;
-                                formated = results[0].replace('[','')
-                                formated = formated.replace(']','')
-                                formated = formated.replace(/'/g,'')
-                                
-                                //formated = formated.replace(/\s/g,'')
+                                    let array2 = formated.split(',')
+                                    array2 = array2.map(s => s.trim());
+                                    console.log(array2)
 
-                                let array2 = formated.split(',')
-                                array2 = array2.map(s => s.trim());
-                                console.log(array2)
-
-                                for (var i = 0; i< array2.length; i++){
-                                    $("#instituicoes").append('<option value="'+array2[i]+'">'+array2[i]+'</option>');
-                                    $("#instituicoes").selectpicker("refresh");
-                                }
+                                    for (var i = 0; i< array2.length; i++){
+                                        $("#instituicoes").append('<option value="'+array2[i]+'">'+array2[i]+'</option>');
+                                        $("#instituicoes").selectpicker("refresh");
+                                    }
 
                             })
+                            }
+                            adicionar()
 
 
                         </script>
@@ -143,28 +188,29 @@
                         
                         <script>
 
-                            var options = {
-                                scriptPath: path.join(__dirname,'../../engine/consulta-escritorio/'),
-                                args: ["escritorios","escritorios"]
-                            }
+                                function adicionar1(){
+                                const { execFile } = require('child_process');
+                                const child = execFile('engine/consulta-escritorio/main', ["escritorios","escritorios"] ,(error, stdout, stderr) => {
+                                    if (error) {
+                                        throw error;
+                                    }
+                                    var results = stdout;
+                                    formated = results.replace('[','')
+                                    formated = formated.replace(']','')
+                                    formated = formated.replace(/'/g,'')
+                                    formated = formated.replace(/\s/g,'')
 
-                            PythonShell.run('main.py', options, function(err, results){
-                                if (err) throw err;
-                                formated = results[0].replace('[','')
-                                formated = formated.replace(']','')
-                                formated = formated.replace(/'/g,'')
-                                formated = formated.replace(/\s/g,'')
+                                    let array2 = formated.split(',')
+                                    console.log(array2)
 
-                                let array2 = formated.split(',')
-                                console.log(array2)
-
-                                for (var i = 0; i< array2.length; i++){
-                                    $("#escritorios").append('<option value="'+array2[i]+'">'+array2[i]+'</option>');
-                                    $("#escritorios").selectpicker("refresh");
-                                }
+                                    for (var i = 0; i< array2.length; i++){
+                                        $("#escritorios").append('<option value="'+array2[i]+'">'+array2[i]+'</option>');
+                                        $("#escritorios").selectpicker("refresh");
+                                    }
 
                             })
-
+                            }
+                            adicionar1()
 
                         </script>
 

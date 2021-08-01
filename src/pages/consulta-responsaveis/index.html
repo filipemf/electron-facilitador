@@ -46,29 +46,28 @@
 
                         <script>
 
-                            var options = {
-                                scriptPath: path.join(__dirname,'../../engine/consulta-responsaveis/'),
-                                args: ["options"]
-                            }
+                                    const { execFile } = require('child_process');
+                                    const child = execFile('engine/consulta-responsaveis/main', ["options"] ,(error, stdout, stderr) => {
+                                        if (error) {
+                                        throw error;
+                                    }
+                                    var results = stdout;
 
-                            PythonShell.run('main.py', options, function(err, results){
-                                if (err) throw err;
+                                    formated = results.replace('[','')
+                                    formated = formated.replace(']','')
+                                    formated = formated.replace(/'/g,'')
+                                    formated = formated.replace(/\s/g,'')
 
-                                formated = results[0].replace('[','')
-                                formated = formated.replace(']','')
-                                formated = formated.replace(/'/g,'')
-                                formated = formated.replace(/\s/g,'')
+                                    let array2 = formated.split(',')
 
-                                let array2 = formated.split(',')
+                                    for (var i = 0; i< array2.length; i++){
+                                        var option = document.createElement('option')
+                                        option.value = array2[i]
+                                        option.text = array2[i]
 
-                                for (var i = 0; i< array2.length; i++){
-                                    var option = document.createElement('option')
-                                    option.value = array2[i]
-                                    option.text = array2[i]
-
-                                    document.getElementById('responsaveis').appendChild(option)
-                                }
-                            })
+                                        document.getElementById('responsaveis').appendChild(option)
+                                    }
+                                })
 
 
                         </script>

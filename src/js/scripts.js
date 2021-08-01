@@ -5,6 +5,7 @@ let {PythonShell} = require('python-shell')
 var path = require("path")
 var ProgressBar = require('progressbar.js')
 
+//migrado
 function buscarMes(){
     
     const mes = document.getElementById('mes').value
@@ -13,85 +14,64 @@ function buscarMes(){
     var $ = jQuery = require("jquery")
 
 
-
+    
+    const { execFile } = require('child_process');
     if(document.getElementById('prevista').checked) {
         var prevista = "prevista"
-        //Male radio button is checked
-        var options = {
-            scriptPath: path.join(__dirname,'../../engine/consulta-mes/'),
-            args: [mes, ano, prevista]
-        }
+        const child = execFile('engine/consulta-mes/main', [mes, ano, prevista] ,(error, stdout, stderr) => {
+          if (error) {
+            throw error;
+          }
+        var results = stdout;
+        $('.card-body.b').empty()
 
-        PythonShell.run('main.py', options, function(err, results){
-            if (err) throw err;
-            console.log(results)
-    
-            $('.card-body.b').empty()
-    
-            function appendHtml(el, str) {
-                var div = document.createElement('div'); //container to append to
-                div.innerHTML = str;
-                while (div.children.length > 0) {
-                    $('.card-body.b').append(div.children[0]);
-                }
-              }
-            appendHtml(document.body, results)
-            //$('body').append(results);
-        })
-
+        function appendHtml(el, str) {
+            var div = document.createElement('div'); //container to append to
+            div.innerHTML = str;
+            while (div.children.length > 0) {
+                $('.card-body.b').append(div.children[0]);
+            }
+            }
+        appendHtml(document.body, results)
+        });
     }else if(document.getElementById('resultado').checked) {
         var resultado = "resultado"
         //Female radio button is checked
-        var options = {
-            scriptPath: path.join(__dirname,'../../engine/consulta-mes/'),
-            args: [mes, ano, resultado]
-        }
-
-        PythonShell.run('main.py', options, function(err, results){
-            if (err) throw err;
-            console.log(results)
+        const child = execFile('engine/consulta-mes/main', [mes, ano, resultado] ,(error, stdout, stderr) => {
+            if (error) {
+                throw error;
+            }
+            var results = stdout;
     
             $('.card-body.b').empty()
-    
+
             function appendHtml(el, str) {
                 var div = document.createElement('div'); //container to append to
                 div.innerHTML = str;
                 while (div.children.length > 0) {
                     $('.card-body.b').append(div.children[0]);
                 }
-              }
+                }
             appendHtml(document.body, results)
-            //$('body').append(results);
+                //$('body').append(results);
         })
 
 
     }
 }
 
+//migrado
 function buscarResponsaveis(){
 
     const responsavel = document.getElementById('responsaveis').value
     console.log(responsavel)
-
-    var options = {
-        enconding: 'ISO-8859-1',
-        scriptPath: path.join(__dirname,'../../engine/consulta-responsaveis/'),
-        args: [responsavel],
-        enconding: "latin1"
-    }
-
-    console.log(options.scriptPath)
-    PythonShell.run('main.py', options, function(err, results){
-        if (err) throw err;
-
         
-        console.log(results)
-        
-        //console.log(str);
-        
-
-        
-        
+    const { execFile } = require('child_process');
+    const child = execFile('engine/consulta-responsaveis/main', [responsavel] ,(error, stdout, stderr) => {
+        if (error) {
+          throw error;
+        }
+        results = stdout
 
         $('.card-body.b').empty()
 
@@ -107,6 +87,7 @@ function buscarResponsaveis(){
 })
 }
 
+//migrado
 function buscarEscritorios(){
     var valuesEscritorios =Array.from($("#escritorios").find(':selected')).map(function(item){
         return $(item).text();
@@ -115,15 +96,13 @@ function buscarEscritorios(){
     var valuesInstituicoes =Array.from($("#instituicoes").find(':selected')).map(function(item){
         return $(item).text();
     });
-    
-    var options = {
-        scriptPath: path.join(__dirname,'../../engine/consulta-escritorio/'),
-        args: [valuesEscritorios, valuesInstituicoes]
-    }
 
-    PythonShell.run('main.py', options, function(err, results){
-        if (err) throw err;
-        console.log(results)
+    const { execFile } = require('child_process');
+    const child = execFile('engine/consulta-escritorio/main', [valuesEscritorios, valuesInstituicoes] ,(error, stdout, stderr) => {
+        if (error) {
+            throw error;
+        }
+        var results = stdout;
         $('.card-body.b').empty()
 
         function appendHtml(el, str) {
@@ -138,6 +117,7 @@ function buscarEscritorios(){
     })
 }
 
+//migrado
 function buscarInstituicoes(){
     var valuesEscritorios =Array.from($("#escritorios").find(':selected')).map(function(item){
         return $(item).text();
@@ -148,18 +128,15 @@ function buscarInstituicoes(){
     });
     
     var valuesCategorias = Array.from($("#categorias").find(':selected')).map(function(item){
-        return $(item).text();
+        return $(item).text().replace("\n","");
     });
     
-    
-    var options = {
-        scriptPath: path.join(__dirname,'../../engine/consulta-instituicao/'),
-        args: [valuesEscritorios, valuesInstituicoes, valuesCategorias]
-    }
-
-    PythonShell.run('main.py', options, function(err, results){
-        if (err) throw err;
-        console.log(results)
+    const { execFile } = require('child_process');
+    const child = execFile('engine/consulta-instituicao/main',[valuesEscritorios, valuesInstituicoes, valuesCategorias] ,(error, stdout, stderr) => {
+        if (error) {
+            throw error;
+        }
+        var results = stdout;
         $('.card-body.b').empty()
 
         function appendHtml(el, str) {
@@ -216,6 +193,7 @@ function incluirDado(){
     })
 }
 
+//migrado
 function buscaComplexa(){
     $('.card-body.b').empty()
     var casosAndamento
@@ -255,7 +233,7 @@ function buscaComplexa(){
     });
 
     var categorias = Array.from($("#categorias").find(':selected')).map(function(item){
-        return $(item).text();
+        return $(item).text().replace("\n","");
     });
     
     const responsavel = document.getElementById('responsaveis').value
@@ -268,18 +246,18 @@ function buscaComplexa(){
     const mes = document.getElementById('mes').value
     const ano = document.getElementById('ano').value
     
+    const { execFile } = require('child_process');
+    
+    
     if(document.getElementById('prevista').checked==true) {
         console.log("é previstaaaaa")
         var prevista = "previsao"
 
-        var options = {
-            scriptPath: path.join(__dirname,'../../engine/consulta-complexa/'),
-            args: [valuesEscritorios, valuesInstituicoes, responsavel, categorias, submissao, status, mes, ano, prevista, casosAndamento, casosRevisao, casosTranscricao, casosAprovacao]
-        }
-
-        
-        PythonShell.run('main.py', options, function(err, results){
-            if (err) throw err;
+        const child = execFile('engine/consulta-complexa/main', [valuesEscritorios, valuesInstituicoes, responsavel, categorias, submissao, status, mes, ano, prevista, casosAndamento, casosRevisao, casosTranscricao, casosAprovacao] ,(error, stdout, stderr) => {
+            if (error) {
+              throw error;
+            }
+            var results = stdout;
             console.log(results)
             $('.card-body.b').empty()
 
@@ -294,18 +272,15 @@ function buscaComplexa(){
             //$('body').append(results);
         })
 
-    }if(document.getElementById('resultado').checked==true) {
+    }else if(document.getElementById('resultado').checked==true) {
         console.log("é resultadoooo")
         var resultado = "resultado"
 
-        var options = {
-            scriptPath: path.join(__dirname,'../../engine/incluir-dado/'),
-            args: [valuesEscritorios, valuesInstituicoes, responsavel, categorias, submissao, status, mes, ano, resultado, casosAndamento, casosRevisao, casosTranscricao, casosAprovacao]
-        }
-
-        
-        PythonShell.run('main.py', options, function(err, results){
-            if (err) throw err;
+        const child = execFile('engine/consulta-complexa/main', [valuesEscritorios, valuesInstituicoes, responsavel, categorias, submissao, status, mes, ano, resultado, casosAndamento, casosRevisao, casosTranscricao, casosAprovacao] ,(error, stdout, stderr) => {
+            if (error) {
+              throw error;
+            }
+            var results = stdout;
             console.log(results)
             $('.card-body.b').empty()
 
@@ -325,14 +300,12 @@ function buscaComplexa(){
         
         var prevista = ""
 
-        var options = {
-            scriptPath: path.join(__dirname,'../../engine/consulta-complexa/'),
-            args: [valuesEscritorios, valuesInstituicoes, responsavel, categorias, submissao, status, mes, ano, prevista, casosAndamento, casosRevisao, casosTranscricao, casosAprovacao]
-        }
-
-        
-        PythonShell.run('main.py', options, function(err, results){
-            if (err) throw err;
+        console.log(categorias)
+        const child = execFile('engine/consulta-complexa/main', [valuesEscritorios, valuesInstituicoes, responsavel, categorias, submissao, status, mes, ano, prevista, casosAndamento, casosRevisao, casosTranscricao, casosAprovacao], {maxBuffer: 1024 * 5000} ,(error, stdout, stderr) => {
+            if (error) {
+              throw error;
+            }
+            var results = stdout;
             console.log(results)
             $('.card-body.b').empty()
 
@@ -350,6 +323,7 @@ function buscaComplexa(){
 
 }
 
+//migrado
 function checarEscritorios(){
     var valuesCategorias = Array.from($("#categorias").find(':selected')).map(function(item){
         var optgroup = $(item).parent().attr('label');
@@ -359,16 +333,15 @@ function checarEscritorios(){
         return finalString
 
     });
-
+       
+    const { execFile } = require('child_process');
     
-    var options = {
-        scriptPath: path.join(__dirname,'../../engine/editar-dado/'),
-        args: ["checar-escritorios", valuesCategorias]
-    }
-
-    
-    PythonShell.run('main.py', options, function(err, results){
-        if (err) throw err;
+    const child = execFile('engine/consulta-escritorio/main', ["checar-escritorios", valuesCategorias] ,(error, stdout, stderr) => {
+        if (error) {
+          throw error;
+        }
+        var results = stdout;
+        console.log(results)
         formated = results[0].replace('[','')
         formated = formated.replace(']','')
         formated = formated.replace(/'/g,'')
