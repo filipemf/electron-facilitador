@@ -151,7 +151,36 @@ function buscarInstituicoes(){
     })
 }
 
+//migrado
 function incluirDado(){
+    var casosAndamento
+    if ($(document).find('#casos-em-andamento').is(':checked')) {
+        casosAndamento = "Sim"
+    } else {
+        casosAndamento = "Não"
+    }
+    
+    var casosRevisao
+    if ($(document).find('#casos-em-revisao').is(':checked')) {
+        casosRevisao = "Sim"
+    } else {
+        casosRevisao = "Não"
+    }
+    
+    var casosTranscricao
+    if ($(document).find('#casos-em-transcricao').is(':checked')) {
+        casosTranscricao = "Sim"
+    } else {
+        casosTranscricao = "Não"
+    }
+
+    var casosAprovacao
+    if ($(document).find('#casos-em-aprovacao').is(':checked')) {
+        casosAprovacao = "Sim"
+    } else {
+        casosAprovacao = "Não"
+    }
+
     var valuesEscritorios =Array.from($("#escritorios").find(':selected')).map(function(item){
         return $(item).text();
     });
@@ -169,16 +198,14 @@ function incluirDado(){
     const dataPrevista = document.getElementById('data-prevista').value
 
     const dataResultado = document.getElementById('data-resultado').value
-    
-    
-    var options = {
-        scriptPath: path.join(__dirname,'../../engine/incluir-dado/'),
-        args: [valuesEscritorios, valuesInstituicoes, responsavel, nomeCategoria, submissao, status, dataPrevista, dataResultado]
-    }
 
-    PythonShell.run('main.py', options, function(err, results){
-        if (err) throw err;
-        console.log(results)
+    const Swal = require('sweetalert2')
+    const { execFile } = require('child_process');
+    const child = execFile('engine/incluir-dado/main', [valuesEscritorios, valuesInstituicoes, responsavel, nomeCategoria, submissao, status, dataPrevista, dataResultado, casosAndamento, casosRevisao, casosTranscricao, casosAprovacao] ,(error, stdout, stderr) => {
+        if (error) {
+            throw error;
+        }
+        var results = stdout;
         $('.card-body.b').empty()
 
         function appendHtml(el, str) {
@@ -189,6 +216,7 @@ function incluirDado(){
             }
           }
         appendHtml(document.body, results)
+        Swal.fire('Registro(s) salvo(s)!', '', 'success')
         //$('body').append(results);
     })
 }
@@ -336,12 +364,48 @@ function checarEscritorios(){
        
     const { execFile } = require('child_process');
     
-    const child = execFile('engine/consulta-escritorio/main', ["checar-escritorios", valuesCategorias] ,(error, stdout, stderr) => {
+    const child = execFile('engine/editar-dado/main', ["checar-escritorios", valuesCategorias] ,(error, stdout, stderr) => {
         if (error) {
           throw error;
         }
         var results = stdout;
         console.log(results)
+        formated = results.replace('[','')
+        formated = formated.replace(']','')
+        formated = formated.replace(/'/g,'')
+        formated = formated.replace(/\s/g,'')
+
+        let array2 = formated.split(',')
+        console.log(array2)
+
+        $("#escritorios").empty()
+        for (var i = 0; i< array2.length; i++){
+            $("#escritorios").append('<option value="'+array2[i]+'">'+array2[i]+'</option>');
+            $("#escritorios").selectpicker("refresh");
+        }
+
+    })
+}
+
+function checarEscritoriosSEMMIGRADO(){
+    var valuesCategorias = Array.from($("#categorias").find(':selected')).map(function(item){
+        var optgroup = $(item).parent().attr('label');
+
+        let finalString = optgroup+": "+$(item).text();
+        console.log(finalString)
+        return finalString
+
+    });
+
+    
+    var options = {
+        scriptPath: path.join('../../Documents/app-ui/engine/editar-dado/'),
+        args: ["checar-escritorios", valuesCategorias]
+    }
+
+    
+    PythonShell.run('main.py', options, function(err, results){
+        if (err) throw err;
         formated = results[0].replace('[','')
         formated = formated.replace(']','')
         formated = formated.replace(/'/g,'')
@@ -359,6 +423,8 @@ function checarEscritorios(){
     })
 }
 
+
+//migrado
 function buscarDados(){
     var valuesCategorias = Array.from($("#categorias").find(':selected')).map(function(item){
         var optgroup = $(item).parent().attr('label');
@@ -374,16 +440,13 @@ function buscarDados(){
     });
 
     
-    var options = {
-        scriptPath: path.join(__dirname,'../../engine/editar-dado/'),
-        args: ["buscar-dados", valuesCategorias, valuesEscritorio]
-    }
-
-    
-    PythonShell.run('main.py', options, function(err, results){
-        if (err) throw err;
-        console.log(results)
-        formated = results[0].replace('[','')
+    const { execFile } = require('child_process');
+    const child = execFile('engine/editar-dado/main', ["buscar-dados", valuesCategorias, valuesEscritorio] ,(error, stdout, stderr) => {
+        if (error) {
+            throw error;
+        }
+        var results = stdout;
+        formated = results.replace('[','')
         formated = formated.replace(']','')
         formated = formated.replace(/\\/g, '');
         formated = formated.replace(/\]/g, '');
@@ -451,6 +514,7 @@ function pegarTodosEscritorios(){
     })
 }
 
+//migrado
 function salvarDadosEditados(){
     var casosAndamento
     if ($(document).find('#casos-em-andamento').is(':checked')) {
@@ -515,41 +579,43 @@ function salvarDadosEditados(){
         var filtered = array3.filter(n => n)
 
         console.log(filtered)
-        var options = {
-            scriptPath: path.join(__dirname,'../../engine/editar-dado/'),
-            args: ["salvar-dados", valuesCategorias[0], nomeCategoria, dataPrevista, dataResultado, responsaveis, submissao, status, filtered, casosAndamento, casosRevisao, casosTranscricao, casosAprovacao]
-        }
-        PythonShell.run('main.py', options, function(err, results){
-            console.log(results)
+        const { execFile } = require('child_process');
+    
+        const child = execFile('engine/editar-dado/main', ["salvar-dados", valuesCategorias[0], nomeCategoria, dataPrevista, dataResultado, responsaveis, submissao, status, filtered, casosAndamento, casosRevisao, casosTranscricao, casosAprovacao] ,(error, stdout, stderr) => {
+            if (error) {
+            throw error;
+            }
+            var results = stdout;
             Swal.fire('Registros editados!', '', 'success')
         })
     }
     else{
         console.log(valuesEscritorio)
-        var options = {
-            scriptPath: path.join(__dirname,'../../engine/editar-dado/'),
-            args: ["salvar-dados", valuesCategorias[0], nomeCategoria, dataPrevista, dataResultado, responsaveis, submissao, status, valuesEscritorio, casosAndamento, casosRevisao, casosTranscricao, casosAprovacao]
-        }
-        PythonShell.run('main.py', options, function(err, results){
-            console.log(results)
+        const child = execFile('engine/editar-dado/main', ["salvar-dados", valuesCategorias[0], nomeCategoria, dataPrevista, dataResultado, responsaveis, submissao, status, valuesEscritorio, casosAndamento, casosRevisao, casosTranscricao, casosAprovacao] ,(error, stdout, stderr) => {
+            if (error) {
+            throw error;
+            }
+            var results = stdout;
             Swal.fire('Registro editado!', '', 'success')
         })
     }
 }
 
 function criarGraficos(){
-    var optionsAn = {
-        scriptPath: path.join(__dirname,'../../engine/dashboard/'),
-    }
-    PythonShell.run('main.py', optionsAn, function(err, results){
-        if (err) throw err;
+    const { execFile } = require('child_process');
+    const child = execFile('engine/dashboard/main',(error, stdout, stderr) => {
+        if (error) {
+            throw error;
+        }
+        var results = stdout;
+        console.log(results)
         //console.log(JSON.parse(results))
         //console.log(results[0])
         let json = JSON.parse(results)
 
                 // Builds the HTML Table out of myList.
         var myList = [json['responsaveis']]
-            
+        console.log(my)
             // Builds the HTML Table out of myList.
         function buildHtmlTable(selector) {
             Object.keys(myList[0]).forEach(function(key) {

@@ -19,8 +19,13 @@ status = sys.argv[6]
 dataPrevista = sys.argv[7]
 dataResultado = sys.argv[8]
 
+casosAndamento = sys.argv[9]
+casosRevisao = sys.argv[10]
+casosTranscricao = sys.argv[11]
+casosAprovacao = sys.argv[12]
 
-def adicionarData(escritorios, instituicao, responsavel, categoria, submissao, status, dataPrevista, dataResultado):
+
+def adicionarData(escritorios, instituicao, responsavel, categoria, submissao, status, dataPrevista, dataResultado, casosAndamento, casosRevisao, casosTranscricao, casosAprovacao):
     arrayEscritorios = escritorios.split(",")
 
     format_str = '%d/%m/%Y'
@@ -56,7 +61,11 @@ def adicionarData(escritorios, instituicao, responsavel, categoria, submissao, s
                 aDataResultado.strftime(format_str2) if dataResultado!="" else "",
                 responsavel,
                 submissao,
-                status)], columns=("CLIENTE","INSTITUIÇÃO","CATEGORIAS","DATA PREVISTA","MÊS/ANO","DATA RESULTADO","RESPONSÁVEL","FAZ SUBMISSÃO? (S/N)","STATUS"))
+                status,
+                casosAndamento,
+                casosRevisao,
+                casosTranscricao,
+                casosAprovacao)], columns=("CLIENTE","INSTITUIÇÃO","CATEGORIAS","DATA PREVISTA","MÊS/ANO","DATA RESULTADO","RESPONSÁVEL","FAZ SUBMISSÃO? (S/N)","STATUS","CASOS EM ANDAMENTO", "CASOS EM REVISÃO","CASOS EM TRANSCRIÇÃO","CASOS EM APROVAÇÃO"))
 
             df = df.append(df2, ignore_index=True)
      
@@ -78,5 +87,5 @@ def adicionarData(escritorios, instituicao, responsavel, categoria, submissao, s
 
     return df
 
-print(adicionarData(escritorios, instituicao, responsavel, categoria, submissao, status, dataPrevista, dataResultado))
+print(adicionarData(escritorios, instituicao, responsavel, categoria, submissao, status, dataPrevista, dataResultado, casosAndamento, casosRevisao, casosTranscricao, casosAprovacao))
 sys.stdout.flush()
