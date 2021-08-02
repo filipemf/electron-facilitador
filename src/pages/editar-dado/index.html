@@ -99,11 +99,16 @@
                                 semSpace = semSpace.replace("]", "")
                                 semSpace = semSpace.replace("]", "")
                                 semSpace = semSpace.replace(/\\/g, '')
+                                semSpace = semSpace.replace(/\n/g, '')
+                                semSpace = semSpace.replace(/\\n/g, '')
+                                semSpace = semSpace.trim()
 
                                 let option2 = arr[i].replace(/\s/g, "")
                                 
                                 option = option.replace("[", "")
                                 option = option.replace("[", "")
+                                option = option.replace("]", "")
+                                option = option.replace("]", "")
 
                                 option2 = option2.replace("&", "")
                                 option2 = option2.replace(":", "")
@@ -301,31 +306,87 @@
 
                 <script>
                     function adicionarEscritorio(){
+                        var $ = jQuery = require("jquery")
                         Swal.fire({
                             title: "Adicionar Escritório",
                             input: 'text',
                             showCancelButton: true        
                         }).then((result) => {
                             if (result.value) {
+                                var casosAndamento
+                                if ($(document).find('#casos-em-andamento').is(':checked')) {
+                                    casosAndamento = "Sim"
+                                } else {
+                                    casosAndamento = "Não"
+                                }
+                                
+                                var casosRevisao
+                                if ($(document).find('#casos-em-revisao').is(':checked')) {
+                                    casosRevisao = "Sim"
+                                } else {
+                                    casosRevisao = "Não"
+                                }
+                                
+                                var casosTranscricao
+                                if ($(document).find('#casos-em-transcricao').is(':checked')) {
+                                    casosTranscricao = "Sim"
+                                } else {
+                                    casosTranscricao = "Não"
+                                }
+
+                                var casosAprovacao
+                                if ($(document).find('#casos-em-aprovacao').is(':checked')) {
+                                    casosAprovacao = "Sim"
+                                } else {
+                                    casosAprovacao = "Não"
+                                }
+
+                                
+                                
+                                
+                                const responsavel = document.getElementById('responsaveis').value
+
+                                const nomeCategoria = document.getElementById('nome-categoria').value
+
+                                const submissao = document.getElementById('submissao').value
+
+                                const status = document.getElementById('status').value
+
+                                const dataPrevista = document.getElementById('data-prevista').value
+
+                                const dataResultado = document.getElementById('data-resultado').value
 
                                 var valuesCategorias = Array.from($("#categorias").find(':selected')).map(function(item){
                                     var optgroup = $(item).parent().attr('label');
 
-                                    let finalString = optgroup+": "+$(item).text();
+                                    let finalString = optgroup+": "+nomeCategoria;
                                     console.log(finalString)
                                     return finalString
 
                                 });
-
+                                
+                                const Swal = require('sweetalert2')
                                 const { execFile } = require('child_process');
-                                const child = execFile('engine/editar-dado/main', ["adicionar-escritorio", valuesCategorias[0], result.value] ,(error, stdout, stderr) => {
+                                const child = execFile('engine/incluir-dado/main', ["adicionar-escritorio", [result.value], valuesCategorias, responsavel, submissao, status, dataPrevista, dataResultado, casosAndamento, casosRevisao, casosTranscricao, casosAprovacao] ,(error, stdout, stderr) => {
                                     if (error) {
                                         throw error;
                                     }
                                     var results = stdout;
+                                    $('.card-body.b').empty()
+
+                                    function appendHtml(el, str) {
+                                        var div = document.createElement('div'); //container to append to
+                                        div.innerHTML = str;
+                                        while (div.children.length > 0) {
+                                            $('.card-body.b').append(div.children[0]);
+                                        }
+                                    }
+                                    appendHtml(document.body, results)
+                                    Swal.fire('Registro(s) salvo(s)!', '', 'success')
+                                    //$('body').append(results);
                                 })
                             }
-                        });
+                        })
                     }
 
                     function apagarRegistro(){

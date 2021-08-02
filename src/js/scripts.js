@@ -387,42 +387,6 @@ function checarEscritorios(){
     })
 }
 
-function checarEscritoriosSEMMIGRADO(){
-    var valuesCategorias = Array.from($("#categorias").find(':selected')).map(function(item){
-        var optgroup = $(item).parent().attr('label');
-
-        let finalString = optgroup+": "+$(item).text();
-        console.log(finalString)
-        return finalString
-
-    });
-
-    
-    var options = {
-        scriptPath: path.join('../../Documents/app-ui/engine/editar-dado/'),
-        args: ["checar-escritorios", valuesCategorias]
-    }
-
-    
-    PythonShell.run('main.py', options, function(err, results){
-        if (err) throw err;
-        formated = results[0].replace('[','')
-        formated = formated.replace(']','')
-        formated = formated.replace(/'/g,'')
-        formated = formated.replace(/\s/g,'')
-
-        let array2 = formated.split(',')
-        console.log(array2)
-
-        $("#escritorios").empty()
-        for (var i = 0; i< array2.length; i++){
-            $("#escritorios").append('<option value="'+array2[i]+'">'+array2[i]+'</option>');
-            $("#escritorios").selectpicker("refresh");
-        }
-
-    })
-}
-
 
 //migrado
 function buscarDados(){
@@ -446,6 +410,7 @@ function buscarDados(){
             throw error;
         }
         var results = stdout;
+        console.log(results)
         formated = results.replace('[','')
         formated = formated.replace(']','')
         formated = formated.replace(/\\/g, '');
@@ -615,7 +580,7 @@ function criarGraficos(){
 
                 // Builds the HTML Table out of myList.
         var myList = [json['responsaveis']]
-        console.log(my)
+        console.log(myList)
             // Builds the HTML Table out of myList.
         function buildHtmlTable(selector) {
             Object.keys(myList[0]).forEach(function(key) {

@@ -11,10 +11,14 @@ import sys
 sys.stdout.reconfigure(encoding='utf-8')
 
 def checarEscritorios(grupos):
+    
     gruposArray = grupos.split(",")
-
+    
     instituicoes = gruposArray[0].split(': ')[0]
     categorias = ': '.join(gruposArray[0].split(': ')[1:])
+
+    # print("Inst: "+instituicoes)
+    # print("Ca: "+categorias)
 
     
     filepath = os.path.join('./UltimaPlanilha', 'ultima_planilha.txt')
@@ -43,7 +47,6 @@ def checarEscritorios(grupos):
 
 def buscarDados(grupos, escritorio):
     gruposArray = grupos.split(",")
-
     instituicoes = gruposArray[0].split(': ')[0]
     categorias = ': '.join(gruposArray[0].split(': ')[1:])
 
@@ -58,7 +61,7 @@ def buscarDados(grupos, escritorio):
 
     
     df['DATA PREVISTA'] = pd.to_datetime(df['DATA PREVISTA'])
-    df['DATA PREVISTA'] = df['DATA PREVISTA'].dt.strftime('%d/%m/%Y')
+    df['DATA PREVISTA'] = df['DATA PREVISTA'].dt.strftime('%m/%d/%Y')
     
     df['DATA RESULTADO'] = pd.to_datetime(df['DATA RESULTADO'])
     df['DATA RESULTADO'] = df['DATA RESULTADO'].dt.strftime('%m/%Y')
