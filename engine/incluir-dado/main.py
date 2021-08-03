@@ -31,7 +31,7 @@ def adicionarData(escritorios, instituicao, responsavel, categoria, submissao, s
     format_str = '%d/%m/%Y'
     format_str2 = '%m/%Y'
     aDataPrevista = datetime.strptime(dataPrevista, format_str) if dataPrevista != "" else ""
-    aDataResultado = datetime.strptime(dataResultado, format_str) if dataResultado != "" else ""
+    aDataResultado = datetime.strptime(dataResultado, format_str2) if dataResultado != "" else ""
     
     filepath = os.path.join('./UltimaPlanilha', 'ultima_planilha.txt')
 
@@ -73,7 +73,7 @@ def adicionarData(escritorios, instituicao, responsavel, categoria, submissao, s
         df = df.replace(np.nan, '', regex=True)
 
         
-        excelBook = openpy.load_workbook(w)
+        excelBook = openpy.load_workbook(filename=w)
         with pd.ExcelWriter(w, engine='openpyxl', date_format='DD/MM/YYYY') as writer:
             # Save your file workbook as base
             writer.book = excelBook
@@ -86,6 +86,7 @@ def adicionarData(escritorios, instituicao, responsavel, categoria, submissao, s
             writer.save()
 
     return df
+
 
 print(adicionarData(escritorios, instituicao, responsavel, categoria, submissao, status, dataPrevista, dataResultado, casosAndamento, casosRevisao, casosTranscricao, casosAprovacao))
 sys.stdout.flush()

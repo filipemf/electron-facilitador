@@ -367,7 +367,7 @@
                                 
                                 const Swal = require('sweetalert2')
                                 const { execFile } = require('child_process');
-                                const child = execFile('engine/incluir-dado/main', ["adicionar-escritorio", [result.value], valuesCategorias, responsavel, submissao, status, dataPrevista, dataResultado, casosAndamento, casosRevisao, casosTranscricao, casosAprovacao] ,(error, stdout, stderr) => {
+                                const child = execFile('engine/editar-dado/main', ["adicionar-escritorio", result.value, valuesCategorias, responsavel, submissao, status, dataPrevista, dataResultado, casosAndamento, casosRevisao, casosTranscricao, casosAprovacao] ,(error, stdout, stderr) => {
                                     if (error) {
                                         throw error;
                                     }

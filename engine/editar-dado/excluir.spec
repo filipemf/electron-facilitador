@@ -5,7 +5,7 @@ block_cipher = None
 
 
 a = Analysis(['excluir.py'],
-             pathex=['C:\\Users\\filip\\Documents\\app-ui\\engine\\editar-dado\\ex'],
+             pathex=['C:\\Users\\filip\\Documents\\app-ui\\engine\\editar-dado'],
              binaries=[],
              datas=[],
              hiddenimports=[],

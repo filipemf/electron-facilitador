@@ -79,7 +79,7 @@ function loadSidebar() {
     <div class="sidebar open">
     <div class="companyLogo">
         <i class='bx bx-copyright icon'></i>
-        <div class="logo_name">Marketing</div>
+        <div class="logo_name">LETSMarketing</div>
         <i class='bx bx-menu' id="btn" ></i>
     </div>
     <ul class="optionsNavigator">
@@ -166,8 +166,8 @@ function loadSidebar() {
     let sidebar = document.querySelector(".sidebar");
     let closeBtn = document.querySelector("#btn");
 
-    closeBtn.addEventListener("click", ()=>{
-    sidebar.classList.toggle("open");
-    });
+    // closeBtn.addEventListener("click", ()=>{
+    // sidebar.classList.toggle("open");
+    // });
 
 }

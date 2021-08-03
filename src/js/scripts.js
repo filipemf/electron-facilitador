@@ -410,13 +410,15 @@ function buscarDados(){
             throw error;
         }
         var results = stdout;
-        console.log(results)
+        
         formated = results.replace('[','')
         formated = formated.replace(']','')
         formated = formated.replace(/\\/g, '');
         formated = formated.replace(/\]/g, '');
         formated = formated.replace(/\[/g, '');
         formated = formated.replace(/'/g,'')
+        formated = formated.replace(/\r/g,'')
+        formated = formated.replace(/\n/g,'')
         //formated = formated.replace(/\s/g,'')
 
         let array2 = formated.split(',')
@@ -424,8 +426,11 @@ function buscarDados(){
         // for(let i = 0; i<array2.length;i++){
         //     console.log(array2[i])
         // }
+        console.log(array2)
 
-        document.getElementById("data-prevista").value = array2[3].replace(/\"/g, '');
+        const moment = require('moment')
+        const dataPrevistaFormatada = moment(array2[3].replace(/\"/g, '')).format('DD/MM/YYYY')
+        document.getElementById("data-prevista").value = dataPrevistaFormatada;
         document.getElementById("data-resultado").value = array2[5].replace(/\"/g, '');
         document.getElementById("nome-categoria").value = array2[2].replace(/\"/g, '');
         document.getElementById("responsaveis").value = array2[6].replace(/\"/g, '');
@@ -434,14 +439,29 @@ function buscarDados(){
         if (array2[9].replace(/\"/g, '')=="Sim"){
             document.getElementById("casos-em-andamento").checked = true
         }
+        else{
+            document.getElementById("casos-em-andamento").checked = false
+        }
+
         if (array2[10].replace(/\"/g, '')=="Sim"){
             document.getElementById("casos-em-revisao").checked = true
         }
+        else{
+            document.getElementById("casos-em-revisao").checked = false
+        }
+
         if (array2[11].replace(/\"/g, '')=="Sim"){
             document.getElementById("casos-em-transcricao").checked = true
         }
-        if (array2[12].replace(/\"/g, '')=="Sim"){
+        else{
+            document.getElementById("casos-em-transcricao").checked = false
+        }
+        if (array2[12].replace(/\"/g, '').substring(0,3)=="Sim"){
+            console.log("È SIMMM")
             document.getElementById("casos-em-aprovacao").checked = true
+        }
+        else{
+            document.getElementById("casos-em-aprovacao").checked = false
         }
 
 

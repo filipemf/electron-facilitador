@@ -17,6 +17,7 @@
     "child_process": "^1.0.2",
     "jquery": "^3.6.0",
     "jquery-mask-plugin": "^1.14.16",
+    "moment": "^2.29.1",
     "progressbar.js": "^1.1.0",
     "python-shell": "^3.0.0",
     "request": "^2.88.2",

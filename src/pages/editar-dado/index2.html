@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <script>
+        var $ = jQuery = require("jquery")
+        const Swal = require('sweetalert2')
+      </script>
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+    <title>ADM</title>
+    <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+
+    <link rel="stylesheet" href="../../css/bootstrap.css">
+    <script type="text/javascript" src="../../js/bootstrap.js"></script>
+    
+    
+    <link rel="stylesheet" href="../../css/style-incluir.css">
+
+    <script src="../../js/scripts.js" charset="UTF-8"></script>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+
+
+    <link rel="stylesheet" href="../../css/navbarstyle.css">
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <script type="text/javascript" src="../../js/navbar.js"></script>
+</head>
+    <body>
+        <script>
+            loadSidebar()
+        </script>
+    <main>
+        <div style="margin-left: 10rem; margin-right: 10rem;">
+            <div class="card-header" style="margin-left: -10rem; margin-right: -10rem; margin-bottom: 10px;">
+                <h2>Editar Dado:</h2>
+            </div>
+
+            <form>
+                <div class="form-row" style="margin-left: 7rem;">
+                    <div style="margin-bottom: 2rem;">
+                        <select id="instituicoes" class="selectpicker" multiple data-live-search="true" title="Selecionar Instituições" data-size=8 data-actions-box="true">
+                        </select>
+
+                        <button type="button" onclick="buscarCategorias()" class="btn btn-warning" style="margin-left: 20px; margin-right: 20px;">
+                            Procurar
+                        </button>
+
+                        <select onchange="checarEscritorios()" id="categorias" class="selectpicker" data-live-search="true" title="Categorias" data-size=8 data-actions-box="true">
+
+                        </select>
+                    </div>
+                    <div class="form-group col-md-6" style="margin-left: 12rem; margin-bottom: 5rem;">
+                        <select onchange="buscarDados()" id="escritorios" class="selectpicker" data-live-search="true" title="Adicionar Escritórios" data-size=8 data-actions-box="true">
+                        </select>
+                    </div>
+                </div>
+
+
+                <script>
+                    var $ = jQuery = require("jquery")
+                    
+                    function buscarCategorias(){
+                        var valuesEscritorios =Array.from($("#instituicoes").find(':selected')).map(function(item){
+                            return $(item).text();
+                        });
+
+
+                        
+                        var options = {
+                            mode:'json',
+                            scriptPath: path.join('../../Documents/app-ui/engine/consulta-instituicao/'),
+                            args: ["grupos",valuesEscritorios, "opa"]
+                        }
+
+                        PythonShell.run('main.py', options, function(err, results){
+                            if (err) throw err;
+                            console.log(results)
+                            $('#categorias').empty()
+                            for (var i = 0; i< results[0].length; i++){
+                                
+                                let option = results[0][i][0].replace(/\s/g, "")
+                                let option2 = results[0][i][1].replace(/\s/g, "")
+                            
+                                option2 = option2.replace("&", "")
+                                option2 = option2.replace(":", "")
+                                option2 = option2.replace("/", "")
+                                option2 = option2.replace("(", "-")
+                                option2 = option2.replace(")", "-")
+                                option2 = option2.toLowerCase()
+
+                                if ($('#divider-'+option).length === 0) {
+                                    $("#categorias").append('<optgroup id="'+'divider-'+option+'" label="'+results[0][i][0]+'"></optgroup>');
+
+                                    $("#divider-"+option).append('<option id="'+option2+'" value="'+results[0][i][1]+'">'+results[0][i][1]+'</option>');
+                                    $("#categorias").selectpicker("refresh");
+                                }
+                                else {
+                                    $("#divider-"+option).append('<option id="'+option2+'" value="'+results[0][i][1]+'">'+results[0][i][1]+'</option>');
+                                    $("#categorias").selectpicker("refresh");
+                                }
+                            }
+                        })
+                    }
+
+                </script>
+                
+                <script>
+
+                    var options = {
+                        scriptPath: path.join('../../Documents/app-ui/engine/consulta-escritorio/'),
+                        args: ["instituicoes","instituicoes"]
+                    }
+
+                    PythonShell.run('main.py', options, function(err, results){
+                        if (err) throw err;
+                        formated = results[0].replace('[','')
+                        formated = formated.replace(']','')
+                        formated = formated.replace(/'/g,'')
+                        
+                        //formated = formated.replace(/\s/g,'')
+
+                        let array2 = formated.split(',')
+                        array2 = array2.map(s => s.trim());
+                        console.log(array2)
+
+                        for (var i = 0; i< array2.length; i++){
+                            $("#instituicoes").append('<option value="'+array2[i]+'">'+array2[i]+'</option>');
+                            $("#instituicoes").selectpicker("refresh");
+                        }
+
+                    })
+
+
+                </script>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="data-prevista" style="margin-right:25px">Data Prevista: </label>
+                        <input id="data-prevista" placeholder="dd/mm/yyyy" data-slots="dmy">
+                    </div>
+                    
+
+                    <div class="form-group col-md-6">
+                        <label for="data-resultado" style="margin-right:25px">Data Resultado: </label>
+                        <input id="data-resultado" placeholder="mm/yyyy" data-slots="my">
+                    </div>
+
+                    
+                    <script>
+                        // This code empowers all input tags having a placeholder and data-slots attribute
+                        document.addEventListener('DOMContentLoaded', () => {
+                            for (const el of document.querySelectorAll("[placeholder][data-slots]")) {
+                                const pattern = el.getAttribute("placeholder"),
+                                    slots = new Set(el.dataset.slots || "_"),
+                                    prev = (j => Array.from(pattern, (c,i) => slots.has(c)? j=i+1: j))(0),
+                                    first = [...pattern].findIndex(c => slots.has(c)),
+                                    accept = new RegExp(el.dataset.accept || "\\d", "g"),
+                                    clean = input => {
+                                        input = input.match(accept) || [];
+                                        return Array.from(pattern, c =>
+                                            input[0] === c || slots.has(c) ? input.shift() || c : c
+                                        );
+                                    },
+                                    format = () => {
+                                        const [i, j] = [el.selectionStart, el.selectionEnd].map(i => {
+                                            i = clean(el.value.slice(0, i)).findIndex(c => slots.has(c));
+                                            return i<0? prev[prev.length-1]: back? prev[i-1] || first: i;
+                                        });
+                                        el.value = clean(el.value).join``;
+                                        el.setSelectionRange(i, j);
+                                        back = false;
+                                    };
+                                let back = false;
+                                el.addEventListener("keydown", (e) => back = e.key === "Backspace");
+                                el.addEventListener("input", format);
+                                el.addEventListener("focus", format);
+                                el.addEventListener("blur", () => el.value === pattern && (el.value=""));
+                            }
+                        });
+    
+                    </script>
+
+                </div>
+
+                <div class="form-group">
+                  <label for="nome-categoria">Nome da Categoria</label>
+                  <input type="text" class="form-control" id="nome-categoria">
+                </div>
+                
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="responsaveis" style="margin-right: 2rem;">Responsáveis</label>
+                    <input type="text" class="responsaveis" id="responsaveis">
+                  </div>
+
+                  <div class="form-group col-md-6">
+                    <label for="submissao">Faz Submissão: </label>
+                    <input type="text" class="submissao" id="submissao" >
+                      
+                  </div>
+
+                  <div class="form-group col-md-6">
+                    <label for="status" style="margin-right: 5.5rem;">Status: </label>
+                    <input type="text" class="status" id="status">
+                  </div>
+
+                </div>
+
+                <div style="margin-left: 30%; margin-top: 15px;" class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                    <input type="radio" class="btn-check" name="btnradio" id="todos" autocomplete="off" checked>
+                    <label class="btn btn-outline-primary" for="todos">Todos os Escritórios</label>
+                  
+                    <input type="radio" class="btn-check" name="btnradio" id="esse" autocomplete="off">
+                    <label class="btn btn-outline-primary" for="esse">Apenas esse Escritório</label>
+                  
+                </div>
+
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="casos-em-andamento">
+                    <label class="form-check-label" for="casos-em-andamento">
+                      Caso em Andamento
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="casos-em-revisao">
+                    <label class="form-check-label" for="casos-em-revisao">
+                        Caso em Revisão
+                    </label>
+                </div>
+                    <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="casos-em-transcricao">
+                    <label class="form-check-label" for="casos-em-transcricao">
+                        Caso em Transcrição
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="casos-em-aprovacao">
+                    <label class="form-check-label" for="casos-em-aprovacao">
+                        Caso em Aprovação
+                    </label>
+                </div>
+
+                <div class="form-row" style="margin-top: 2%;">
+                    <div class="form-group col-md-6">
+                        <button type="button" class="btn btn-primary" onclick="adicionarEscritorio()">Adicionar Escritório</button>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <button type="button" class="btn btn-danger" onclick="apagarRegistro()">Apagar Registro</button>
+                    </div>
+                </div>
+
+                <script>
+                    function adicionarEscritorio(){
+                        var $ = jQuery = require("jquery")
+                        Swal.fire({
+                            title: "Adicionar Escritório",
+                            input: 'text',
+                            showCancelButton: true        
+                        }).then((result) => {
+                            if (result.value) {
+                                
+                                    
+                                var casosAndamento
+                                if ($(document).find('#casos-em-andamento').is(':checked')) {
+                                    casosAndamento = "Sim"
+                                } else {
+                                    casosAndamento = "Não"
+                                }
+                                
+                                var casosRevisao
+                                if ($(document).find('#casos-em-revisao').is(':checked')) {
+                                    casosRevisao = "Sim"
+                                } else {
+                                    casosRevisao = "Não"
+                                }
+                                
+                                var casosTranscricao
+                                if ($(document).find('#casos-em-transcricao').is(':checked')) {
+                                    casosTranscricao = "Sim"
+                                } else {
+                                    casosTranscricao = "Não"
+                                }
+
+                                var casosAprovacao
+                                if ($(document).find('#casos-em-aprovacao').is(':checked')) {
+                                    casosAprovacao = "Sim"
+                                } else {
+                                    casosAprovacao = "Não"
+                                }
+
+                                
+                                
+                                
+                                const responsavel = document.getElementById('responsaveis').value
+
+                                const nomeCategoria = document.getElementById('nome-categoria').value
+
+                                const submissao = document.getElementById('submissao').value
+
+                                const status = document.getElementById('status').value
+
+                                const dataPrevista = document.getElementById('data-prevista').value
+
+                                const dataResultado = document.getElementById('data-resultado').value
+
+                                var valuesCategorias = Array.from($("#categorias").find(':selected')).map(function(item){
+                                    var optgroup = $(item).parent().attr('label');
+
+                                    let finalString = optgroup+": "+nomeCategoria;
+                                    console.log(finalString)
+                                    return finalString
+
+                                });
+                                
+                                const Swal = require('sweetalert2')
+                                const { execFile } = require('child_process');
+                                var options = {
+                                    scriptPath: path.join('../../Documents/app-ui/engine/incluir-dado/'),
+                                    args: ["adicionar-escritorio", result.value, valuesCategorias, responsavel, submissao, status, dataPrevista, dataResultado, casosAndamento, casosRevisao, casosTranscricao, casosAprovacao]
+                                }
+
+                                PythonShell.run('main.py', options, function(error, results){    
+                                    if (error) {
+                                        throw error;
+                                    }
+                                    $('.card-body.b').empty()
+
+                                    function appendHtml(el, str) {
+                                        var div = document.createElement('div'); //container to append to
+                                        div.innerHTML = str;
+                                        while (div.children.length > 0) {
+                                            $('.card-body.b').append(div.children[0]);
+                                        }
+                                    }
+                                    appendHtml(document.body, results)
+                                    Swal.fire('Registro(s) salvo(s)!', '', 'success')
+                                    //$('body').append(results);
+                                })
+                            }
+                        })
+                    }
+
+                    function apagarRegistro(){
+                        Swal.fire({
+                            title: 'Tem Certeza que Deseja Apagar o Registro?',
+                            showDenyButton: true,
+                            showCancelButton: true,
+                            confirmButtonText: `Apagar Esse Escritório`,
+                            denyButtonText: `Apagar Todos Escritórios`,
+                            }).then((result) => {
+                            /* Read more about isConfirmed, isDenied below */
+                            if (result.isConfirmed) {
+                                var valuesCategorias = Array.from($("#categorias").find(':selected')).map(function(item){
+                                    var optgroup = $(item).parent().attr('label');
+
+                                    let finalString = optgroup+": "+$(item).text();
+                                    console.log(finalString)
+                                    return finalString
+
+                                });
+
+                                var selectedItem = $('#escritorios').val()
+                                
+                                const { execFile } = require('child_process');
+                                const child = execFile('engine/editar-dado/excluir', ["excluir-apenas", valuesCategorias[0], selectedItem] ,(error, stdout, stderr) => {
+                                    if (error) {
+                                        throw error;
+                                    }
+                                    var results = stdout;
+
+                                    Swal.fire('Registro apagado!', '', 'info')
+                                })
+
+                                
+                            } else if (result.isDenied) {
+                                var valuesCategorias = Array.from($("#categorias").find(':selected')).map(function(item){
+                                    var optgroup = $(item).parent().attr('label');
+
+                                    let finalString = optgroup+": "+$(item).text();
+                                    console.log(finalString)
+                                    return finalString
+
+                                });
+
+                                
+                                let x = document.getElementById('escritorios')
+
+                                let array3 = []
+                                for (var i = 0; i < x.length; i++) {
+                                    array3.push(x[i].text)
+                                }
+                                var filtered = array3.filter(n => n)
+
+                                const { execFile } = require('child_process');
+                                const child = execFile('engine/editar-dado/excluir', ["excluir-todos", valuesCategorias[0], filtered] ,(error, stdout, stderr) => {
+                                    if (error) {
+                                        throw error;
+                                    }
+                                    var results = stdout;
+                                    Swal.fire('Registros apagados!', '', 'info')
+                                })
+
+                                
+                            }
+                            })
+                    }
+                    
+                </script>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <button type="button" class="btn btn-success" style="margin-left: 85%;" onclick="salvarDadosEditados()">Salvar</button>
+                    </div>
+                </div>
+                
+              </form>
+
+
+        </div>
+                
+    </main>
+
+</body>
+</html>
