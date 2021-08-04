@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <script>
         var $ = jQuery = require("jquery")
+        const path = require('path')
       </script>
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
     <title>ADM</title>
@@ -50,7 +51,9 @@
                         
                         <script>
                             const { execFile } = require('child_process');
-                            const child = execFile('engine/consulta-escritorio/main', ["instituicoes","instituicoes"] ,(error, stdout, stderr) => {
+                            var exePath = path.resolve(__dirname+"../../../../engine/consulta-escritorio/", './main.exe')
+                            console.log(exePath)
+                            const child = execFile(exePath, ["instituicoes","instituicoes"] ,(error, stdout, stderr) => {
                                 if (error) {
                                 throw error;
                                 }
@@ -84,8 +87,9 @@
                         <script>
 
                             const exec = require('child_process').execFile;
-                            
-                            exec('engine/consulta-escritorio/main', ["escritorios","escritorios"] ,(error, stdout, stderr) => {
+                            var exePath = path.resolve(__dirname+"../../../../engine/consulta-escritorio/", './main.exe')
+                            console.log(exePath)
+                            exec(exePath, ["escritorios","escritorios"] ,(error, stdout, stderr) => {
                                 if (error) {
                                 throw error;
                                 }
@@ -105,6 +109,40 @@
                                 }
 
                             })
+
+                                                        
+                            //migrado
+                            function buscarEscritorios(){
+                                var valuesEscritorios =Array.from($("#escritorios").find(':selected')).map(function(item){
+                                    return $(item).text();
+                                });
+
+                                var valuesInstituicoes =Array.from($("#instituicoes").find(':selected')).map(function(item){
+                                    return $(item).text();
+                                });
+
+                                const { execFile } = require('child_process');
+                                var exePath = path.resolve(__dirname+"../../../../engine/consulta-escritorio/", './main.exe')
+                                console.log(exePath)
+                                const child = execFile(exePath, [valuesEscritorios, valuesInstituicoes] ,(error, stdout, stderr) => {
+                                    if (error) {
+                                        throw error;
+                                    }
+                                    var results = stdout;
+                                    $('.card-body.b').empty()
+
+                                    function appendHtml(el, str) {
+                                        var div = document.createElement('div'); //container to append to
+                                        div.innerHTML = str;
+                                        while (div.children.length > 0) {
+                                            $('.card-body.b').append(div.children[0]);
+                                        }
+                                    }
+                                    appendHtml(document.body, results)
+                                    //$('body').append(results);
+                                })
+                            }
+
 
 
                         </script>

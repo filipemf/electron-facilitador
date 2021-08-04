@@ -5,7 +5,7 @@
     <script>
         var $ = jQuery = require("jquery")
         const Swal = require('sweetalert2')
-
+        const path = require('path')
       </script>
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
     <title>ADM</title>
@@ -46,9 +46,84 @@
                         </select>
 
                         <script>
-                                function adicionar(){
+                                
+                            //migrado
+                            function incluirDado(){
+                                var casosAndamento
+                                if ($(document).find('#casos-em-andamento').is(':checked')) {
+                                    casosAndamento = "Sim"
+                                } else {
+                                    casosAndamento = "Não"
+                                }
+                                
+                                var casosRevisao
+                                if ($(document).find('#casos-em-revisao').is(':checked')) {
+                                    casosRevisao = "Sim"
+                                } else {
+                                    casosRevisao = "Não"
+                                }
+                                
+                                var casosTranscricao
+                                if ($(document).find('#casos-em-transcricao').is(':checked')) {
+                                    casosTranscricao = "Sim"
+                                } else {
+                                    casosTranscricao = "Não"
+                                }
+
+                                var casosAprovacao
+                                if ($(document).find('#casos-em-aprovacao').is(':checked')) {
+                                    casosAprovacao = "Sim"
+                                } else {
+                                    casosAprovacao = "Não"
+                                }
+
+                                var valuesEscritorios =Array.from($("#escritorios").find(':selected')).map(function(item){
+                                    return $(item).text();
+                                });
+
+                                var valuesInstituicoes = $("#instituicoes").find(':selected').text();
+                                
+                                const responsavel = document.getElementById('responsaveis').value
+
+                                const nomeCategoria = document.getElementById('nome-categoria').value
+
+                                const submissao = document.getElementById('submissao').value
+
+                                const status = document.getElementById('status').value
+
+                                const dataPrevista = document.getElementById('data-prevista').value
+
+                                const dataResultado = document.getElementById('data-resultado').value
+
+                                const Swal = require('sweetalert2')
                                 const { execFile } = require('child_process');
-                                const child = execFile('engine/consulta-escritorio/main', ["instituicoes","instituicoes"] ,(error, stdout, stderr) => {
+                                var exePath = path.resolve(__dirname+"../../../../engine/incluir-dado/", './main.exe')
+                                console.log(exePath)
+                                const child = execFile(exePath, [valuesEscritorios, valuesInstituicoes, responsavel, nomeCategoria, submissao, status, dataPrevista, dataResultado, casosAndamento, casosRevisao, casosTranscricao, casosAprovacao] ,(error, stdout, stderr) => {
+                                    if (error) {
+                                        throw error;
+                                    }
+                                    var results = stdout;
+                                    $('.card-body.b').empty()
+
+                                    function appendHtml(el, str) {
+                                        var div = document.createElement('div'); //container to append to
+                                        div.innerHTML = str;
+                                        while (div.children.length > 0) {
+                                            $('.card-body.b').append(div.children[0]);
+                                        }
+                                    }
+                                    appendHtml(document.body, results)
+                                    Swal.fire('Registro(s) salvo(s)!', '', 'success')
+                                    //$('body').append(results);
+                                })
+                            }
+
+                            function adicionar(){
+                                const { execFile } = require('child_process');
+                                var exePath = path.resolve(__dirname+"../../../../engine/consulta-escritorio/", './main.exe')
+                                console.log(exePath)
+                                const child = execFile(exePath, ["instituicoes","instituicoes"] ,(error, stdout, stderr) => {
                                     if (error) {
                                         throw error;
                                     }
@@ -82,7 +157,9 @@
                         <script>
                             function adicionar1(){
                                 const { execFile } = require('child_process');
-                                const child = execFile('engine/consulta-escritorio/main', ["escritorios","escritorios"] ,(error, stdout, stderr) => {
+                                var exePath = path.resolve(__dirname+"../../../../engine/consulta-escritorio/", './main.exe')
+                                console.log(exePath)
+                                const child = execFile(exePath, ["escritorios","escritorios"] ,(error, stdout, stderr) => {
                                     if (error) {
                                         throw error;
                                     }
@@ -103,8 +180,6 @@
                             })
                             }
                             adicionar1()
-
-
                         </script>
                     </div>
                 </div>
@@ -172,7 +247,9 @@
                     <script>
                             function adicionar2(){
                                 const { execFile } = require('child_process');
-                                const child = execFile('engine/consulta-responsaveis/main', ["options"] ,(error, stdout, stderr) => {
+                                var exePath = path.resolve(__dirname+"../../../../engine/consulta-responsaveis/", './main.exe')
+                                console.log(exePath)
+                                const child = execFile(exePath, ["options"] ,(error, stdout, stderr) => {
                                     if (error) {
                                     throw error;
                                 }

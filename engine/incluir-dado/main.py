@@ -40,15 +40,6 @@ def adicionarData(escritorios, instituicao, responsavel, categoria, submissao, s
 
     df = pd.read_excel(w, sheet_name="CATEGORIAS PARA LIPE")
 
-    df['DATA PREVISTA'] = pd.to_datetime(df['DATA PREVISTA'])
-    df['DATA PREVISTA'] = df['DATA PREVISTA'].dt.strftime('%d/%m/%Y')
-    
-    df['DATA RESULTADO'] = pd.to_datetime(df['DATA RESULTADO'])
-    df['DATA RESULTADO'] = df['DATA RESULTADO'].dt.strftime('%m/%Y')
-
-    df['MÊS/ANO'] = pd.to_datetime(df['MÊS/ANO'])
-    df['MÊS/ANO'] = df['MÊS/ANO'].dt.strftime('%m/%Y')
-
     if arrayEscritorios[0] is not None:
         for i in range(0, len(arrayEscritorios)):
             df2= pd.DataFrame([

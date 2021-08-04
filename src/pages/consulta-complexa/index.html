@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <script>
         var $ = jQuery = require("jquery")
+        const path = require('path')
     </script>
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
     <title>ADM</title>
@@ -119,7 +120,9 @@
                                 
                                 
                                 const { execFile } = require('child_process');
-                                const child = execFile('engine/consulta-instituicao/main', ["grupos",valuesEscritorios, "opa"] ,(error, stdout, stderr) => {
+                                var exePath = path.resolve(__dirname+"../../../../engine/consulta-instituicao/", './main.exe')
+                                console.log(exePath)
+                                const child = execFile(exePath, ["grupos",valuesEscritorios, "opa"] ,(error, stdout, stderr) => {
                                     if (error) {
                                         throw error;
                                     }
@@ -202,7 +205,9 @@
                         <script>
                             function adicionar(){
                                 const { execFile } = require('child_process');
-                                const child = execFile('engine/consulta-escritorio/main', ["instituicoes","instituicoes"] ,(error, stdout, stderr) => {
+                                var exePath = path.resolve(__dirname+"../../../../engine/consulta-escritorio/", './main.exe')
+                                console.log(exePath)
+                                const child = execFile(exePath, ["instituicoes","instituicoes"] ,(error, stdout, stderr) => {
                                     if (error) {
                                         throw error;
                                     }
@@ -238,7 +243,9 @@
                         <script>
                             function adicionar1(){
                                 const { execFile } = require('child_process');
-                                const child = execFile('engine/consulta-escritorio/main', ["escritorios","escritorios"] ,(error, stdout, stderr) => {
+                                var exePath = path.resolve(__dirname+"../../../../engine/consulta-escritorio/", './main.exe')
+                                console.log(exePath)
+                                const child = execFile(exePath, ["escritorios","escritorios"] ,(error, stdout, stderr) => {
                                     if (error) {
                                         throw error;
                                     }
@@ -270,7 +277,9 @@
                             <script>
                                 function adicionar2(){
                                     const { execFile } = require('child_process');
-                                    const child = execFile('engine/consulta-responsaveis/main', ["options"] ,(error, stdout, stderr) => {
+                                    var exePath = path.resolve(__dirname+"../../../../engine/consulta-responsaveis/", './main.exe')
+                                console.log(exePath)
+                                    const child = execFile(exePath, ["options"] ,(error, stdout, stderr) => {
                                         if (error) {
                                         throw error;
                                     }
@@ -293,7 +302,142 @@
                                 })
                                 }
                                 adicionar2()
+                                
+                                //migrado
+                                function buscaComplexa(){
+                                    $('.card-body.b').empty()
+                                    var casosAndamento
+                                    if ($(document).find('#casos-em-andamento').is(':checked')) {
+                                        casosAndamento = "Sim"
+                                    } else {
+                                        casosAndamento = "Não"
+                                    }
+                                    
+                                    var casosRevisao
+                                    if ($(document).find('#casos-em-revisao').is(':checked')) {
+                                        casosRevisao = "Sim"
+                                    } else {
+                                        casosRevisao = "Não"
+                                    }
+                                    
+                                    var casosTranscricao
+                                    if ($(document).find('#casos-em-transcricao').is(':checked')) {
+                                        casosTranscricao = "Sim"
+                                    } else {
+                                        casosTranscricao = "Não"
+                                    }
 
+                                    var casosAprovacao
+                                    if ($(document).find('#casos-em-aprovacao').is(':checked')) {
+                                        casosAprovacao = "Sim"
+                                    } else {
+                                        casosAprovacao = "Não"
+                                    }
+                                    
+                                    var valuesEscritorios =Array.from($("#escritorios").find(':selected')).map(function(item){
+                                        return $(item).text();
+                                    });
+
+                                    var valuesInstituicoes = Array.from($("#instituicoes").find(':selected')).map(function(item){
+                                        return $(item).text();
+                                    });
+
+                                    var categorias = Array.from($("#categorias").find(':selected')).map(function(item){
+                                        return $(item).text().replace("\n","");
+                                    });
+                                    
+                                    const responsavel = document.getElementById('responsaveis').value
+
+
+                                    const submissao = document.getElementById('submissao').value
+
+                                    const status = document.getElementById('status').value
+
+                                    const mes = document.getElementById('mes').value
+                                    const ano = document.getElementById('ano').value
+                                    
+                                    const { execFile } = require('child_process');
+                                    
+                                    
+                                    if(document.getElementById('prevista').checked==true) {
+                                        console.log("é previstaaaaa")
+                                        var prevista = "previsao"
+
+                                        var exePath = path.resolve(__dirname+"../../../../engine/consulta-complexa/", './main.exe')
+                                        console.log(exePath)
+                                        const child = execFile(exePath, [valuesEscritorios, valuesInstituicoes, responsavel, categorias, submissao, status, mes, ano, prevista, casosAndamento, casosRevisao, casosTranscricao, casosAprovacao] ,(error, stdout, stderr) => {
+                                            if (error) {
+                                            throw error;
+                                            }
+                                            var results = stdout;
+                                            console.log(results)
+                                            $('.card-body.b').empty()
+
+                                            function appendHtml(el, str) {
+                                                var div = document.createElement('div'); //container to append to
+                                                div.innerHTML = str;
+                                                while (div.children.length > 0) {
+                                                    $('.card-body.b').append(div.children[0]);
+                                                }
+                                            }
+                                            appendHtml(document.body, results)
+                                            //$('body').append(results);
+                                        })
+
+                                    }else if(document.getElementById('resultado').checked==true) {
+                                        console.log("é resultadoooo")
+                                        var resultado = "resultado"
+
+                                        var exePath = path.resolve(__dirname+"../../../../engine/consulta-complexa/", './main.exe')
+                                        console.log(exePath)
+                                        const child = execFile(exePath, [valuesEscritorios, valuesInstituicoes, responsavel, categorias, submissao, status, mes, ano, resultado, casosAndamento, casosRevisao, casosTranscricao, casosAprovacao] ,(error, stdout, stderr) => {
+                                            if (error) {
+                                            throw error;
+                                            }
+                                            var results = stdout;
+                                            console.log(results)
+                                            $('.card-body.b').empty()
+
+                                            function appendHtml(el, str) {
+                                                var div = document.createElement('div'); //container to append to
+                                                div.innerHTML = str;
+                                                while (div.children.length > 0) {
+                                                    $('.card-body.b').append(div.children[0]);
+                                                }
+                                            }
+                                            appendHtml(document.body, results)
+                                            //$('body').append(results);
+                                        })
+                                    }
+                                    else{
+                                        console.log("é nadaaa")
+                                        
+                                        var prevista = ""
+
+                                        console.log(categorias)
+                                        var exePath = path.resolve(__dirname+"../../../../engine/consulta-complexa/", './main.exe')
+                                        console.log(exePath)
+                                        const child = execFile(exePath, [valuesEscritorios, valuesInstituicoes, responsavel, categorias, submissao, status, mes, ano, prevista, casosAndamento, casosRevisao, casosTranscricao, casosAprovacao], {maxBuffer: 1024 * 5000} ,(error, stdout, stderr) => {
+                                            if (error) {
+                                            throw error;
+                                            }
+                                            var results = stdout;
+                                            console.log(results)
+                                            $('.card-body.b').empty()
+
+                                            function appendHtml(el, str) {
+                                                var div = document.createElement('div'); //container to append to
+                                                div.innerHTML = str;
+                                                while (div.children.length > 0) {
+                                                    $('.card-body.b').append(div.children[0]);
+                                                }
+                                            }
+                                            appendHtml(document.body, results)
+                                            //$('body').append(results);
+                                        })
+                                    }
+
+                                }
 
                             </script>
                         </div>
