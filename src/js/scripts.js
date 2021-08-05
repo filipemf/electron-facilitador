@@ -582,7 +582,7 @@ function salvarDadosEditados(){
 
 function criarGraficos(){
     const { execFile } = require('child_process');
-    var exePath = path.resolve(__dirname+"../../../../engine/dashboard/dist/main/dist/main/", './main.exe')
+    var exePath = path.resolve(__dirname+"../../../../engine/dashboard/dist/main/", './main.exe')
     console.log(exePath)
     const child = execFile(exePath,(error, stdout, stderr) => {
         if (error) {
