@@ -242,7 +242,8 @@
                             let dataPrevistaFormatada
                             try{
 
-                                dataPrevistaFormatada = moment(array2[3].replace(/\"/g, '')).format("DD/MM/YYYY")
+                                //dataPrevistaFormatada = moment(array2[3].replace(/\"/g, '')).format("DD/MM/YYYY")
+                                dataPrevistaFormatada = array2[3].replace(/\"/g, '')
                             }
                             catch(e){
                                 dataPrevistaFormatada = array2[3].replace(/\"/g, '')

@@ -66,7 +66,7 @@ def excluirDado(grupos, escritorio):
     df = df[df['CLIENTE']==escritorio]
 
 
-    df['DATA PREVISTA'] = pd.to_datetime(df['DATA PREVISTA'])
+    df['DATA PREVISTA'] = pd.to_datetime(df['DATA PREVISTA'], dayfirst=True)
     df['DATA PREVISTA'] = df['DATA PREVISTA'].dt.strftime('%d/%m/%Y')
     
     df['DATA RESULTADO'] = pd.to_datetime(df['DATA RESULTADO'])

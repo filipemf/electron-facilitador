@@ -40,7 +40,7 @@ def adicionarData(escritorios, instituicao, responsavel, categoria, submissao, s
 
     df = pd.read_excel(w, sheet_name="CATEGORIAS PARA LIPE")
 
-    df['DATA PREVISTA'] = pd.to_datetime(df['DATA PREVISTA'])
+    df['DATA PREVISTA'] = pd.to_datetime(df['DATA PREVISTA'], dayfirst=True)
     df['DATA PREVISTA'] = df['DATA PREVISTA'].dt.strftime('%d/%m/%Y')
     
     df['DATA RESULTADO'] = pd.to_datetime(df['DATA RESULTADO'])

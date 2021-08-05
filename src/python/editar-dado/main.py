@@ -60,7 +60,7 @@ def buscarDados(grupos, escritorio):
     df = pd.read_excel(w, sheet_name="CATEGORIAS PARA LIPE")
 
     
-    df['DATA PREVISTA'] = pd.to_datetime(df['DATA PREVISTA'])
+    df['DATA PREVISTA'] = pd.to_datetime(df['DATA PREVISTA'], dayfirst=True)
     df['DATA PREVISTA'] = df['DATA PREVISTA'].dt.strftime('%d/%m/%Y')
     
     df['DATA RESULTADO'] = pd.to_datetime(df['DATA RESULTADO'])
@@ -121,7 +121,7 @@ def salvarRow(grupos, nomeCategoria, dataPrevista, dataResultado, responsaveis, 
     aDataResultado = datetime.strptime(dataResultado, format_str2) if dataResultado != "" else ""
 
     
-    df['DATA PREVISTA'] = pd.to_datetime(df['DATA PREVISTA'])
+    df['DATA PREVISTA'] = pd.to_datetime(df['DATA PREVISTA'], dayfirst=True)
     df['DATA PREVISTA'] = df['DATA PREVISTA'].dt.strftime('%d/%m/%Y')
     
     df['DATA RESULTADO'] = pd.to_datetime(df['DATA RESULTADO'])
@@ -162,7 +162,8 @@ def salvarRow(grupos, nomeCategoria, dataPrevista, dataResultado, responsaveis, 
         df = df.drop(index)
 
     excelBook = openpy.load_workbook(w)
-    with pd.ExcelWriter(w, engine='openpyxl', date_format='DD/MM/YYYY') as writer:
+    print(df)
+    with pd.ExcelWriter(w, engine='openpyxl') as writer:
         # Save your file workbook as base
         writer.book = excelBook
         writer.sheets = dict((ws.title, ws) for ws in excelBook.worksheets)
@@ -215,7 +216,7 @@ def adicionarEscritorio(escritorio, grupos, responsavel, submissao, status, data
         pass
 
 
-    df['DATA PREVISTA'] = pd.to_datetime(df['DATA PREVISTA'])
+    df['DATA PREVISTA'] = pd.to_datetime(df['DATA PREVISTA'], dayfirst=True)
     df['DATA PREVISTA'] = df['DATA PREVISTA'].dt.strftime('%d/%m/%Y')
     
     df['DATA RESULTADO'] = pd.to_datetime(df['DATA RESULTADO'])
