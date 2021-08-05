@@ -71,7 +71,7 @@
                         
                         
                         const { execFile } = require('child_process');
-                        var exePath = path.resolve(__dirname+"../../../../engine/consulta-instituicao/", './main.exe')
+                        var exePath = path.resolve(__dirname+"../../../../engine/consulta-instituicao/dist/main/", './main.exe')
                         console.log(exePath)
                         const child = execFile(exePath, ["grupos",valuesEscritorios, "opa"] ,(error, stdout, stderr) => {
                             if (error) {
@@ -167,7 +167,7 @@
                         });
                         
                         const { execFile } = require('child_process');
-                        var exePath = path.resolve(__dirname+"../../../../engine/editar-dado/", './main.exe')
+                        var exePath = path.resolve(__dirname+"../../../../engine/editar-dado/dist/main/", './main.exe')
                         console.log(exePath)
                         const child = execFile(exePath, ["checar-escritorios", valuesCategorias] ,(error, stdout, stderr) => {
                             if (error) {
@@ -212,7 +212,7 @@
                         
                         const { execFile } = require('child_process');
                         
-                        var exePath = path.resolve(__dirname+"../../../../engine/editar-dado/", './main.exe')
+                        var exePath = path.resolve(__dirname+"../../../../engine/editar-dado/dist/main/", './main.exe')
                         console.log(exePath)
                         const child = execFile(exePath, ["buscar-dados", valuesCategorias, valuesEscritorio] ,(error, stdout, stderr) => {
                             if (error) {
@@ -354,7 +354,7 @@
                             console.log(filtered)
                             const { execFile } = require('child_process');
                         
-                            var exePath = path.resolve(__dirname+"../../../../engine/editar-dado/", './main.exe')
+                            var exePath = path.resolve(__dirname+"../../../../engine/editar-dado/dist/main/", './main.exe')
                             console.log(exePath)
                             const child = execFile(exePath, ["salvar-dados", valuesCategorias[0], nomeCategoria, dataPrevista, dataResultado, responsaveis, submissao, status, filtered, casosAndamento, casosRevisao, casosTranscricao, casosAprovacao] ,(error, stdout, stderr) => {
                                 if (error) {
@@ -367,7 +367,7 @@
                         else{
                             const { execFile } = require('child_process');
                             console.log(valuesEscritorio)
-                            var exePath = path.resolve(__dirname+"../../../../engine/editar-dado/", './main.exe')
+                            var exePath = path.resolve(__dirname+"../../../../engine/editar-dado/dist/main/", './main.exe')
                             console.log(exePath)
                             const child = execFile(exePath, ["salvar-dados", valuesCategorias[0], nomeCategoria, dataPrevista, dataResultado, responsaveis, submissao, status, valuesEscritorio, casosAndamento, casosRevisao, casosTranscricao, casosAprovacao] ,(error, stdout, stderr) => {
                                 if (error) {
@@ -385,7 +385,7 @@
 
                     function adicionar(){
                         const { execFile } = require('child_process');
-                        var exePath = path.resolve(__dirname+"../../../../engine/consulta-escritorio/", './main.exe')
+                        var exePath = path.resolve(__dirname+"../../../../engine/consulta-escritorio/dist/main/", './main.exe')
                         console.log(exePath)
                         const child = execFile(exePath, ["instituicoes","instituicoes"] ,(error, stdout, stderr) => {
                             if (error) {
@@ -597,7 +597,7 @@
                                 
                                 const Swal = require('sweetalert2')
                                 const { execFile } = require('child_process');
-                                var exePath = path.resolve(__dirname+"../../../../engine/editar-dado/", './main.exe')
+                                var exePath = path.resolve(__dirname+"../../../../engine/editar-dado/dist/main/", './main.exe')
                                 console.log(exePath)
                                 const child = execFile(exePath, ["adicionar-escritorio", result.value, valuesCategorias, responsavel, submissao, status, dataPrevista, dataResultado, casosAndamento, casosRevisao, casosTranscricao, casosAprovacao] ,(error, stdout, stderr) => {
                                     if (error) {
@@ -643,7 +643,7 @@
                                 var selectedItem = $('#escritorios').val()
                                 
                                 const { execFile } = require('child_process');
-                                var exePath = path.resolve(__dirname+"../../../../engine/editar-dado/", './excluir.exe')
+                                var exePath = path.resolve(__dirname+"../../../../engine/editar-dado/dist/excluir/", './excluir.exe')
                                 console.log(exePath)
                                 const child = execFile(exePath, ["excluir-apenas", valuesCategorias[0], selectedItem] ,(error, stdout, stderr) => {
                                     if (error) {
@@ -675,7 +675,7 @@
                                 var filtered = array3.filter(n => n)
 
                                 const { execFile } = require('child_process');
-                                var exePath = path.resolve(__dirname+"../../../../engine/editar-dado/", './excluir.exe')
+                                var exePath = path.resolve(__dirname+"../../../../engine/editar-dado/dist/excluir/", './excluir.exe')
                                 console.log(exePath)
                                 const child = execFile(exePath, ["excluir-todos", valuesCategorias[0], filtered] ,(error, stdout, stderr) => {
                                     if (error) {

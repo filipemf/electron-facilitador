@@ -18,7 +18,7 @@ async function createWindow(){
     mainWindow.maximize()
     await mainWindow.loadFile('src/pages/dashboard/index.html')
 
-    //mainWindow.webContents.openDevTools()
+    mainWindow.webContents.openDevTools()
 
     ipcMain.on('update-content', function(event, data){
         console.log(data)

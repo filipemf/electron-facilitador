@@ -48,7 +48,7 @@
                         <script>
 
                             const { execFile } = require('child_process');
-                            var exePath = path.resolve(__dirname+"../../../../engine/consulta-responsaveis/", './main.exe')
+                            var exePath = path.resolve(__dirname+"../../../../engine/consulta-responsaveis/dist/main/", './main.exe')
                             console.log(exePath)
                             const child = execFile(exePath, ["options"] ,(error, stdout, stderr) => {
                                 if (error) {
@@ -80,7 +80,7 @@
                             console.log(responsavel)
                                 
                             const { execFile } = require('child_process');
-                            var exePath = path.resolve(__dirname+"../../../../engine/consulta-responsaveis/", './main.exe')
+                            var exePath = path.resolve(__dirname+"../../../../engine/consulta-responsaveis/dist/main/", './main.exe')
                             console.log(exePath)
                             const child = execFile(exePath, [responsavel] ,(error, stdout, stderr) => {
                                 if (error) {

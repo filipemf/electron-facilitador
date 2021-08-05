@@ -18,7 +18,7 @@ function buscarMes(){
     const { execFile } = require('child_process');
     if(document.getElementById('prevista').checked) {
         var prevista = "prevista"
-        var exePath = path.resolve(__dirname+"../../../../engine/consulta-mes/", './main.exe')
+        var exePath = path.resolve(__dirname+"../../../../engine/consulta-mes/dist/main/", './main.exe')
         console.log(exePath)
         const child = execFile(exePath, [mes, ano, prevista] ,(error, stdout, stderr) => {
           if (error) {
@@ -39,7 +39,7 @@ function buscarMes(){
     }else if(document.getElementById('resultado').checked) {
         var resultado = "resultado"
         //Female radio button is checked
-        var exePath = path.resolve(__dirname+"../../../../engine/consulta-mes/", './main.exe')
+        var exePath = path.resolve(__dirname+"../../../../engine/consulta-mes/dist/main/", './main.exe')
         console.log(exePath)
         const child = execFile(exePath, [mes, ano, resultado] ,(error, stdout, stderr) => {
             if (error) {
@@ -71,7 +71,7 @@ function buscarResponsaveis(){
     console.log(responsavel)
         
     const { execFile } = require('child_process');
-    var exePath = path.resolve(__dirname+"../../../../engine/consulta-responsaveis/", './main.exe')
+    var exePath = path.resolve(__dirname+"../../../../engine/consulta-responsaveis/dist/main/", './main.exe')
     console.log(exePath)
     const child = execFile(exePath, [responsavel] ,(error, stdout, stderr) => {
         if (error) {
@@ -104,7 +104,7 @@ function buscarEscritorios(){
     });
 
     const { execFile } = require('child_process');
-    var exePath = path.resolve(__dirname+"../../../../engine/consulta-escritorio/", './main.exe')
+    var exePath = path.resolve(__dirname+"../../../../engine/consulta-escritorio/dist/main/", './main.exe')
     console.log(exePath)
     const child = execFile(exePath, [valuesEscritorios, valuesInstituicoes] ,(error, stdout, stderr) => {
         if (error) {
@@ -140,7 +140,7 @@ function buscarInstituicoes(){
     });
     
     const { execFile } = require('child_process');
-    var exePath = path.resolve(__dirname+"../../../../engine/consulta-instituicao/", './main.exe')
+    var exePath = path.resolve(__dirname+"../../../../engine/consulta-instituicao/dist/main/", './main.exe')
     console.log(exePath)
     const child = execFile(exePath,[valuesEscritorios, valuesInstituicoes, valuesCategorias] ,(error, stdout, stderr) => {
         if (error) {
@@ -211,7 +211,7 @@ function incluirDado(){
 
     const Swal = require('sweetalert2')
     const { execFile } = require('child_process');
-    var exePath = path.resolve(__dirname+"../../../../engine/incluir-dado/", './main.exe')
+    var exePath = path.resolve(__dirname+"../../../../engine/incluir-dado/dist/main/", './main.exe')
     console.log(exePath)
     const child = execFile(exePath, [valuesEscritorios, valuesInstituicoes, responsavel, nomeCategoria, submissao, status, dataPrevista, dataResultado, casosAndamento, casosRevisao, casosTranscricao, casosAprovacao] ,(error, stdout, stderr) => {
         if (error) {
@@ -293,7 +293,7 @@ function buscaComplexa(){
         console.log("é previstaaaaa")
         var prevista = "previsao"
 
-        var exePath = path.resolve(__dirname+"../../../../engine/consulta-complexa/", './main.exe')
+        var exePath = path.resolve(__dirname+"../../../../engine/consulta-complexa/dist/main/", './main.exe')
         console.log(exePath)
         const child = execFile(exePath, [valuesEscritorios, valuesInstituicoes, responsavel, categorias, submissao, status, mes, ano, prevista, casosAndamento, casosRevisao, casosTranscricao, casosAprovacao] ,(error, stdout, stderr) => {
             if (error) {
@@ -318,7 +318,7 @@ function buscaComplexa(){
         console.log("é resultadoooo")
         var resultado = "resultado"
 
-        var exePath = path.resolve(__dirname+"../../../../engine/consulta-complexa/", './main.exe')
+        var exePath = path.resolve(__dirname+"../../../../engine/consulta-complexa/dist/main/", './main.exe')
         console.log(exePath)
         const child = execFile(exePath, [valuesEscritorios, valuesInstituicoes, responsavel, categorias, submissao, status, mes, ano, resultado, casosAndamento, casosRevisao, casosTranscricao, casosAprovacao] ,(error, stdout, stderr) => {
             if (error) {
@@ -345,7 +345,7 @@ function buscaComplexa(){
         var prevista = ""
 
         console.log(categorias)
-        var exePath = path.resolve(__dirname+"../../../../engine/consulta-complexa/", './main.exe')
+        var exePath = path.resolve(__dirname+"../../../../engine/consulta-complexa/dist/main/", './main.exe')
         console.log(exePath)
         const child = execFile(exePath, [valuesEscritorios, valuesInstituicoes, responsavel, categorias, submissao, status, mes, ano, prevista, casosAndamento, casosRevisao, casosTranscricao, casosAprovacao], {maxBuffer: 1024 * 5000} ,(error, stdout, stderr) => {
             if (error) {
@@ -381,7 +381,7 @@ function checarEscritorios(){
     });
        
     const { execFile } = require('child_process');
-    var exePath = path.resolve(__dirname+"../../../../engine/editar-dado/", './main.exe')
+    var exePath = path.resolve(__dirname+"../../../../engine/editar-dado/dist/main/", './main.exe')
     console.log(exePath)
     const child = execFile(exePath, ["checar-escritorios", valuesCategorias] ,(error, stdout, stderr) => {
         if (error) {
@@ -424,7 +424,7 @@ function buscarDados(){
     
     const { execFile } = require('child_process');
     
-    var exePath = path.resolve(__dirname+"../../../../engine/editar-dado/", './main.exe')
+    var exePath = path.resolve(__dirname+"../../../../engine/editar-dado/dist/main/", './main.exe')
     console.log(exePath)
     const child = execFile(exePath, ["buscar-dados", valuesCategorias, valuesEscritorio] ,(error, stdout, stderr) => {
         if (error) {
@@ -556,7 +556,7 @@ function salvarDadosEditados(){
         console.log(filtered)
         const { execFile } = require('child_process');
     
-        var exePath = path.resolve(__dirname+"../../../../engine/editar-dado/", './main.exe')
+        var exePath = path.resolve(__dirname+"../../../../engine/editar-dado/dist/main/", './main.exe')
         console.log(exePath)
         const child = execFile(exePath, ["salvar-dados", valuesCategorias[0], nomeCategoria, dataPrevista, dataResultado, responsaveis, submissao, status, filtered, casosAndamento, casosRevisao, casosTranscricao, casosAprovacao] ,(error, stdout, stderr) => {
             if (error) {
@@ -568,7 +568,7 @@ function salvarDadosEditados(){
     }
     else{
         console.log(valuesEscritorio)
-        var exePath = path.resolve(__dirname+"../../../../engine/editar-dado/", './main.exe')
+        var exePath = path.resolve(__dirname+"../../../../engine/editar-dado/dist/main/", './main.exe')
         console.log(exePath)
         const child = execFile(exePath, ["salvar-dados", valuesCategorias[0], nomeCategoria, dataPrevista, dataResultado, responsaveis, submissao, status, valuesEscritorio, casosAndamento, casosRevisao, casosTranscricao, casosAprovacao] ,(error, stdout, stderr) => {
             if (error) {
@@ -582,7 +582,7 @@ function salvarDadosEditados(){
 
 function criarGraficos(){
     const { execFile } = require('child_process');
-    var exePath = path.resolve(__dirname+"../../../../engine/dashboard/", './main.exe')
+    var exePath = path.resolve(__dirname+"../../../../engine/dashboard/dist/main/dist/main/", './main.exe')
     console.log(exePath)
     const child = execFile(exePath,(error, stdout, stderr) => {
         if (error) {

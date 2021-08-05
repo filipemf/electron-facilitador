@@ -69,7 +69,7 @@
                                 
                                 
                                 const { execFile } = require('child_process');
-                                var exePath = path.resolve(__dirname+"../../../../engine/consulta-instituicao/", './main.exe')
+                                var exePath = path.resolve(__dirname+"../../../../engine/consulta-instituicao/dist/main/", './main.exe')
                                 console.log(exePath)
                                 const child = execFile(exePath, ["grupos",valuesEscritorios, "opa"] ,(error, stdout, stderr) => {
                                     if (error) {
@@ -155,7 +155,7 @@
 
                             function adicionar(){
                                 const { execFile } = require('child_process');
-                                var exePath = path.resolve(__dirname+"../../../../engine/consulta-escritorio/", './main.exe')
+                                var exePath = path.resolve(__dirname+"../../../../engine/consulta-escritorio/dist/main/", './main.exe')
                                 console.log(exePath)
                                 const child = execFile(exePath, ["instituicoes","instituicoes"] ,(error, stdout, stderr) => {
                                     if (error) {
@@ -198,7 +198,7 @@
                                 });
                                 
                                 const { execFile } = require('child_process');
-                                var exePath = path.resolve(__dirname+"../../../../engine/consulta-instituicao/", './main.exe')
+                                var exePath = path.resolve(__dirname+"../../../../engine/consulta-instituicao/dist/main/", './main.exe')
                                 console.log(exePath)
                                 const child = execFile(exePath,[valuesEscritorios, valuesInstituicoes, valuesCategorias] ,(error, stdout, stderr) => {
                                     if (error) {
@@ -230,7 +230,7 @@
                         <script>
                                 function adicionar1(){
                                 const { execFile } = require('child_process');
-                                var exePath = path.resolve(__dirname+"../../../../engine/consulta-escritorio/", './main.exe')
+                                var exePath = path.resolve(__dirname+"../../../../engine/consulta-escritorio/dist/main/", './main.exe')
                                 console.log(exePath)
                                 const child = execFile(exePath, ["escritorios","escritorios"] ,(error, stdout, stderr) => {
                                     if (error) {

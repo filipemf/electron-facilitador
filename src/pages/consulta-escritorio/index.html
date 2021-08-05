@@ -51,7 +51,7 @@
                         
                         <script>
                             const { execFile } = require('child_process');
-                            var exePath = path.resolve(__dirname+"../../../../engine/consulta-escritorio/", './main.exe')
+                            var exePath = path.resolve(__dirname+"../../../../engine/consulta-escritorio/dist/main/", './main.exe')
                             console.log(exePath)
                             const child = execFile(exePath, ["instituicoes","instituicoes"] ,(error, stdout, stderr) => {
                                 if (error) {
@@ -87,7 +87,7 @@
                         <script>
 
                             const exec = require('child_process').execFile;
-                            var exePath = path.resolve(__dirname+"../../../../engine/consulta-escritorio/", './main.exe')
+                            var exePath = path.resolve(__dirname+"../../../../engine/consulta-escritorio/dist/main/", './main.exe')
                             console.log(exePath)
                             exec(exePath, ["escritorios","escritorios"] ,(error, stdout, stderr) => {
                                 if (error) {
@@ -122,7 +122,7 @@
                                 });
 
                                 const { execFile } = require('child_process');
-                                var exePath = path.resolve(__dirname+"../../../../engine/consulta-escritorio/", './main.exe')
+                                var exePath = path.resolve(__dirname+"../../../../engine/consulta-escritorio/dist/main/", './main.exe')
                                 console.log(exePath)
                                 const child = execFile(exePath, [valuesEscritorios, valuesInstituicoes] ,(error, stdout, stderr) => {
                                     if (error) {
