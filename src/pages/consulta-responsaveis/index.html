@@ -25,11 +25,18 @@
     <script type="text/javascript" src="../../js/navbar.js"></script>
 
     <script type="text/javascript" src="../../js/scripts.js"></script>
+    <link rel="stylesheet" href="../../css/loader.css">
+
 </head>
     <body>
         <script>
             loadSidebar()
         </script>
+
+        <div class="loader-wrapper">
+            <div class="loader-1"></div>
+        </div>
+        
     <main>
 
             <div class="card" style="display: inline-block;">
@@ -70,38 +77,40 @@
 
                                 document.getElementById('responsaveis').appendChild(option)
                             }
+                            $(".loader-wrapper").fadeOut("slow");
                         })
 
 
                             //migrado
                             function buscarResponsaveis(){
-
-                            const responsavel = document.getElementById('responsaveis').value
-                            console.log(responsavel)
-                                
-                            const { execFile } = require('child_process');
-                            var exePath = path.resolve(__dirname+"../../../../engine/consulta-responsaveis/dist/main/", './main.exe')
-                            console.log(exePath)
-                            const child = execFile(exePath, [responsavel] ,(error, stdout, stderr) => {
-                                if (error) {
-                                    const Swal1 = require('sweetalert2')
-                                    Swal1.fire("Ops! Algo deu Errado!", "", 'error')
-                                    throw error;
-                                }
-                                results = stdout
-
-                                $('.card-body.b').empty()
-
-                                function appendHtml(el, str) {
-                                    var div = document.createElement('div'); //container to append to
-                                    div.innerHTML = str;
-                                    while (div.children.length > 0) {
-                                        $('.card-body.b').append(div.children[0]);
+                                $(".loader-wrapper").fadeIn("slow");
+                                const responsavel = document.getElementById('responsaveis').value
+                                console.log(responsavel)
+                                    
+                                const { execFile } = require('child_process');
+                                var exePath = path.resolve(__dirname+"../../../../engine/consulta-responsaveis/dist/main/", './main.exe')
+                                console.log(exePath)
+                                const child = execFile(exePath, [responsavel] ,(error, stdout, stderr) => {
+                                    if (error) {
+                                        const Swal1 = require('sweetalert2')
+                                        Swal1.fire("Ops! Algo deu Errado!", "", 'error')
+                                        throw error;
                                     }
-                                }
-                                appendHtml(document.body, results)
-                                //$('body').append(results);
-                            })
+                                    results = stdout
+
+                                    $('.card-body.b').empty()
+
+                                    function appendHtml(el, str) {
+                                        var div = document.createElement('div'); //container to append to
+                                        div.innerHTML = str;
+                                        while (div.children.length > 0) {
+                                            $('.card-body.b').append(div.children[0]);
+                                        }
+                                    }
+                                    appendHtml(document.body, results)
+                                    $(".loader-wrapper").fadeOut("slow");
+                                    //$('body').append(results);
+                                })
                             }
 
                         </script>

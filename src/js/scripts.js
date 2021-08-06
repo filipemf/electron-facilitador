@@ -7,13 +7,13 @@ var ProgressBar = require('progressbar.js')
 
 //migrado
 function buscarMes() {
-
+    
     const mes = document.getElementById('mes').value
     const ano = document.getElementById('ano').value
 
     var $ = jQuery = require("jquery")
-
-
+    $(".loader-wrapper").fadeIn("slow");
+    
 
     const { execFile } = require('child_process');
     if (document.getElementById('prevista').checked) {
@@ -35,6 +35,7 @@ function buscarMes() {
                 }
             }
             appendHtml(document.body, results)
+            $(".loader-wrapper").fadeOut("slow");
         });
     } else if (document.getElementById('resultado').checked) {
         var resultado = "resultado"
@@ -55,8 +56,12 @@ function buscarMes() {
                 while (div.children.length > 0) {
                     $('.card-body.b').append(div.children[0]);
                 }
+                $(".loader-wrapper").fadeOut("slow");
             }
+            
             appendHtml(document.body, results)
+            $(".loader-wrapper").fadeOut("slow");
+            
             //$('body').append(results);
         })
 
@@ -411,7 +416,6 @@ function checarEscritorios() {
 
     })
 }
-
 //migrado
 function buscarDados() {
     var valuesCategorias = Array.from($("#categorias").find(':selected')).map(function (item) {
@@ -780,7 +784,7 @@ function criarGraficos() {
         }
         $('#span_aprovacao').empty()
         $('#span_aprovacao').append((eval(json['casos-aprovacao'].sim + "/" + json['casos-aprovacao'].nao) * 100).toFixed(0) + "%")
-
+        $(".loader-wrapper").fadeOut("slow");
         // Number from 0.0 to 1.0
 
     })

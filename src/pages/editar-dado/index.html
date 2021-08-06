@@ -29,11 +29,16 @@
     <link rel="stylesheet" href="../../css/navbarstyle.css">
     <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
     <script type="text/javascript" src="../../js/navbar.js"></script>
+
+    <link rel="stylesheet" href="../../css/loader.css">
 </head>
     <body>
         <script>
             loadSidebar()
         </script>
+    <div class="loader-wrapper">
+        <div class="loader-1"></div>
+    </div>
     <main>
         <div style="margin-left: 10rem; margin-right: 10rem;">
             <div class="card-header" style="margin-left: -10rem; margin-right: -10rem; margin-bottom: 10px;">
@@ -290,6 +295,7 @@
                                         
                     //migrado
                     function salvarDadosEditados(){
+                        $(".loader-wrapper").fadeIn("slow");
                         var casosAndamento
                         if ($(document).find('#casos-em-andamento').is(':checked')) {
                             casosAndamento = "Sim"
@@ -364,6 +370,7 @@
                                     throw error;
                                 }
                                 var results = stdout;
+                                $(".loader-wrapper").fadeOut("slow");
                                 Swal.fire('Registros editados!', '', 'success')
                             })
                         }
@@ -379,15 +386,13 @@
                                     throw error;
                                 }
                                 var results = stdout;
+                                $(".loader-wrapper").fadeOut("slow");
                                 Swal.fire('Registro editado!', '', 'success')
                             })
                         }
                     }
 
-                </script>
-                
-                <script>
-
+                    
                     function adicionar(){
                         const { execFile } = require('child_process');
                         var exePath = path.resolve(__dirname+"../../../../engine/consulta-escritorio/dist/main/", './main.exe')
@@ -412,30 +417,14 @@
                                 $("#instituicoes").append('<option value="'+array2[i]+'">'+array2[i]+'</option>');
                                 $("#instituicoes").selectpicker("refresh");
                             }
+                            $(".loader-wrapper").fadeOut("slow");
 
                     })
                     }
                     adicionar()
 
-
-                </script>
-
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label for="data-prevista" style="margin-right:25px">Data Prevista: </label>
-                        <input id="data-prevista" placeholder="dd/mm/yyyy" data-slots="dmy">
-                    </div>
-                    
-
-                    <div class="form-group col-md-6">
-                        <label for="data-resultado" style="margin-right:25px">Data Resultado: </label>
-                        <input id="data-resultado" placeholder="mm/yyyy" data-slots="my">
-                    </div>
-
-                    
-                    <script>
-                        // This code empowers all input tags having a placeholder and data-slots attribute
-                        document.addEventListener('DOMContentLoaded', () => {
+                    // This code empowers all input tags having a placeholder and data-slots attribute
+                    document.addEventListener('DOMContentLoaded', () => {
                             for (const el of document.querySelectorAll("[placeholder][data-slots]")) {
                                 const pattern = el.getAttribute("placeholder"),
                                     slots = new Set(el.dataset.slots || "_"),
@@ -465,83 +454,10 @@
                             }
                         });
     
-                    </script>
-
-                </div>
-
-                <div class="form-group">
-                  <label for="nome-categoria">Nome da Categoria</label>
-                  <input type="text" class="form-control" id="nome-categoria">
-                </div>
-                
-                <div class="form-row">
-                  <div class="form-group col-md-6">
-                    <label for="responsaveis" style="margin-right: 2rem;">Responsáveis</label>
-                    <input type="text" class="responsaveis" id="responsaveis">
-                  </div>
-
-                  <div class="form-group col-md-6">
-                    <label for="submissao">Faz Submissão: </label>
-                    <input type="text" class="submissao" id="submissao" >
-                      
-                  </div>
-
-                  <div class="form-group col-md-6">
-                    <label for="status" style="margin-right: 5.5rem;">Status: </label>
-                    <input type="text" class="status" id="status">
-                  </div>
-
-                </div>
-
-                <div style="margin-left: 30%; margin-top: 15px;" class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                    <input type="radio" class="btn-check" name="btnradio" id="todos" autocomplete="off" checked>
-                    <label class="btn btn-outline-primary" for="todos">Todos os Escritórios</label>
-                  
-                    <input type="radio" class="btn-check" name="btnradio" id="esse" autocomplete="off">
-                    <label class="btn btn-outline-primary" for="esse">Apenas esse Escritório</label>
-                  
-                </div>
-
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="casos-em-andamento">
-                    <label class="form-check-label" for="casos-em-andamento">
-                      Caso em Andamento
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="casos-em-revisao">
-                    <label class="form-check-label" for="casos-em-revisao">
-                        Caso em Revisão
-                    </label>
-                </div>
-                    <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="casos-em-transcricao">
-                    <label class="form-check-label" for="casos-em-transcricao">
-                        Caso em Transcrição
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="casos-em-aprovacao">
-                    <label class="form-check-label" for="casos-em-aprovacao">
-                        Caso em Aprovação
-                    </label>
-                </div>
-
-                <div class="form-row" style="margin-top: 2%;">
-                    <div class="form-group col-md-6">
-                        <button type="button" class="btn btn-primary" onclick="adicionarEscritorio()">Adicionar Escritório</button>
-                    </div>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <button type="button" class="btn btn-danger" onclick="apagarRegistro()">Apagar Registro</button>
-                    </div>
-                </div>
-
-                <script>
+                    
                     function adicionarEscritorio(){
                         var $ = jQuery = require("jquery")
+                        $(".loader-wrapper").fadeIn("slow");
                         Swal.fire({
                             title: "Adicionar Escritório",
                             input: 'text',
@@ -619,6 +535,7 @@
                                         }
                                     }
                                     appendHtml(document.body, results)
+                                    $(".loader-wrapper").fadeOut("slow");
                                     Swal.fire('Registro(s) salvo(s)!', '', 'success')
                                     //$('body').append(results);
                                 })
@@ -627,6 +544,7 @@
                     }
 
                     function apagarRegistro(){
+                        $(".loader-wrapper").fadeIn("slow");
                         Swal.fire({
                             title: 'Tem Certeza que Deseja Apagar o Registro?',
                             showDenyButton: true,
@@ -655,7 +573,7 @@
                                         throw error;
                                     }
                                     var results = stdout;
-
+                                    $(".loader-wrapper").fadeOut("slow");
                                     Swal.fire('Registro apagado!', '', 'info')
                                 })
 
@@ -687,6 +605,7 @@
                                         throw error;
                                     }
                                     var results = stdout;
+                                    $(".loader-wrapper").fadeOut("slow");
                                     Swal.fire('Registros apagados!', '', 'info')
                                 })
 
@@ -696,6 +615,92 @@
                     }
                     
                 </script>
+                
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="data-prevista" style="margin-right:25px">Data Prevista: </label>
+                        <input id="data-prevista" placeholder="dd/mm/yyyy" data-slots="dmy">
+                    </div>
+                    
+
+                    <div class="form-group col-md-6">
+                        <label for="data-resultado" style="margin-right:25px">Data Resultado: </label>
+                        <input id="data-resultado" placeholder="mm/yyyy" data-slots="my">
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                  <label for="nome-categoria">Nome da Categoria</label>
+                  <input type="text" class="form-control" id="nome-categoria">
+                </div>
+                
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="responsaveis" style="margin-right: 2rem;">Responsáveis</label>
+                    <input type="text" class="responsaveis" id="responsaveis">
+                  </div>
+
+                  <div class="form-group col-md-6">
+                    <label for="submissao">Faz Submissão: </label>
+                    <input type="text" class="submissao" id="submissao" >
+                      
+                  </div>
+
+                  <div class="form-group col-md-6">
+                    <label for="status" style="margin-right: 5.5rem;">Status: </label>
+                    <input type="text" class="status" id="status">
+                  </div>
+
+                </div>
+
+                <div style="margin-left: 30%; margin-top: 15px;" class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                    <input type="radio" class="btn-check" name="btnradio" id="todos" autocomplete="off" checked>
+                    <label class="btn btn-outline-primary" for="todos">Todos os Escritórios</label>
+                  
+                    <input type="radio" class="btn-check" name="btnradio" id="esse" autocomplete="off">
+                    <label class="btn btn-outline-primary" for="esse">Apenas esse Escritório</label>
+                  
+                </div>
+
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="casos-em-andamento">
+                    <label class="form-check-label" for="casos-em-andamento">
+                      Caso em Andamento
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="casos-em-revisao">
+                    <label class="form-check-label" for="casos-em-revisao">
+                        Caso em Revisão
+                    </label>
+                </div>
+                    <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="casos-em-transcricao">
+                    <label class="form-check-label" for="casos-em-transcricao">
+                        Caso em Transcrição
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="casos-em-aprovacao">
+                    <label class="form-check-label" for="casos-em-aprovacao">
+                        Caso em Aprovação
+                    </label>
+                </div>
+
+                <div class="form-row" style="margin-top: 2%;">
+                    <div class="form-group col-md-6">
+                        <button type="button" class="btn btn-primary" onclick="adicionarEscritorio()">Adicionar Escritório</button>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <button type="button" class="btn btn-danger" onclick="apagarRegistro()">Apagar Registro</button>
+                    </div>
+                </div>
+
 
                 <div class="form-row">
                     <div class="form-group col-md-6">
