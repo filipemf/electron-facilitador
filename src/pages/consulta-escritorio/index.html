@@ -55,7 +55,9 @@
                             console.log(exePath)
                             const child = execFile(exePath, ["instituicoes","instituicoes"] ,(error, stdout, stderr) => {
                                 if (error) {
-                                throw error;
+                                    const Swal1 = require('sweetalert2')
+                                    Swal1.fire("Ops! Algo deu Errado!", "", 'error')
+                                    throw error;
                                 }
                                 var results = stdout;
                                 formated = results.replace('[','')
@@ -91,7 +93,9 @@
                             console.log(exePath)
                             exec(exePath, ["escritorios","escritorios"] ,(error, stdout, stderr) => {
                                 if (error) {
-                                throw error;
+                                    const Swal1 = require('sweetalert2')
+                                    Swal1.fire("Ops! Algo deu Errado!", "", 'error')
+                                    throw error;
                                 }
                                 var results = stdout;
                                 console.log(results)

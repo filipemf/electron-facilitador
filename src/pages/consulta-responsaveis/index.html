@@ -84,7 +84,9 @@
                             console.log(exePath)
                             const child = execFile(exePath, [responsavel] ,(error, stdout, stderr) => {
                                 if (error) {
-                                throw error;
+                                    const Swal1 = require('sweetalert2')
+                                    Swal1.fire("Ops! Algo deu Errado!", "", 'error')
+                                    throw error;
                                 }
                                 results = stdout
 

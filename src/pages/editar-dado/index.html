@@ -359,7 +359,9 @@
                             console.log(exePath)
                             const child = execFile(exePath, ["salvar-dados", valuesCategorias[0], nomeCategoria, dataPrevista, dataResultado, responsaveis, submissao, status, filtered, casosAndamento, casosRevisao, casosTranscricao, casosAprovacao] ,(error, stdout, stderr) => {
                                 if (error) {
-                                throw error;
+                                    const Swal1 = require('sweetalert2')
+                                    Swal1.fire("Ops! Algo deu Errado!", "", 'error')
+                                    throw error;
                                 }
                                 var results = stdout;
                                 Swal.fire('Registros editados!', '', 'success')
@@ -372,7 +374,9 @@
                             console.log(exePath)
                             const child = execFile(exePath, ["salvar-dados", valuesCategorias[0], nomeCategoria, dataPrevista, dataResultado, responsaveis, submissao, status, valuesEscritorio, casosAndamento, casosRevisao, casosTranscricao, casosAprovacao] ,(error, stdout, stderr) => {
                                 if (error) {
-                                throw error;
+                                    const Swal1 = require('sweetalert2')
+                                    Swal1.fire("Ops! Algo deu Errado!", "", 'error')
+                                    throw error;
                                 }
                                 var results = stdout;
                                 Swal.fire('Registro editado!', '', 'success')
