@@ -28,13 +28,19 @@
     <link rel="stylesheet" href="../../css/navbarstyle.css">
     <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
     <script type="text/javascript" src="../../js/navbar.js"></script>
+
+    <link rel="stylesheet" href="../../css/loader.css">
 </head>
     <body>
         <script>
             loadSidebar()
         </script>
-    <main>
 
+        <div class="loader-wrapper">
+            <div class="loader-1"></div>
+        </div>
+
+    <main>
             <div class="card" style="display:inherit;">
               
                     <div class="card-header">
@@ -66,219 +72,155 @@
                                     document.getElementById('resultado').checked = false
                                     console.log(document.getElementById('resultado').checked)
                                 }
-                            </script>
-
-                            <div>
-                                <select name="mes" id="mes" style="margin-top: 15px; margin-left: 15px;">
-                                    <option value="01">Janeiro</option>
-                                    <option value="02">Fevereiro</option>
-                                    <option value="03">Março</option>
-                                    <option value="04">Abril</option>
-                                    <option value="5">Maio</option>
-                                    <option value="06">Junho</option>
-                                    <option value="07">Julho</option>
-                                    <option value="08">Agosto</option>
-                                    <option value="09">Setembro</option>
-                                    <option value="10">Outubro</option>
-                                    <option value="11">Novembro</option>
-                                    <option value="12">Dezembro</option>
-                                </select>
-
-                                <select name="ano" id="ano" style="margin-top: 15px;">
-                                    <option value="todos">Todos</option>
-                                    <option value="2021">2021</option>
-                                    <option value="2020">2020</option>
-                                    <option value="2022">2022</option>
-                                </select>
-                            </div>
                             
-                            
-                        </div>
-
-
-                        <div style="display:block; margin-bottom: 30px; justify-content: space-between; margin-right: 15px;">
-                            <select style="margin-right: 15px;" id="instituicoes" class="selectpicker" multiple data-live-search="true" title="Selecionar Instituições" data-size=8 data-actions-box="true">
-
-                            </select>
-
-                            <button onclick="buscarCategorias()" class="btn btn-warning" style="margin-left: 20px; margin-right: 20px;">
-                                Procurar
-                            </button>
-
-                            <select id="categorias" class="selectpicker" multiple data-live-search="true" title="Categorias" data-size=8 data-actions-box="true">
-
-                            </select>
-                        </div>
-
-                        <script>
-                            var $ = jQuery = require("jquery")
-                            
-                            function buscarCategorias(){
-                                var valuesEscritorios =Array.from($("#instituicoes").find(':selected')).map(function(item){
-                                    return $(item).text();
-                                });
+                                var $ = jQuery = require("jquery")
                                 
+                                function buscarCategorias(){
+                                    var valuesEscritorios =Array.from($("#instituicoes").find(':selected')).map(function(item){
+                                        return $(item).text();
+                                    });
+                                    
+                                    
+                                    const { execFile } = require('child_process');
+                                    var exePath = path.resolve(__dirname+"../../../../engine/consulta-instituicao/dist/main/", './main.exe')
+                                    console.log(exePath)
+                                    const child = execFile(exePath, ["grupos",valuesEscritorios, "opa"] ,(error, stdout, stderr) => {
+                                        if (error) {
+                                            throw error;
+                                        }
+                                        var results = stdout;
+                                        
+                                        let arrayFor = results.slice(1,-1)
+                                        let arr = results.split("],[")
+                                        // console.log(typeof jsonAr)
+                                        //console.log(arr)
+                                        for (var i = 0; i< arr.length;i++){
+                                            arr[i].substring(3)
+                                            arr[i].slice(1,-1)
+                                            arr[i].replace("[")
+                                            arr[i].replace(/\s/g, "")
+                                        }
+                                        console.log(arr)
+
+                                        
+                                        $('#categorias').empty()
+                                        for (var i = 0; i< arr.length; i++){
+                                            let option = arr[i].replace(/\s/g, "")
+
+                                            let semSpace = arr[i]
+                                            semSpace = semSpace.replace("[", "")
+                                            semSpace = semSpace.replace("[", "")
+                                            semSpace = semSpace.replace("]", "")
+                                            semSpace = semSpace.replace("]", "")
+                                            semSpace = semSpace.replace(/\\/g, '')
+
+                                            let option2 = arr[i].replace(/\s/g, "")
+                                            
+                                            option = option.replace("[", "")
+                                            option = option.replace("[", "")
+
+                                            option2 = option2.replace("&", "")
+                                            option2 = option2.replace(":", "")
+                                            option2 = option2.replace("/", "")
+                                            option2 = option2.replace("(", "-")
+                                            option2 = option2.replace(")", "-")
+                                            option2 = option2.replace("]", "")
+                                            option2 = option2.replace("]", "")
+                                            option2 = option2.replace("[", "")
+                                            option2 = option2.replace("[", "")
+                                            option2 = option2.toLowerCase()
+
+                                            semSpace = semSpace.replace(/"/g, "")
+                                            option = option.replace(/"/g, "")
+                                            option2 = option2.replace(/"/g, "")
+
+                                            semSpace = semSpace.split(",")
+                                            option = option.split(",")
+                                            option2 = option2.split(",")
+
+                                            
+
+                                            console.log(semSpace[1])
+                                            console.log(option)
+                                            console.log(option2)
+                                            
+                                            
+
+                                            if ($('#divider-'+option[0]).length === 0) {
+                                                $("#categorias").append('<optgroup id="'+'divider-'+option[0]+'" label="'+semSpace[0]+'"></optgroup>');
+
+                                                $("#divider-"+option[0]).append('<option id="'+option2[1]+'" value="'+semSpace[1]+'">'+semSpace[1]+'</option>');
+                                                $("#categorias").selectpicker("refresh");
+                                            }
+                                            else {
+                                                $("#divider-"+option[0]).append('<option id="'+option2[1]+'" value="'+semSpace[1]+'">'+semSpace[1]+'</option>');
+                                                $("#categorias").selectpicker("refresh");
+                                            }
+                                        }
+                                    })
+                                }
                                 
-                                const { execFile } = require('child_process');
-                                var exePath = path.resolve(__dirname+"../../../../engine/consulta-instituicao/", './main.exe')
-                                console.log(exePath)
-                                const child = execFile(exePath, ["grupos",valuesEscritorios, "opa"] ,(error, stdout, stderr) => {
-                                    if (error) {
-                                        throw error;
-                                    }
-                                    var results = stdout;
                                     
-                                    let arrayFor = results.slice(1,-1)
-                                    let arr = results.split("],[")
-                                    // console.log(typeof jsonAr)
-                                    //console.log(arr)
-                                    for (var i = 0; i< arr.length;i++){
-                                        arr[i].substring(3)
-                                        arr[i].slice(1,-1)
-                                        arr[i].replace("[")
-                                        arr[i].replace(/\s/g, "")
-                                    }
-                                    console.log(arr)
-
-                                    
-                                    $('#categorias').empty()
-                                    for (var i = 0; i< arr.length; i++){
-                                        let option = arr[i].replace(/\s/g, "")
-
-                                        let semSpace = arr[i]
-                                        semSpace = semSpace.replace("[", "")
-                                        semSpace = semSpace.replace("[", "")
-                                        semSpace = semSpace.replace("]", "")
-                                        semSpace = semSpace.replace("]", "")
-                                        semSpace = semSpace.replace(/\\/g, '')
-
-                                        let option2 = arr[i].replace(/\s/g, "")
-                                        
-                                        option = option.replace("[", "")
-                                        option = option.replace("[", "")
-
-                                        option2 = option2.replace("&", "")
-                                        option2 = option2.replace(":", "")
-                                        option2 = option2.replace("/", "")
-                                        option2 = option2.replace("(", "-")
-                                        option2 = option2.replace(")", "-")
-                                        option2 = option2.replace("]", "")
-                                        option2 = option2.replace("]", "")
-                                        option2 = option2.replace("[", "")
-                                        option2 = option2.replace("[", "")
-                                        option2 = option2.toLowerCase()
-
-                                        semSpace = semSpace.replace(/"/g, "")
-                                        option = option.replace(/"/g, "")
-                                        option2 = option2.replace(/"/g, "")
-
-                                        semSpace = semSpace.split(",")
-                                        option = option.split(",")
-                                        option2 = option2.split(",")
-
-                                        
-
-                                        console.log(semSpace[1])
-                                        console.log(option)
-                                        console.log(option2)
-                                        
-                                        
-
-                                        if ($('#divider-'+option[0]).length === 0) {
-                                            $("#categorias").append('<optgroup id="'+'divider-'+option[0]+'" label="'+semSpace[0]+'"></optgroup>');
-
-                                            $("#divider-"+option[0]).append('<option id="'+option2[1]+'" value="'+semSpace[1]+'">'+semSpace[1]+'</option>');
-                                            $("#categorias").selectpicker("refresh");
+                                function adicionar(){
+                                    const { execFile } = require('child_process');
+                                    var exePath = path.resolve(__dirname+"../../../../engine/consulta-escritorio/dist/main/", './main.exe')
+                                    console.log(exePath)
+                                    const child = execFile(exePath, ["instituicoes","instituicoes"] ,(error, stdout, stderr) => {
+                                        if (error) {
+                                            throw error;
                                         }
-                                        else {
-                                            $("#divider-"+option[0]).append('<option id="'+option2[1]+'" value="'+semSpace[1]+'">'+semSpace[1]+'</option>');
-                                            $("#categorias").selectpicker("refresh");
+                                        var results = stdout;
+                                        console.log(results)
+                                        formated = results.replace('[','')
+                                        formated = formated.replace(']','')
+                                        formated = formated.replace(/'/g,'')
+                                        
+                                        //formated = formated.replace(/\s/g,'')
+
+                                        let array2 = formated.split(',')
+                                        array2 = array2.map(s => s.trim());
+                                        console.log(array2)
+
+                                        for (var i = 0; i< array2.length; i++){
+                                            $("#instituicoes").append('<option value="'+array2[i]+'">'+array2[i]+'</option>');
+                                            $("#instituicoes").selectpicker("refresh");
                                         }
-                                    }
+
                                 })
-                            }
-
-                        </script>
-                        
-
-                        
-                        <script>
-                            function adicionar(){
-                                const { execFile } = require('child_process');
-                                var exePath = path.resolve(__dirname+"../../../../engine/consulta-escritorio/", './main.exe')
-                                console.log(exePath)
-                                const child = execFile(exePath, ["instituicoes","instituicoes"] ,(error, stdout, stderr) => {
-                                    if (error) {
-                                        throw error;
-                                    }
-                                    var results = stdout;
-                                    console.log(results)
-                                    formated = results.replace('[','')
-                                    formated = formated.replace(']','')
-                                    formated = formated.replace(/'/g,'')
+                                }
+                                adicionar()
                                     
-                                    //formated = formated.replace(/\s/g,'')
+                                function adicionar1(){
+                                    const { execFile } = require('child_process');
+                                    var exePath = path.resolve(__dirname+"../../../../engine/consulta-escritorio/dist/main/", './main.exe')
+                                    console.log(exePath)
+                                    const child = execFile(exePath, ["escritorios","escritorios"] ,(error, stdout, stderr) => {
+                                        if (error) {
+                                            throw error;
+                                        }
+                                        var results = stdout;
+                                        formated = results.replace('[','')
+                                        formated = formated.replace(']','')
+                                        formated = formated.replace(/'/g,'')
+                                        formated = formated.replace(/\s/g,'')
 
-                                    let array2 = formated.split(',')
-                                    array2 = array2.map(s => s.trim());
-                                    console.log(array2)
+                                        let array2 = formated.split(',')
+                                        console.log(array2)
 
-                                    for (var i = 0; i< array2.length; i++){
-                                        $("#instituicoes").append('<option value="'+array2[i]+'">'+array2[i]+'</option>');
-                                        $("#instituicoes").selectpicker("refresh");
-                                    }
+                                        for (var i = 0; i< array2.length; i++){
+                                            $("#escritorios").append('<option value="'+array2[i]+'">'+array2[i]+'</option>');
+                                            $("#escritorios").selectpicker("refresh");
+                                        }
+                                        $(".loader-wrapper").fadeOut("slow");
 
-                            })
-                            }
-                            adicionar()
-                                
-                        </script>
+                                })
+                                }
+                                adicionar1()
 
-
-                        
-                        <select id="escritorios" class="selectpicker" multiple data-live-search="true" title="Adicionar Escritórios" data-size=8 data-actions-box="true">
-
-                        </select>
-                        
-                        <script>
-                            function adicionar1(){
-                                const { execFile } = require('child_process');
-                                var exePath = path.resolve(__dirname+"../../../../engine/consulta-escritorio/", './main.exe')
-                                console.log(exePath)
-                                const child = execFile(exePath, ["escritorios","escritorios"] ,(error, stdout, stderr) => {
-                                    if (error) {
-                                        throw error;
-                                    }
-                                    var results = stdout;
-                                    formated = results.replace('[','')
-                                    formated = formated.replace(']','')
-                                    formated = formated.replace(/'/g,'')
-                                    formated = formated.replace(/\s/g,'')
-
-                                    let array2 = formated.split(',')
-                                    console.log(array2)
-
-                                    for (var i = 0; i< array2.length; i++){
-                                        $("#escritorios").append('<option value="'+array2[i]+'">'+array2[i]+'</option>');
-                                        $("#escritorios").selectpicker("refresh");
-                                    }
-
-                            })
-                            }
-                            adicionar1()
-                        </script>
-
-                        <div>
-                            <label for="responsaveis">Responsáveis: </label>       
-                            <select name="responsaveis" id="responsaveis" style="margin-top: 15px; margin-left: 15px;">
-                                <option value="">‎‎‎‎‎‏‏‎</option>
-                            </select>
-
-                            <script>
                                 function adicionar2(){
                                     const { execFile } = require('child_process');
-                                    var exePath = path.resolve(__dirname+"../../../../engine/consulta-responsaveis/", './main.exe')
-                                console.log(exePath)
+                                    var exePath = path.resolve(__dirname+"../../../../engine/consulta-responsaveis/dist/main/", './main.exe')
+                                    console.log(exePath)
                                     const child = execFile(exePath, ["options"] ,(error, stdout, stderr) => {
                                         if (error) {
                                         throw error;
@@ -305,6 +247,7 @@
                                 
                                 //migrado
                                 function buscaComplexa(){
+                                    $(".loader-wrapper").fadeIn("slow");
                                     $('.card-body.b').empty()
                                     var casosAndamento
                                     if ($(document).find('#casos-em-andamento').is(':checked')) {
@@ -363,7 +306,7 @@
                                         console.log("é previstaaaaa")
                                         var prevista = "previsao"
 
-                                        var exePath = path.resolve(__dirname+"../../../../engine/consulta-complexa/", './main.exe')
+                                        var exePath = path.resolve(__dirname+"../../../../engine/consulta-complexa/dist/main/", './main.exe')
                                         console.log(exePath)
                                         const child = execFile(exePath, [valuesEscritorios, valuesInstituicoes, responsavel, categorias, submissao, status, mes, ano, prevista, casosAndamento, casosRevisao, casosTranscricao, casosAprovacao] ,(error, stdout, stderr) => {
                                             if (error) {
@@ -381,6 +324,7 @@
                                                 }
                                             }
                                             appendHtml(document.body, results)
+                                            $(".loader-wrapper").fadeOut("slow");
                                             //$('body').append(results);
                                         })
 
@@ -388,7 +332,7 @@
                                         console.log("é resultadoooo")
                                         var resultado = "resultado"
 
-                                        var exePath = path.resolve(__dirname+"../../../../engine/consulta-complexa/", './main.exe')
+                                        var exePath = path.resolve(__dirname+"../../../../engine/consulta-complexa/dist/main/", './main.exe')
                                         console.log(exePath)
                                         const child = execFile(exePath, [valuesEscritorios, valuesInstituicoes, responsavel, categorias, submissao, status, mes, ano, resultado, casosAndamento, casosRevisao, casosTranscricao, casosAprovacao] ,(error, stdout, stderr) => {
                                             if (error) {
@@ -406,6 +350,7 @@
                                                 }
                                             }
                                             appendHtml(document.body, results)
+                                            $(".loader-wrapper").fadeOut("slow");
                                             //$('body').append(results);
                                         })
                                     }
@@ -415,7 +360,7 @@
                                         var prevista = ""
 
                                         console.log(categorias)
-                                        var exePath = path.resolve(__dirname+"../../../../engine/consulta-complexa/", './main.exe')
+                                        var exePath = path.resolve(__dirname+"../../../../engine/consulta-complexa/dist/main/", './main.exe')
                                         console.log(exePath)
                                         const child = execFile(exePath, [valuesEscritorios, valuesInstituicoes, responsavel, categorias, submissao, status, mes, ano, prevista, casosAndamento, casosRevisao, casosTranscricao, casosAprovacao], {maxBuffer: 1024 * 5000} ,(error, stdout, stderr) => {
                                             if (error) {
@@ -433,13 +378,68 @@
                                                 }
                                             }
                                             appendHtml(document.body, results)
+                                            $(".loader-wrapper").fadeOut("slow");
                                             //$('body').append(results);
                                         })
                                     }
 
                                 }
-
+                            
                             </script>
+
+                            <div>
+                                <select name="mes" id="mes" style="margin-top: 15px; margin-left: 15px;">
+                                    <option value="01">Janeiro</option>
+                                    <option value="02">Fevereiro</option>
+                                    <option value="03">Março</option>
+                                    <option value="04">Abril</option>
+                                    <option value="5">Maio</option>
+                                    <option value="06">Junho</option>
+                                    <option value="07">Julho</option>
+                                    <option value="08">Agosto</option>
+                                    <option value="09">Setembro</option>
+                                    <option value="10">Outubro</option>
+                                    <option value="11">Novembro</option>
+                                    <option value="12">Dezembro</option>
+                                </select>
+
+                                <select name="ano" id="ano" style="margin-top: 15px;">
+                                    <option value="todos">Todos</option>
+                                    <option value="2021">2021</option>
+                                    <option value="2020">2020</option>
+                                    <option value="2022">2022</option>
+                                </select>
+                            </div>
+                            
+                            
+                        </div>
+
+
+                        <div style="display:block; margin-bottom: 30px; justify-content: space-between; margin-right: 15px;">
+                            <select style="margin-right: 15px;" id="instituicoes" class="selectpicker" multiple data-live-search="true" title="Selecionar Instituições" data-size=8 data-actions-box="true">
+
+                            </select>
+
+                            <button onclick="buscarCategorias()" class="btn btn-warning" style="margin-left: 20px; margin-right: 20px;">
+                                Procurar
+                            </button>
+
+                            <select id="categorias" class="selectpicker" multiple data-live-search="true" title="Categorias" data-size=8 data-actions-box="true">
+
+                            </select>
+                        </div>
+
+                        <select id="escritorios" class="selectpicker" multiple data-live-search="true" title="Adicionar Escritórios" data-size=8 data-actions-box="true">
+
+                        </select>
+                        
+
+                        <div>
+                            <label for="responsaveis">Responsáveis: </label>       
+                            <select name="responsaveis" id="responsaveis" style="margin-top: 15px; margin-left: 15px;">
+                                <option value="">‎‎‎‎‎‏‏‎</option>
+                            </select>
+
                         </div>
                         <div>
                             <label for="submissao">Faz Submissão: </label>

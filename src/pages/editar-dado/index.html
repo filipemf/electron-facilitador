@@ -29,11 +29,16 @@
     <link rel="stylesheet" href="../../css/navbarstyle.css">
     <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
     <script type="text/javascript" src="../../js/navbar.js"></script>
+
+    <link rel="stylesheet" href="../../css/loader.css">
 </head>
     <body>
         <script>
             loadSidebar()
         </script>
+    <div class="loader-wrapper">
+        <div class="loader-1"></div>
+    </div>
     <main>
         <div style="margin-left: 10rem; margin-right: 10rem;">
             <div class="card-header" style="margin-left: -10rem; margin-right: -10rem; margin-bottom: 10px;">
@@ -71,7 +76,7 @@
                         
                         
                         const { execFile } = require('child_process');
-                        var exePath = path.resolve(__dirname+"../../../../engine/consulta-instituicao/", './main.exe')
+                        var exePath = path.resolve(__dirname+"../../../../engine/consulta-instituicao/dist/main/", './main.exe')
                         console.log(exePath)
                         const child = execFile(exePath, ["grupos",valuesEscritorios, "opa"] ,(error, stdout, stderr) => {
                             if (error) {
@@ -167,7 +172,7 @@
                         });
                         
                         const { execFile } = require('child_process');
-                        var exePath = path.resolve(__dirname+"../../../../engine/editar-dado/", './main.exe')
+                        var exePath = path.resolve(__dirname+"../../../../engine/editar-dado/dist/main/", './main.exe')
                         console.log(exePath)
                         const child = execFile(exePath, ["checar-escritorios", valuesCategorias] ,(error, stdout, stderr) => {
                             if (error) {
@@ -212,7 +217,7 @@
                         
                         const { execFile } = require('child_process');
                         
-                        var exePath = path.resolve(__dirname+"../../../../engine/editar-dado/", './main.exe')
+                        var exePath = path.resolve(__dirname+"../../../../engine/editar-dado/dist/main/", './main.exe')
                         console.log(exePath)
                         const child = execFile(exePath, ["buscar-dados", valuesCategorias, valuesEscritorio] ,(error, stdout, stderr) => {
                             if (error) {
@@ -242,7 +247,8 @@
                             let dataPrevistaFormatada
                             try{
 
-                                dataPrevistaFormatada = moment(array2[3].replace(/\"/g, '')).format("DD/MM/YYYY")
+                                //dataPrevistaFormatada = moment(array2[3].replace(/\"/g, '')).format("DD/MM/YYYY")
+                                dataPrevistaFormatada = array2[3].replace(/\"/g, '')
                             }
                             catch(e){
                                 dataPrevistaFormatada = array2[3].replace(/\"/g, '')
@@ -289,6 +295,7 @@
                                         
                     //migrado
                     function salvarDadosEditados(){
+                        $(".loader-wrapper").fadeIn("slow");
                         var casosAndamento
                         if ($(document).find('#casos-em-andamento').is(':checked')) {
                             casosAndamento = "Sim"
@@ -354,38 +361,41 @@
                             console.log(filtered)
                             const { execFile } = require('child_process');
                         
-                            var exePath = path.resolve(__dirname+"../../../../engine/editar-dado/", './main.exe')
+                            var exePath = path.resolve(__dirname+"../../../../engine/editar-dado/dist/main/", './main.exe')
                             console.log(exePath)
                             const child = execFile(exePath, ["salvar-dados", valuesCategorias[0], nomeCategoria, dataPrevista, dataResultado, responsaveis, submissao, status, filtered, casosAndamento, casosRevisao, casosTranscricao, casosAprovacao] ,(error, stdout, stderr) => {
                                 if (error) {
-                                throw error;
+                                    const Swal1 = require('sweetalert2')
+                                    Swal1.fire("Ops! Algo deu Errado!", "", 'error')
+                                    throw error;
                                 }
                                 var results = stdout;
+                                $(".loader-wrapper").fadeOut("slow");
                                 Swal.fire('Registros editados!', '', 'success')
                             })
                         }
                         else{
                             const { execFile } = require('child_process');
                             console.log(valuesEscritorio)
-                            var exePath = path.resolve(__dirname+"../../../../engine/editar-dado/", './main.exe')
+                            var exePath = path.resolve(__dirname+"../../../../engine/editar-dado/dist/main/", './main.exe')
                             console.log(exePath)
                             const child = execFile(exePath, ["salvar-dados", valuesCategorias[0], nomeCategoria, dataPrevista, dataResultado, responsaveis, submissao, status, valuesEscritorio, casosAndamento, casosRevisao, casosTranscricao, casosAprovacao] ,(error, stdout, stderr) => {
                                 if (error) {
-                                throw error;
+                                    const Swal1 = require('sweetalert2')
+                                    Swal1.fire("Ops! Algo deu Errado!", "", 'error')
+                                    throw error;
                                 }
                                 var results = stdout;
+                                $(".loader-wrapper").fadeOut("slow");
                                 Swal.fire('Registro editado!', '', 'success')
                             })
                         }
                     }
 
-                </script>
-                
-                <script>
-
+                    
                     function adicionar(){
                         const { execFile } = require('child_process');
-                        var exePath = path.resolve(__dirname+"../../../../engine/consulta-escritorio/", './main.exe')
+                        var exePath = path.resolve(__dirname+"../../../../engine/consulta-escritorio/dist/main/", './main.exe')
                         console.log(exePath)
                         const child = execFile(exePath, ["instituicoes","instituicoes"] ,(error, stdout, stderr) => {
                             if (error) {
@@ -407,30 +417,14 @@
                                 $("#instituicoes").append('<option value="'+array2[i]+'">'+array2[i]+'</option>');
                                 $("#instituicoes").selectpicker("refresh");
                             }
+                            $(".loader-wrapper").fadeOut("slow");
 
                     })
                     }
                     adicionar()
 
-
-                </script>
-
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label for="data-prevista" style="margin-right:25px">Data Prevista: </label>
-                        <input id="data-prevista" placeholder="dd/mm/yyyy" data-slots="dmy">
-                    </div>
-                    
-
-                    <div class="form-group col-md-6">
-                        <label for="data-resultado" style="margin-right:25px">Data Resultado: </label>
-                        <input id="data-resultado" placeholder="mm/yyyy" data-slots="my">
-                    </div>
-
-                    
-                    <script>
-                        // This code empowers all input tags having a placeholder and data-slots attribute
-                        document.addEventListener('DOMContentLoaded', () => {
+                    // This code empowers all input tags having a placeholder and data-slots attribute
+                    document.addEventListener('DOMContentLoaded', () => {
                             for (const el of document.querySelectorAll("[placeholder][data-slots]")) {
                                 const pattern = el.getAttribute("placeholder"),
                                     slots = new Set(el.dataset.slots || "_"),
@@ -460,7 +454,180 @@
                             }
                         });
     
-                    </script>
+                    
+                    function adicionarEscritorio(){
+                        var $ = jQuery = require("jquery")
+                        $(".loader-wrapper").fadeIn("slow");
+                        Swal.fire({
+                            title: "Adicionar Escritório",
+                            input: 'text',
+                            showCancelButton: true        
+                        }).then((result) => {
+                            if (result.value) {
+                                var casosAndamento
+                                if ($(document).find('#casos-em-andamento').is(':checked')) {
+                                    casosAndamento = "Sim"
+                                } else {
+                                    casosAndamento = "Não"
+                                }
+                                
+                                var casosRevisao
+                                if ($(document).find('#casos-em-revisao').is(':checked')) {
+                                    casosRevisao = "Sim"
+                                } else {
+                                    casosRevisao = "Não"
+                                }
+                                
+                                var casosTranscricao
+                                if ($(document).find('#casos-em-transcricao').is(':checked')) {
+                                    casosTranscricao = "Sim"
+                                } else {
+                                    casosTranscricao = "Não"
+                                }
+
+                                var casosAprovacao
+                                if ($(document).find('#casos-em-aprovacao').is(':checked')) {
+                                    casosAprovacao = "Sim"
+                                } else {
+                                    casosAprovacao = "Não"
+                                }
+
+                                
+                                
+                                
+                                const responsavel = document.getElementById('responsaveis').value
+
+                                const nomeCategoria = document.getElementById('nome-categoria').value
+
+                                const submissao = document.getElementById('submissao').value
+
+                                const status = document.getElementById('status').value
+
+                                const dataPrevista = document.getElementById('data-prevista').value
+
+                                const dataResultado = document.getElementById('data-resultado').value
+
+                                var valuesCategorias = Array.from($("#categorias").find(':selected')).map(function(item){
+                                    var optgroup = $(item).parent().attr('label');
+
+                                    let finalString = optgroup+": "+nomeCategoria;
+                                    console.log(finalString)
+                                    return finalString
+
+                                });
+                                
+                                const Swal = require('sweetalert2')
+                                const { execFile } = require('child_process');
+                                var exePath = path.resolve(__dirname+"../../../../engine/editar-dado/dist/main/", './main.exe')
+                                console.log(exePath)
+                                const child = execFile(exePath, ["adicionar-escritorio", result.value, valuesCategorias, responsavel, submissao, status, dataPrevista, dataResultado, casosAndamento, casosRevisao, casosTranscricao, casosAprovacao] ,(error, stdout, stderr) => {
+                                    if (error) {
+                                        throw error;
+                                    }
+                                    var results = stdout;
+                                    $('.card-body.b').empty()
+
+                                    function appendHtml(el, str) {
+                                        var div = document.createElement('div'); //container to append to
+                                        div.innerHTML = str;
+                                        while (div.children.length > 0) {
+                                            $('.card-body.b').append(div.children[0]);
+                                        }
+                                    }
+                                    appendHtml(document.body, results)
+                                    $(".loader-wrapper").fadeOut("slow");
+                                    Swal.fire('Registro(s) salvo(s)!', '', 'success')
+                                    //$('body').append(results);
+                                })
+                            }
+                        })
+                    }
+
+                    function apagarRegistro(){
+                        $(".loader-wrapper").fadeIn("slow");
+                        Swal.fire({
+                            title: 'Tem Certeza que Deseja Apagar o Registro?',
+                            showDenyButton: true,
+                            showCancelButton: true,
+                            confirmButtonText: `Apagar Esse Escritório`,
+                            denyButtonText: `Apagar Todos Escritórios`,
+                            }).then((result) => {
+                            /* Read more about isConfirmed, isDenied below */
+                            if (result.isConfirmed) {
+                                var valuesCategorias = Array.from($("#categorias").find(':selected')).map(function(item){
+                                    var optgroup = $(item).parent().attr('label');
+
+                                    let finalString = optgroup+": "+$(item).text();
+                                    console.log(finalString)
+                                    return finalString
+
+                                });
+
+                                var selectedItem = $('#escritorios').val()
+                                
+                                const { execFile } = require('child_process');
+                                var exePath = path.resolve(__dirname+"../../../../engine/editar-dado/dist/excluir/", './excluir.exe')
+                                console.log(exePath)
+                                const child = execFile(exePath, ["excluir-apenas", valuesCategorias[0], selectedItem] ,(error, stdout, stderr) => {
+                                    if (error) {
+                                        throw error;
+                                    }
+                                    var results = stdout;
+                                    $(".loader-wrapper").fadeOut("slow");
+                                    Swal.fire('Registro apagado!', '', 'info')
+                                })
+
+                                
+                            } else if (result.isDenied) {
+                                var valuesCategorias = Array.from($("#categorias").find(':selected')).map(function(item){
+                                    var optgroup = $(item).parent().attr('label');
+
+                                    let finalString = optgroup+": "+$(item).text();
+                                    console.log(finalString)
+                                    return finalString
+
+                                });
+
+                                
+                                let x = document.getElementById('escritorios')
+
+                                let array3 = []
+                                for (var i = 0; i < x.length; i++) {
+                                    array3.push(x[i].text)
+                                }
+                                var filtered = array3.filter(n => n)
+
+                                const { execFile } = require('child_process');
+                                var exePath = path.resolve(__dirname+"../../../../engine/editar-dado/dist/excluir/", './excluir.exe')
+                                console.log(exePath)
+                                const child = execFile(exePath, ["excluir-todos", valuesCategorias[0], filtered] ,(error, stdout, stderr) => {
+                                    if (error) {
+                                        throw error;
+                                    }
+                                    var results = stdout;
+                                    $(".loader-wrapper").fadeOut("slow");
+                                    Swal.fire('Registros apagados!', '', 'info')
+                                })
+
+                                
+                            }
+                            })
+                    }
+                    
+                </script>
+                
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="data-prevista" style="margin-right:25px">Data Prevista: </label>
+                        <input id="data-prevista" placeholder="dd/mm/yyyy" data-slots="dmy">
+                    </div>
+                    
+
+                    <div class="form-group col-md-6">
+                        <label for="data-resultado" style="margin-right:25px">Data Resultado: </label>
+                        <input id="data-resultado" placeholder="mm/yyyy" data-slots="my">
+                    </div>
 
                 </div>
 
@@ -534,163 +701,6 @@
                     </div>
                 </div>
 
-                <script>
-                    function adicionarEscritorio(){
-                        var $ = jQuery = require("jquery")
-                        Swal.fire({
-                            title: "Adicionar Escritório",
-                            input: 'text',
-                            showCancelButton: true        
-                        }).then((result) => {
-                            if (result.value) {
-                                var casosAndamento
-                                if ($(document).find('#casos-em-andamento').is(':checked')) {
-                                    casosAndamento = "Sim"
-                                } else {
-                                    casosAndamento = "Não"
-                                }
-                                
-                                var casosRevisao
-                                if ($(document).find('#casos-em-revisao').is(':checked')) {
-                                    casosRevisao = "Sim"
-                                } else {
-                                    casosRevisao = "Não"
-                                }
-                                
-                                var casosTranscricao
-                                if ($(document).find('#casos-em-transcricao').is(':checked')) {
-                                    casosTranscricao = "Sim"
-                                } else {
-                                    casosTranscricao = "Não"
-                                }
-
-                                var casosAprovacao
-                                if ($(document).find('#casos-em-aprovacao').is(':checked')) {
-                                    casosAprovacao = "Sim"
-                                } else {
-                                    casosAprovacao = "Não"
-                                }
-
-                                
-                                
-                                
-                                const responsavel = document.getElementById('responsaveis').value
-
-                                const nomeCategoria = document.getElementById('nome-categoria').value
-
-                                const submissao = document.getElementById('submissao').value
-
-                                const status = document.getElementById('status').value
-
-                                const dataPrevista = document.getElementById('data-prevista').value
-
-                                const dataResultado = document.getElementById('data-resultado').value
-
-                                var valuesCategorias = Array.from($("#categorias").find(':selected')).map(function(item){
-                                    var optgroup = $(item).parent().attr('label');
-
-                                    let finalString = optgroup+": "+nomeCategoria;
-                                    console.log(finalString)
-                                    return finalString
-
-                                });
-                                
-                                const Swal = require('sweetalert2')
-                                const { execFile } = require('child_process');
-                                var exePath = path.resolve(__dirname+"../../../../engine/editar-dado/", './main.exe')
-                                console.log(exePath)
-                                const child = execFile(exePath, ["adicionar-escritorio", result.value, valuesCategorias, responsavel, submissao, status, dataPrevista, dataResultado, casosAndamento, casosRevisao, casosTranscricao, casosAprovacao] ,(error, stdout, stderr) => {
-                                    if (error) {
-                                        throw error;
-                                    }
-                                    var results = stdout;
-                                    $('.card-body.b').empty()
-
-                                    function appendHtml(el, str) {
-                                        var div = document.createElement('div'); //container to append to
-                                        div.innerHTML = str;
-                                        while (div.children.length > 0) {
-                                            $('.card-body.b').append(div.children[0]);
-                                        }
-                                    }
-                                    appendHtml(document.body, results)
-                                    Swal.fire('Registro(s) salvo(s)!', '', 'success')
-                                    //$('body').append(results);
-                                })
-                            }
-                        })
-                    }
-
-                    function apagarRegistro(){
-                        Swal.fire({
-                            title: 'Tem Certeza que Deseja Apagar o Registro?',
-                            showDenyButton: true,
-                            showCancelButton: true,
-                            confirmButtonText: `Apagar Esse Escritório`,
-                            denyButtonText: `Apagar Todos Escritórios`,
-                            }).then((result) => {
-                            /* Read more about isConfirmed, isDenied below */
-                            if (result.isConfirmed) {
-                                var valuesCategorias = Array.from($("#categorias").find(':selected')).map(function(item){
-                                    var optgroup = $(item).parent().attr('label');
-
-                                    let finalString = optgroup+": "+$(item).text();
-                                    console.log(finalString)
-                                    return finalString
-
-                                });
-
-                                var selectedItem = $('#escritorios').val()
-                                
-                                const { execFile } = require('child_process');
-                                var exePath = path.resolve(__dirname+"../../../../engine/editar-dado/", './excluir.exe')
-                                console.log(exePath)
-                                const child = execFile(exePath, ["excluir-apenas", valuesCategorias[0], selectedItem] ,(error, stdout, stderr) => {
-                                    if (error) {
-                                        throw error;
-                                    }
-                                    var results = stdout;
-
-                                    Swal.fire('Registro apagado!', '', 'info')
-                                })
-
-                                
-                            } else if (result.isDenied) {
-                                var valuesCategorias = Array.from($("#categorias").find(':selected')).map(function(item){
-                                    var optgroup = $(item).parent().attr('label');
-
-                                    let finalString = optgroup+": "+$(item).text();
-                                    console.log(finalString)
-                                    return finalString
-
-                                });
-
-                                
-                                let x = document.getElementById('escritorios')
-
-                                let array3 = []
-                                for (var i = 0; i < x.length; i++) {
-                                    array3.push(x[i].text)
-                                }
-                                var filtered = array3.filter(n => n)
-
-                                const { execFile } = require('child_process');
-                                var exePath = path.resolve(__dirname+"../../../../engine/editar-dado/", './excluir.exe')
-                                console.log(exePath)
-                                const child = execFile(exePath, ["excluir-todos", valuesCategorias[0], filtered] ,(error, stdout, stderr) => {
-                                    if (error) {
-                                        throw error;
-                                    }
-                                    var results = stdout;
-                                    Swal.fire('Registros apagados!', '', 'info')
-                                })
-
-                                
-                            }
-                            })
-                    }
-                    
-                </script>
 
                 <div class="form-row">
                     <div class="form-group col-md-6">

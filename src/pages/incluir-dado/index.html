@@ -28,11 +28,17 @@
     <link rel="stylesheet" href="../../css/navbarstyle.css">
     <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
     <script type="text/javascript" src="../../js/navbar.js"></script>
+
+    <link rel="stylesheet" href="../../css/loader.css">
 </head>
     <body>
         <script>
             loadSidebar()
         </script>
+
+    <div class="loader-wrapper">
+        <div class="loader-1"></div>
+    </div>
     <main>
         <div style="margin-left: 10rem; margin-right: 10rem;">
             <div class="card-header" style="margin-left: -10rem; margin-right: -10rem; margin-bottom: 10px;">
@@ -46,9 +52,10 @@
                         </select>
 
                         <script>
-                                
+                            
                             //migrado
                             function incluirDado(){
+                                $(".loader-wrapper").fadeIn("slow");
                                 var casosAndamento
                                 if ($(document).find('#casos-em-andamento').is(':checked')) {
                                     casosAndamento = "Sim"
@@ -97,7 +104,7 @@
 
                                 const Swal = require('sweetalert2')
                                 const { execFile } = require('child_process');
-                                var exePath = path.resolve(__dirname+"../../../../engine/incluir-dado/", './main.exe')
+                                var exePath = path.resolve(__dirname+"../../../../engine/incluir-dado/dist/main/", './main.exe')
                                 console.log(exePath)
                                 const child = execFile(exePath, [valuesEscritorios, valuesInstituicoes, responsavel, nomeCategoria, submissao, status, dataPrevista, dataResultado, casosAndamento, casosRevisao, casosTranscricao, casosAprovacao] ,(error, stdout, stderr) => {
                                     if (error) {
@@ -114,6 +121,7 @@
                                         }
                                     }
                                     appendHtml(document.body, results)
+                                    $(".loader-wrapper").fadeOut("slow");
                                     Swal.fire('Registro(s) salvo(s)!', '', 'success')
                                     //$('body').append(results);
                                 })
@@ -121,7 +129,7 @@
 
                             function adicionar(){
                                 const { execFile } = require('child_process');
-                                var exePath = path.resolve(__dirname+"../../../../engine/consulta-escritorio/", './main.exe')
+                                var exePath = path.resolve(__dirname+"../../../../engine/consulta-escritorio/dist/main/", './main.exe')
                                 console.log(exePath)
                                 const child = execFile(exePath, ["instituicoes","instituicoes"] ,(error, stdout, stderr) => {
                                     if (error) {
@@ -143,21 +151,17 @@
                                         $("#instituicoes").append('<option value="'+array2[i]+'">'+array2[i]+'</option>');
                                         $("#instituicoes").selectpicker("refresh");
                                     }
+                                    console.log(document.styleSheets)
+                                    $(".loader-wrapper").fadeOut("slow");
 
                             })
                             }
                             adicionar()
 
-                        </script>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <select id="escritorios" class="selectpicker" multiple data-live-search="true" title="Adicionar Escritórios" data-size=8 data-actions-box="true">
-                        </select>
-
-                        <script>
+                            
                             function adicionar1(){
                                 const { execFile } = require('child_process');
-                                var exePath = path.resolve(__dirname+"../../../../engine/consulta-escritorio/", './main.exe')
+                                var exePath = path.resolve(__dirname+"../../../../engine/consulta-escritorio/dist/main/", './main.exe')
                                 console.log(exePath)
                                 const child = execFile(exePath, ["escritorios","escritorios"] ,(error, stdout, stderr) => {
                                     if (error) {
@@ -180,74 +184,42 @@
                             })
                             }
                             adicionar1()
-                        </script>
-                    </div>
-                </div>
-                
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label for="data-prevista" style="margin-right:25px">Data Prevista: </label>
-                        <input id="data-prevista" placeholder="dd/mm/yyyy" data-slots="dmy">
-                    </div>
-                    
 
-                    <div class="form-group col-md-6">
-                        <label for="data-resultado" style="margin-right:25px">Data Resultado: </label>
-                        <input id="data-resultado" placeholder="mm/yyyy" data-slots="my">
-                    </div>
+                            
+                            // This code empowers all input tags having a placeholder and data-slots attribute
+                            document.addEventListener('DOMContentLoaded', () => {
+                                for (const el of document.querySelectorAll("[placeholder][data-slots]")) {
+                                    const pattern = el.getAttribute("placeholder"),
+                                        slots = new Set(el.dataset.slots || "_"),
+                                        prev = (j => Array.from(pattern, (c,i) => slots.has(c)? j=i+1: j))(0),
+                                        first = [...pattern].findIndex(c => slots.has(c)),
+                                        accept = new RegExp(el.dataset.accept || "\\d", "g"),
+                                        clean = input => {
+                                            input = input.match(accept) || [];
+                                            return Array.from(pattern, c =>
+                                                input[0] === c || slots.has(c) ? input.shift() || c : c
+                                            );
+                                        },
+                                        format = () => {
+                                            const [i, j] = [el.selectionStart, el.selectionEnd].map(i => {
+                                                i = clean(el.value.slice(0, i)).findIndex(c => slots.has(c));
+                                                return i<0? prev[prev.length-1]: back? prev[i-1] || first: i;
+                                            });
+                                            el.value = clean(el.value).join``;
+                                            el.setSelectionRange(i, j);
+                                            back = false;
+                                        };
+                                    let back = false;
+                                    el.addEventListener("keydown", (e) => back = e.key === "Backspace");
+                                    el.addEventListener("input", format);
+                                    el.addEventListener("focus", format);
+                                    el.addEventListener("blur", () => el.value === pattern && (el.value=""));
+                                }
+                            });
 
-                    <script>
-                    // This code empowers all input tags having a placeholder and data-slots attribute
-                    document.addEventListener('DOMContentLoaded', () => {
-                        for (const el of document.querySelectorAll("[placeholder][data-slots]")) {
-                            const pattern = el.getAttribute("placeholder"),
-                                slots = new Set(el.dataset.slots || "_"),
-                                prev = (j => Array.from(pattern, (c,i) => slots.has(c)? j=i+1: j))(0),
-                                first = [...pattern].findIndex(c => slots.has(c)),
-                                accept = new RegExp(el.dataset.accept || "\\d", "g"),
-                                clean = input => {
-                                    input = input.match(accept) || [];
-                                    return Array.from(pattern, c =>
-                                        input[0] === c || slots.has(c) ? input.shift() || c : c
-                                    );
-                                },
-                                format = () => {
-                                    const [i, j] = [el.selectionStart, el.selectionEnd].map(i => {
-                                        i = clean(el.value.slice(0, i)).findIndex(c => slots.has(c));
-                                        return i<0? prev[prev.length-1]: back? prev[i-1] || first: i;
-                                    });
-                                    el.value = clean(el.value).join``;
-                                    el.setSelectionRange(i, j);
-                                    back = false;
-                                };
-                            let back = false;
-                            el.addEventListener("keydown", (e) => back = e.key === "Backspace");
-                            el.addEventListener("input", format);
-                            el.addEventListener("focus", format);
-                            el.addEventListener("blur", () => el.value === pattern && (el.value=""));
-                        }
-                    });
-
-                    </script>
-                </div>
-
-                <div class="form-group">
-                  <label for="nome-categoria">Nome da Categoria</label>
-                  <input type="text" class="form-control" id="nome-categoria" placeholder="Digite o nome">
-                </div>
-                
-                <div class="form-row">
-                  <div class="form-group col-md-6">
-                    <label for="responsaveis">Responsáveis</label>
-                    
-                    <select name="responsaveis" id="responsaveis" style="margin-top: 15px; margin-left: 15px;">
-                        <option value="">‎‎‎‎‎‏‏‎</option>
-                    </select>
-
-                    <script>
                             function adicionar2(){
                                 const { execFile } = require('child_process');
-                                var exePath = path.resolve(__dirname+"../../../../engine/consulta-responsaveis/", './main.exe')
+                                var exePath = path.resolve(__dirname+"../../../../engine/consulta-responsaveis/dist/main/", './main.exe')
                                 console.log(exePath)
                                 const child = execFile(exePath, ["options"] ,(error, stdout, stderr) => {
                                     if (error) {
@@ -272,7 +244,91 @@
                             })
                             }
                             adicionar2()
-                    </script>
+
+                            function adicionarGrupo(){
+                                Swal.fire({
+                                    title: "Adicionar Grupo",
+                                    input: 'text',
+                                    showCancelButton: true        
+                                }).then((result) => {
+                                    if (result.value) {
+                                        var option = document.createElement('option')
+                                        option.value = result
+                                        option.text = result
+
+                                        $("#instituicoes").append('<option value="'+result.value+'" selected>'+result.value+'</option>');
+                                        $("#instituicoes").selectpicker("refresh");
+                                    }
+                                });
+                            }
+
+                            function adicionarEscritorio(){
+                                Swal.fire({
+                                    title: "Adicionar Escritório",
+                                    input: 'text',
+                                    showCancelButton: true        
+                                }).then((result) => {
+                                    if (result.value) {
+                                        var option = document.createElement('option')
+                                        option.value = result
+                                        option.text = result
+
+                                        $("#escritorios").append('<option value="'+result.value+'" selected>'+result.value+'</option>');
+                                        $("#escritorios").selectpicker("refresh");
+                                    }
+                                });
+                            }
+                            
+                            function adicionarResponsavel(){
+                                Swal.fire({
+                                    title: "Adicionar Responsável",
+                                    input: 'text',
+                                    showCancelButton: true        
+                                }).then((result) => {
+                                    if (result.value) {
+                                        var option = document.createElement('option')
+                                        option.value = result
+                                        option.text = result
+
+                                        $("#responsaveis").append('<option value="'+result.value+'" selected>'+result.value+'</option>');
+                                        $("#responsaveis").selectpicker("refresh");
+                                    }
+                                });
+                            }
+                            
+                        </script>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <select id="escritorios" class="selectpicker" multiple data-live-search="true" title="Adicionar Escritórios" data-size=8 data-actions-box="true">
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="data-prevista" style="margin-right:25px">Data Prevista: </label>
+                        <input id="data-prevista" placeholder="dd/mm/yyyy" data-slots="dmy">
+                    </div>
+                    
+
+                    <div class="form-group col-md-6">
+                        <label for="data-resultado" style="margin-right:25px">Data Resultado: </label>
+                        <input id="data-resultado" placeholder="mm/yyyy" data-slots="my">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="nome-categoria">Nome da Categoria</label>
+                  <input type="text" class="form-control" id="nome-categoria" placeholder="Digite o nome">
+                </div>
+                
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="responsaveis">Responsáveis</label>
+                    
+                    <select name="responsaveis" id="responsaveis" style="margin-top: 15px; margin-left: 15px;">
+                        <option value="">‎‎‎‎‎‏‏‎</option>
+                    </select>
                   </div>
 
                   <div class="form-group col-md-6">
@@ -342,59 +398,6 @@
                         <button type="button" class="btn btn-info" onclick="adicionarResponsavel()">Adicionar Responsável</button>
                     </div>
                 </div>
-
-                <script>
-                    function adicionarGrupo(){
-                        Swal.fire({
-                            title: "Adicionar Grupo",
-                            input: 'text',
-                            showCancelButton: true        
-                        }).then((result) => {
-                            if (result.value) {
-                                var option = document.createElement('option')
-                                option.value = result
-                                option.text = result
-
-                                $("#instituicoes").append('<option value="'+result.value+'" selected>'+result.value+'</option>');
-                                $("#instituicoes").selectpicker("refresh");
-                            }
-                        });
-                    }
-
-                    function adicionarEscritorio(){
-                        Swal.fire({
-                            title: "Adicionar Escritório",
-                            input: 'text',
-                            showCancelButton: true        
-                        }).then((result) => {
-                            if (result.value) {
-                                var option = document.createElement('option')
-                                option.value = result
-                                option.text = result
-
-                                $("#escritorios").append('<option value="'+result.value+'" selected>'+result.value+'</option>');
-                                $("#escritorios").selectpicker("refresh");
-                            }
-                        });
-                    }
-                    
-                    function adicionarResponsavel(){
-                        Swal.fire({
-                            title: "Adicionar Responsável",
-                            input: 'text',
-                            showCancelButton: true        
-                        }).then((result) => {
-                            if (result.value) {
-                                var option = document.createElement('option')
-                                option.value = result
-                                option.text = result
-
-                                $("#responsaveis").append('<option value="'+result.value+'" selected>'+result.value+'</option>');
-                                $("#responsaveis").selectpicker("refresh");
-                            }
-                        });
-                    }
-                </script>
 
                 <div class="form-row">
                     <div class="form-group col-md-6">

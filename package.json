@@ -36,6 +36,9 @@
     "nsis": {
       "allowToChangeInstallationDirectory": true,
       "oneClick": false
-    }
+    },
+    "asarUnpack": [
+      "engine"
+    ]
   }
 }

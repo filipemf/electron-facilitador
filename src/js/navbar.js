@@ -148,13 +148,11 @@ function loadSidebar() {
         <span class="actual" id="actualFile">Atual: </span>
         </div>
         <script>
-
         const fs = require('fs');
         var text = fs.readFileSync('./UltimaPlanilha/ultima_planilha.txt','utf8')
         $('#actualFile').append(text);
         console.log(text);
         
-
         </script>
         <span class="hoverText">Carregar Novo Arquivo</span>
     </li>

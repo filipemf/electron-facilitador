@@ -91,6 +91,7 @@ header label span{
 }
 
 main{
+    z-index: -1;
     position: relative;
     padding: 1rem 1.5rem;
     margin-left: 4rem;
