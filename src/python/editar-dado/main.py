@@ -172,7 +172,7 @@ def salvarRow(grupos, nomeCategoria, dataPrevista, dataResultado, responsaveis, 
         df.to_excel(writer,'CATEGORIAS PARA LIPE', index = False)
 
         # Save the file
-        writer.save()
+        
     print(df)
     return df
 
@@ -235,7 +235,7 @@ def adicionarEscritorio(escritorio, grupos, responsavel, submissao, status, data
         df.to_excel(writer,'CATEGORIAS PARA LIPE', index = False)
 
         # Save the file
-        writer.save()
+        
 
 if sys.argv[1]=="checar-escritorios":
     print(checarEscritorios(sys.argv[2]))

@@ -68,9 +68,9 @@ def adicionarData(escritorios, instituicao, responsavel, categoria, submissao, s
             df.to_excel(writer,'CATEGORIAS PARA LIPE', index = False)
 
             # Save the file
-            writer.save()
+            
 
     return df
 
-print(adicionarData("Eren,CM", "jeguealado", "jeguealado", "jeguealado", "jeguealado", "jeguealado", "12/05/2021", "02/2022", "Sim", "Sim", "Sim", "Sim"))
+print(adicionarData("Eren,CM,Jada", "jeguealado1", "jeguealado", "jeguealado", "jeguealado", "jeguealado", "12/05/2021", "02/2022", "Sim", "Sim", "Sim", "Sim"))
 sys.stdout.flush()

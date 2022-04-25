@@ -53,6 +53,7 @@ function changeFile(){
                     $('#actualFile').empty()
                     $('#actualFile').append(text);
                     console.log(text);
+                    window.location.reload();
                 })
 
             }
@@ -68,6 +69,7 @@ function changeFile(){
                 });
             }
         })
+    
 }
 
 

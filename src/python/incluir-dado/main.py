@@ -83,7 +83,7 @@ def adicionarData(escritorios, instituicao, responsavel, categoria, submissao, s
             df.to_excel(writer,'CATEGORIAS PARA LIPE', index = False)
 
             # Save the file
-            writer.save()
+            
 
     return df
 

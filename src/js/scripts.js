@@ -502,21 +502,22 @@ function buscarDados() {
 }
 
 //migrado
-function salvarDadosEditados() {
+function salvarDadosEditados(){
+    $(".loader-wrapper").fadeIn("slow");
     var casosAndamento
     if ($(document).find('#casos-em-andamento').is(':checked')) {
         casosAndamento = "Sim"
     } else {
         casosAndamento = "Não"
     }
-
+    
     var casosRevisao
     if ($(document).find('#casos-em-revisao').is(':checked')) {
         casosRevisao = "Sim"
     } else {
         casosRevisao = "Não"
     }
-
+    
     var casosTranscricao
     if ($(document).find('#casos-em-transcricao').is(':checked')) {
         casosTranscricao = "Sim"
@@ -530,16 +531,16 @@ function salvarDadosEditados() {
     } else {
         casosAprovacao = "Não"
     }
+    
 
-
-    var valuesEscritorio = Array.from($("#escritorios").find(':selected')).map(function (item) {
+    var valuesEscritorio = Array.from($("#escritorios").find(':selected')).map(function(item){
         return $(item).text();
     });
 
-    var valuesCategorias = Array.from($("#categorias").find(':selected')).map(function (item) {
+    var valuesCategorias = Array.from($("#categorias").find(':selected')).map(function(item){
         var optgroup = $(item).parent().attr('label');
 
-        let finalString = optgroup + ": " + $(item).text();
+        let finalString = optgroup+": "+$(item).text();
         console.log(finalString)
         return finalString
 
@@ -551,11 +552,11 @@ function salvarDadosEditados() {
     let nomeCategoria = document.getElementById("nome-categoria").value
     let responsaveis = document.getElementById("responsaveis").value
     let submissao = document.getElementById("submissao").value
-    let status = document.getElementById("status").value
+    let status = document.getElementById("status").value 
 
     const Swal = require('sweetalert2')
-    if (document.getElementById('todos').checked) {
-
+    if(document.getElementById('todos').checked) {
+        
         let x = document.getElementById('escritorios')
 
         let array3 = []
@@ -567,26 +568,33 @@ function salvarDadosEditados() {
 
         console.log(filtered)
         const { execFile } = require('child_process');
-
-        var exePath = path.resolve(__dirname + "../../../../engine/editar-dado/dist/main/", './main.exe')
+    
+        var exePath = path.resolve(__dirname+"../../../../engine/editar-dado/dist/main/", './main.exe')
         console.log(exePath)
-        const child = execFile(exePath, ["salvar-dados", valuesCategorias[0], nomeCategoria, dataPrevista, dataResultado, responsaveis, submissao, status, filtered, casosAndamento, casosRevisao, casosTranscricao, casosAprovacao], (error, stdout, stderr) => {
+        const child = execFile(exePath, ["salvar-dados", valuesCategorias[0], nomeCategoria, dataPrevista, dataResultado, responsaveis, submissao, status, filtered, casosAndamento, casosRevisao, casosTranscricao, casosAprovacao] ,(error, stdout, stderr) => {
             if (error) {
+                const Swal1 = require('sweetalert2')
+                Swal1.fire("Ops! Algo deu Errado!", "", 'error')
                 throw error;
             }
             var results = stdout;
+            $(".loader-wrapper").fadeOut("slow");
             Swal.fire('Registros editados!', '', 'success')
         })
     }
-    else {
+    else{
+        const { execFile } = require('child_process');
         console.log(valuesEscritorio)
-        var exePath = path.resolve(__dirname + "../../../../engine/editar-dado/dist/main/", './main.exe')
+        var exePath = path.resolve(__dirname+"../../../../engine/editar-dado/dist/main/", './main.exe')
         console.log(exePath)
-        const child = execFile(exePath, ["salvar-dados", valuesCategorias[0], nomeCategoria, dataPrevista, dataResultado, responsaveis, submissao, status, valuesEscritorio, casosAndamento, casosRevisao, casosTranscricao, casosAprovacao], (error, stdout, stderr) => {
+        const child = execFile(exePath, ["salvar-dados", valuesCategorias[0], nomeCategoria, dataPrevista, dataResultado, responsaveis, submissao, status, valuesEscritorio, casosAndamento, casosRevisao, casosTranscricao, casosAprovacao] ,(error, stdout, stderr) => {
             if (error) {
+                const Swal1 = require('sweetalert2')
+                Swal1.fire("Ops! Algo deu Errado!", "", 'error')
                 throw error;
             }
             var results = stdout;
+            $(".loader-wrapper").fadeOut("slow");
             Swal.fire('Registro editado!', '', 'success')
         })
     }
@@ -655,7 +663,7 @@ function criarGraficos() {
                 circle.text.style.color = state.color;
             }
         });
-        andamento1.text.style.fontSize = '2.8rem';
+        andamento1.text.style.fontSize = '2rem';
 
         if (eval(json['casos-andamento'].sim + "/" + json['casos-andamento'].nao).toFixed(1) <= 1.0) {
             console.log(String(eval(json['casos-andamento'].sim + "/" + json['casos-andamento'].nao).toFixed(1) <= 1.0))
@@ -667,7 +675,7 @@ function criarGraficos() {
         }
         $('#span_andamento').empty()
         $('#span_andamento').append((eval(json['casos-andamento'].sim + "/" + json['casos-andamento'].nao) * 100).toFixed(0) + "%")
-
+        
 
         var revisao1 = new ProgressBar.Circle(revisao, {
             color: '#aaa',
@@ -696,7 +704,7 @@ function criarGraficos() {
                 circle.text.style.color = state.color;
             }
         });
-        revisao1.text.style.fontSize = '2.8rem';
+        revisao1.text.style.fontSize = '2rem';
 
         if (eval(json['casos-revisao'].sim + "/" + json['casos-revisao'].nao).toFixed(1) <= 1.0) {
             revisao1.animate(eval(json['casos-revisao'].sim + "/" + json['casos-revisao'].nao).toFixed(1));
@@ -735,7 +743,7 @@ function criarGraficos() {
                 circle.text.style.color = state.color;
             }
         });
-        transcricao1.text.style.fontSize = '2.8rem';
+        transcricao1.text.style.fontSize = '2rem';
         if (eval(json['casos-transcricao'].sim + "/" + json['casos-transcricao'].nao).toFixed(1) <= 1.0) {
             transcricao1.animate(eval(json['casos-transcricao'].sim + "/" + json['casos-transcricao'].nao).toFixed(1));  // Number from 0.0 to 1.0
         }
@@ -774,7 +782,7 @@ function criarGraficos() {
                 circle.text.style.color = state.color;
             }
         });
-        aprovacao1.text.style.fontSize = '2.8rem';
+        aprovacao1.text.style.fontSize = '2rem';
 
         if (eval(json['casos-aprovacao'].sim + "/" + json['casos-aprovacao'].nao).toFixed(1) <= 1.0) {
             aprovacao1.animate(eval(json['casos-aprovacao'].sim + "/" + json['casos-aprovacao'].nao).toFixed(1));  // Number from 0.0 to 1.0
@@ -788,5 +796,5 @@ function criarGraficos() {
         // Number from 0.0 to 1.0
 
     })
-
+    $("svg").removeAttr('width');
 }

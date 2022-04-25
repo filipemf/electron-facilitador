@@ -6,8 +6,8 @@ async function createWindow(){
     mainWindow = new BrowserWindow({
         //fullscreen: true,
         //frame: false,
-        width:1025,
-        height: 1017,
+        //width:1025,
+        //height: 1017,
         webPreferences:{
             nodeIntegration: true,
             enableRemoteModule: true,
@@ -18,7 +18,7 @@ async function createWindow(){
     mainWindow.maximize()
     await mainWindow.loadFile('src/pages/dashboard/index.html')
 
-    mainWindow.webContents.openDevTools()
+    //mainWindow.webContents.openDevTools()
 
     ipcMain.on('update-content', function(event, data){
         console.log(data)

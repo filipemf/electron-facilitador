@@ -1,6 +1,6 @@
 {
   "name": "electron-facilitador",
-  "version": "1.0.0",
+  "version": "2.1.0",
   "description": "Programa com objetivo de facilitar a leitura e edição de um arquivo do excel.",
   "main": "main.js",
   "scripts": {
