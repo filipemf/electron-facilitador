@@ -19,6 +19,7 @@ function buscarMes() {
     if (document.getElementById('prevista').checked) {
         var prevista = "prevista"
         var exePath = path.resolve(__dirname + "../../../../engine/consulta-mes/dist/main/", './main.exe')
+        console.log(`caminhooooooooo`)
         console.log(exePath)
         const child = execFile(exePath, [mes, ano, prevista], (error, stdout, stderr) => {
             if (error) {
